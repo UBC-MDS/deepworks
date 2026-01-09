@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "deepwork"
+version = "0.0.1"
+description = "A package that helps developers optimize their workflow through focus session planning, task prioritization, break management, and motivational affirmations."
+authors = ["Jingbo Wang, Jennifer Onyebuchi, Shanzé Khemani, Jiro Amato"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.semantic_release]
+version_toml = [
+    "pyproject.toml:tool.poetry.version",
+]                                                    # version location
+branch = "main"                                      # branch to make releases of
+changelog_file = "CHANGELOG.md"                      # changelog file
+build_command = "pip install poetry && poetry build" # build dists 
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
