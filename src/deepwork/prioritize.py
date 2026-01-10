@@ -1,6 +1,7 @@
 """Task prioritization function for deepwork."""
 
 import pandas as pd
+from typing import Optional
 
 def prioritize_tasks(
     tasks: list[dict],
