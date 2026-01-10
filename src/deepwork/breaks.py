@@ -43,4 +43,5 @@ def suggest_break(
     >>> activity = suggest_break(minutes_worked=90, energy_level=4, break_type="active")
     >>> print(activity['name'])
     """
+    # return {} #stub
     ...
