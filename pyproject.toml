@@ -36,7 +36,9 @@ classifiers = [
 # TODO: add keywords
 keywords = []
 # TODO: add dependencies
-dependencies = []
+dependencies = [
+    "pandas"
+]
 
 [project.urls]
 Homepage = "https://github.com/UBC-MDS/deepwork"
