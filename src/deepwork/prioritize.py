@@ -16,9 +16,12 @@ def prioritize_tasks(
     tasks : list of dict
         List of task dictionaries. Each task should have:
         - 'name' : str (required)
-        - 'deadline' : str, optional (format: 'YYYY-MM-DD')
-        - 'effort' : int, optional (1-5 scale)
-        - 'importance' : int, optional (1-5 scale)
+        - 'deadline' : str, optional (format: 'YYYY-MM-DD'). Tasks without 
+        deadlines receive a default middle urgency score.
+        - 'effort' : int, optional (1-5 scale, where 1 = low effort, 5 = high effort).
+          Lower effort tasks are prioritized higher. Default is 3.
+        - 'importance' : int, optional (1-5 scale, where 5 = most important).
+          Default is 3.
     method : str, optional
         Prioritization method: 'weighted' or 'deadline'.
         Default is 'weighted'.
