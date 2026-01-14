@@ -39,9 +39,9 @@ def suggest_break(
     Parameters
     ----------
     minutes_worked : int
-        How long you've been working (in minutes).
+        How long you've been working (in minutes). This will influence the length of the suggested break.
     energy_level : int
-        Current energy level on a scale of 1-10.
+        Your current energy level on a scale of 1-10.
     break_type : str, optional
         Preferred break type: 'active', 'rest', 'social', 'mindful', or 'any'.
         Default is 'any'.
@@ -82,6 +82,7 @@ def suggest_break(
         if indoor_only and activity["location"] == "outdoor":
             continue
         candidates.append(activity)
+    
 
     if not candidates:
         candidates = ACTIVITIES
