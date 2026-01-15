@@ -30,4 +30,3 @@ class TestSuggestBreakBasic:
         result1 = suggest_break(minutes_worked=60, energy_level=5, seed=42)
         result2 = suggest_break(minutes_worked=60, energy_level=5, seed=42)
         assert result1["name"] == result2["name"]
-```
