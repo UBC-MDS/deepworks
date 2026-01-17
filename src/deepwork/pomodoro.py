@@ -194,6 +194,10 @@ def warn_if_too_short(total_minutes: int, work: int, short_break: int) -> None:
         Work session duration.
     short_break : int
         Short break duration.
+
+    Returns
+    -------
+    None
     """
     if total_minutes < work + short_break:
         warnings.warn(
