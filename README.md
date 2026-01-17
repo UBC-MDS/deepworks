@@ -38,7 +38,10 @@ This package contains four main functions:
 ## Usage
 
 ``` python
-from deepwork import get_affirmation, plan_pomodoro, prioritize_tasks, suggest_break
+from deepwork.affirmation import get_affirmation
+from deepwork.pomodoro import plan_pomodoro
+from deepwork.prioritize import prioritize_tasks
+from deepwork.breaks import suggest_break
 
 # Get a motivational affirmation
 affirmation = get_affirmation(name="Alice", mood="stressed", energy=4)
