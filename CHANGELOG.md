@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `prioritize_tasks()` function for ranking tasks by priority (either by importance or deadline)
 - Comprehensive test suite for `suggest_break`, `get_affirmation`, `plan_pomodoro`
 - Added `Testing` portion to the README.md
+- Added a brief description of the package in `src/deepwork/__init__.py`
 
 ### Changed
 
