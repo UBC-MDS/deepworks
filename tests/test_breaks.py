@@ -1,5 +1,5 @@
 import pytest
-from deepwork.breaks import suggest_break, ACTIVITIES, format_result
+from deepwork.breaks import suggest_break, ACTIVITIES, _format_result
 
 
 # Basic functionality tests
