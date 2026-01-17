@@ -121,3 +121,60 @@ def test_invalid_method_raises_valueerror():
     """Test that invalid method raises ValueError."""
     with pytest.raises(ValueError, match="Invalid method"):
         prioritize_tasks([{"name": "Task"}], method="invalid")
+
+
+def test_invalid_weights_type_raises_typeerror():
+    """Test that non-dict weights raises TypeError."""
+    with pytest.raises(TypeError, match="weights must be a dict"):
+        prioritize_tasks([{"name": "Task"}], weights="not a dict")
+
+
+def test_urgency_level_one_day_deadline():
+    """Test urgency level 5 for deadline <= 1 day away."""
+    from datetime import date, timedelta
+    tomorrow = (date.today() + timedelta(days=1)).strftime("%Y-%m-%d")
+    tasks = [{"name": "Urgent", "deadline": tomorrow, "importance": 3, "effort": 3}]
+    result = prioritize_tasks(tasks, method="weighted")
+    # With urgency 5: score = 3*0.5 + 3*0.3 + 5*0.2 = 1.5 + 0.9 + 1.0 = 3.4
+    # effort_score = 6 - 3 = 3, so: 3*0.5 + 3*0.3 + 5*0.2 = 1.5 + 0.9 + 1.0 = 3.4
+    assert result.iloc[0]["priority_score"] == 3.4
+
+
+def test_urgency_level_three_days_deadline():
+    """Test urgency level 4 for deadline <= 3 days away."""
+    from datetime import date, timedelta
+    three_days = (date.today() + timedelta(days=3)).strftime("%Y-%m-%d")
+    tasks = [{"name": "Soon", "deadline": three_days, "importance": 3, "effort": 3}]
+    result = prioritize_tasks(tasks, method="weighted")
+    # urgency 4: score = 3*0.5 + 3*0.3 + 4*0.2 = 1.5 + 0.9 + 0.8 = 3.2
+    assert result.iloc[0]["priority_score"] == 3.2
+
+
+def test_urgency_level_seven_days_deadline():
+    """Test urgency level 3 for deadline <= 7 days away."""
+    from datetime import date, timedelta
+    one_week = (date.today() + timedelta(days=7)).strftime("%Y-%m-%d")
+    tasks = [{"name": "This Week", "deadline": one_week, "importance": 3, "effort": 3}]
+    result = prioritize_tasks(tasks, method="weighted")
+    # urgency 3: score = 3*0.5 + 3*0.3 + 3*0.2 = 1.5 + 0.9 + 0.6 = 3.0
+    assert result.iloc[0]["priority_score"] == 3.0
+
+
+def test_urgency_level_fourteen_days_deadline():
+    """Test urgency level 2 for deadline <= 14 days away."""
+    from datetime import date, timedelta
+    two_weeks = (date.today() + timedelta(days=14)).strftime("%Y-%m-%d")
+    tasks = [{"name": "Two Weeks", "deadline": two_weeks, "importance": 3, "effort": 3}]
+    result = prioritize_tasks(tasks, method="weighted")
+    # urgency 2: score = 3*0.5 + 3*0.3 + 2*0.2 = 1.5 + 0.9 + 0.4 = 2.8
+    assert result.iloc[0]["priority_score"] == 2.8
+
+
+def test_urgency_level_beyond_fourteen_days_deadline():
+    """Test urgency level 1 for deadline > 14 days away."""
+    from datetime import date, timedelta
+    far_future = (date.today() + timedelta(days=30)).strftime("%Y-%m-%d")
+    tasks = [{"name": "Later", "deadline": far_future, "importance": 3, "effort": 3}]
+    result = prioritize_tasks(tasks, method="weighted")
+    # urgency 1: score = 3*0.5 + 3*0.3 + 1*0.2 = 1.5 + 0.9 + 0.2 = 2.6
+    assert result.iloc[0]["priority_score"] == 2.6
