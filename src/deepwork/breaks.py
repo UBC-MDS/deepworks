@@ -91,18 +91,18 @@ def suggest_break(
     >>> activity = suggest_break(minutes_worked=90, energy_level=4, break_type="active")
     >>> print(activity['name'])
     """
-    validate_inputs(minutes_worked, energy_level, break_type, duration, indoor_only, seed)
+    _validate_inputs(minutes_worked, energy_level, break_type, duration, indoor_only, seed)
 
-    warn_if_overworked(minutes_worked)
+    _warn_if_overworked(minutes_worked)
 
-    energy_cat = get_energy_category(energy_level)
-    candidates = filter_activities(break_type, duration, indoor_only, energy_cat)
-    weighted = weight_activities(candidates, energy_cat, minutes_worked)
-    selected = weighted_random_choice(weighted, seed)
+    energy_cat = _get_energy_category(energy_level)
+    candidates = _filter_activities(break_type, duration, indoor_only, energy_cat)
+    weighted = _weight_activities(candidates, energy_cat, minutes_worked)
+    selected = _weighted_random_choice(weighted, seed)
 
-    return format_result(selected)
+    return _format_result(selected)
 
-def validate_inputs(
+def _validate_inputs(
     minutes_worked: int,
     energy_level: int,
     break_type: str,
@@ -144,7 +144,7 @@ def validate_inputs(
     if seed is not None and not isinstance(seed, int):
         raise TypeError(f"seed must be an integer, got {type(seed).__name__}")
 
-def warn_if_overworked(minutes_worked: int) -> None:
+def _warn_if_overworked(minutes_worked: int) -> None:
     """
     Warn if user has worked too long without a break.
 
@@ -159,7 +159,7 @@ def warn_if_overworked(minutes_worked: int) -> None:
             UserWarning
         )
 
-def get_energy_category(energy_level: int) -> str:
+def _get_energy_category(energy_level: int) -> str:
     """
     Convert numeric energy level to category.
 
@@ -180,7 +180,7 @@ def get_energy_category(energy_level: int) -> str:
     else:
         return "high"
 
-def filter_activities(
+def _filter_activities(
     break_type: str,
     duration: int,
     indoor_only: bool,
@@ -237,7 +237,7 @@ def filter_activities(
 
     return candidates
 
-def weight_activities(
+def _weight_activities(
     candidates: list[dict],
     energy_cat: str,
     minutes_worked: int
@@ -272,7 +272,7 @@ def weight_activities(
         weighted.append((activity, weight))
     return weighted
 
-def weighted_random_choice(weighted: list[tuple[dict, float]], seed: Optional[int]) -> dict:
+def _weighted_random_choice(weighted: list[tuple[dict, float]], seed: Optional[int]) -> dict:
     """
     Select an activity using weighted random selection.
 
@@ -290,7 +290,7 @@ def weighted_random_choice(weighted: list[tuple[dict, float]], seed: Optional[in
     activities, weights = zip(*weighted)
     return rng.choices(activities, weights=weights, k=1)[0]
 
-def format_result(activity: dict) -> dict:
+def _format_result(activity: dict) -> dict:
     """
     Format the selected activity for return.
 
@@ -312,5 +312,3 @@ def format_result(activity: dict) -> dict:
         "energy_required": activity["energy_required"],
         "location": activity["location"]
     }
-    
-        

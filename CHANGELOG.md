@@ -21,10 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `plan_pomodoro()` implementation for generating Pomodoro-style work/break schedules.
 - `prioritize_tasks()` function for ranking tasks by priority (either by importance or deadline)
 - Comprehensive test suite for `suggest_break`, `get_affirmation`, `plan_pomodoro`
+- Added `Testing` portion to the README.md
+- Added a brief description of the package in `src/deepwork/__init__.py`
 
 ### Changed
 
 - Updated all docstring to be more comprehensive and include examples of usage.
+- Added `--cov-branch` flag under the [tool.hatch.envs.test.scripts] matrix in the `pyproject.toml` file
 
 ## [0.0.1] - (2026-01-10)
 

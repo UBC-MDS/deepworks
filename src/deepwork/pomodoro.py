@@ -90,20 +90,20 @@ def plan_pomodoro(
     >>> schedule = plan_pomodoro(total_minutes=60, technique="custom", work_length=20, short_break=5)
     >>> schedule = plan_pomodoro(total_minutes=10, technique="pomodoro")  # final work session truncated to 10
     """
-    validate_inputs(total_minutes, technique, work_length, short_break, long_break, long_break_interval)
+    _validate_inputs(total_minutes, technique, work_length, short_break, long_break, long_break_interval)
 
-    work, s_break, l_break, interval = get_timing_config(
+    work, s_break, l_break, interval = _get_timing_config(
         technique, work_length, short_break, long_break, long_break_interval
     )
 
-    warn_if_too_short(total_minutes, work, s_break)
+    _warn_if_too_short(total_minutes, work, s_break)
 
-    schedule, work_session_count = build_schedule(total_minutes, work, s_break, l_break, interval)
+    schedule, work_session_count = _build_schedule(total_minutes, work, s_break, l_break, interval)
 
-    return create_dataframe_with_metadata(schedule, work_session_count)
+    return _create_dataframe_with_metadata(schedule, work_session_count)
 
 
-def validate_inputs(
+def _validate_inputs(
     total_minutes: int,
     technique: str,
     work_length: Optional[int],
@@ -143,7 +143,7 @@ def validate_inputs(
                 raise ValueError(f"{name} must be positive")
 
 
-def get_timing_config(
+def _get_timing_config(
     technique: str,
     work_length: Optional[int],
     short_break: Optional[int],
@@ -182,7 +182,7 @@ def get_timing_config(
     return work, s_break, l_break, interval
 
 
-def warn_if_too_short(total_minutes: int, work: int, short_break: int) -> None:
+def _warn_if_too_short(total_minutes: int, work: int, short_break: int) -> None:
     """
     Warn if total time is less than one work+break cycle.
 
@@ -194,6 +194,10 @@ def warn_if_too_short(total_minutes: int, work: int, short_break: int) -> None:
         Work session duration.
     short_break : int
         Short break duration.
+
+    Returns
+    -------
+    None
     """
     if total_minutes < work + short_break:
         warnings.warn(
@@ -202,7 +206,7 @@ def warn_if_too_short(total_minutes: int, work: int, short_break: int) -> None:
         )
 
 
-def build_schedule(
+def _build_schedule(
     total_minutes: int,
     work: int,
     short_break: int,
@@ -279,7 +283,7 @@ def build_schedule(
     return schedule, work_session_count
 
 
-def create_dataframe_with_metadata(schedule: list[dict], work_session_count: int) -> pd.DataFrame:
+def _create_dataframe_with_metadata(schedule: list[dict], work_session_count: int) -> pd.DataFrame:
     """
     Create DataFrame from schedule and add summary metadata.
 

@@ -98,17 +98,17 @@ def get_affirmation(
     dict
         Affirmation with keys: text, category, mood_alignment.
     """
-    validate_inputs(name, mood, energy, category, seed)
+    _validate_inputs(name, mood, energy, category, seed)
 
     if seed is not None:
         random.seed(seed)
 
-    display_name = sanitize_name(name)
-    energy_cat = get_energy_category(energy)
-    preferred_categories = get_preferred_categories(mood, category)
+    display_name = _sanitize_name(name)
+    energy_cat = _get_energy_category(energy)
+    preferred_categories = _get_preferred_categories(mood, category)
 
-    candidates = weight_affirmations(preferred_categories, energy_cat)
-    selected = weighted_random_choice(candidates)
+    candidates = _weight_affirmations(preferred_categories, energy_cat)
+    selected = _weighted_random_choice(candidates)
 
     personalized_text = selected["text"].replace("{name}", display_name)
     mood_alignment = _calculate_alignment(selected, preferred_categories, energy_cat)
@@ -120,7 +120,7 @@ def get_affirmation(
     }
 
 
-def validate_inputs(
+def _validate_inputs(
     name: str,
     mood: str,
     energy: int,
@@ -162,7 +162,7 @@ def validate_inputs(
         raise TypeError(f"seed must be an integer, got {type(seed).__name__}")
 
 
-def sanitize_name(name: str) -> str:
+def _sanitize_name(name: str) -> str:
     """
     Sanitize and format the user's name.
 
@@ -180,7 +180,7 @@ def sanitize_name(name: str) -> str:
     return stripped.title() if stripped else "Developer"
 
 
-def get_energy_category(energy: int) -> str:
+def _get_energy_category(energy: int) -> str:
     """
     Convert numeric energy level to category.
 
@@ -202,7 +202,7 @@ def get_energy_category(energy: int) -> str:
         return "high"
 
 
-def get_preferred_categories(mood: str, category: Optional[str]) -> list[str]:
+def _get_preferred_categories(mood: str, category: Optional[str]) -> list[str]:
     """
     Get preferred affirmation categories based on mood.
 
@@ -223,7 +223,7 @@ def get_preferred_categories(mood: str, category: Optional[str]) -> list[str]:
     return MOOD_CATEGORY_MAP.get(mood.lower(), ["motivation"])
 
 
-def weight_affirmations(
+def _weight_affirmations(
     preferred_categories: list[str],
     energy_cat: str
 ) -> list[tuple[dict, float]]:
@@ -266,7 +266,7 @@ def weight_affirmations(
     return candidates if candidates else [(a, 1.0) for a in AFFIRMATIONS]
 
 
-def weighted_random_choice(candidates: list[tuple[dict, float]]) -> dict:
+def _weighted_random_choice(candidates: list[tuple[dict, float]]) -> dict:
     """
     Select an affirmation using weighted random selection.
 
