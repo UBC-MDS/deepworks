@@ -22,8 +22,14 @@
 # SOFTWARE.
 
 """
-Add a docstring here for the init module.
+deepwork: A Python package for developer productivity.
 
-This might include a very brief description of the package,
-its purpose, and any important notes.
+This package helps engineers optimize their workflow by providing tools to:
+- Plan focus sessions using Pomodoro and other time-blocking techniques
+- Prioritize tasks using weighted scoring or deadline-based methods
+- Take effective breaks with activity suggestions based on energy levels
+- Stay motivated with personalized developer-focused affirmations
+
+Designed for engineers looking to maintain focus, manage energy,
+and sustain productivity throughout the workday.
 """

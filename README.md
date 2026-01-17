@@ -2,15 +2,15 @@
 
 |  |  |
 |------------------------------------|------------------------------------|
-| Package | [![PyPI Version](https://img.shields.io/badge/PyPI-v0.0.0-lightgrey.svg)](#) [![Python Versions](https://img.shields.io/badge/Python-3.8%2B-lightgrey.svg)](#) |
+| Package | [![PyPI Version](https://img.shields.io/badge/PyPI-v0.1.0-lightgrey.svg)](#) [![Python Versions](https://img.shields.io/badge/Python-3.10%2B-lightgrey.svg)](#) |
 | Meta | [![Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md) |
 
 `deepwork` is a Python package for developer productivity that helps developers stay focused and energized throughout the workday. `deepwork` provides tools to plan focus (pomodoro) sessions, prioritize tasks, take effective breaks, and stay motivated with personalized affirmations. The perfect package for developers looking to optimize their workflow.
 
 ## Get Started
-
+> To install the latest release (latest tag) from GitHub, run the following:
 ``` bash
-$ pip install deepwork
+$ pip install git+https://github.com/UBC-MDS/deepwork@main
 ```
 
 ### Functions
@@ -31,12 +31,17 @@ This package contains four main functions:
 
 `deepwork` requires the following libraries:
 
+-   **Python 3.10+**: Required runtime environment.
 -   **Pandas**: Used for data manipulation and the structured table display of schedules and tasks.
+-   **pip**: Used for package installation.
 
 ## Usage
 
 ``` python
-from deepwork import get_affirmation, plan_pomodoro, prioritize_tasks, suggest_break
+from deepwork.affirmation import get_affirmation
+from deepwork.pomodoro import plan_pomodoro
+from deepwork.prioritize import prioritize_tasks
+from deepwork.breaks import suggest_break
 
 # Get a motivational affirmation
 affirmation = get_affirmation(name="Alice", mood="stressed", energy=4)
@@ -57,6 +62,26 @@ print(ranked)
 # Get a break suggestion after working
 activity = suggest_break(minutes_worked=90, energy_level=4, break_type="active")
 print(activity['name'], "-", activity['description'])
+```
+
+## Testing
+
+To run the tests for this package, clone the repository and install it with the test dependencies:
+
+1. Clone the repository:
+``` bash
+$ git clone https://github.com/UBC-MDS/deepwork
+```
+
+2. Install the package with test dependencies:
+```bash
+$ cd path/to/deepwork
+$ pip install -e ".[tests]"
+```
+
+3. Run tests accordingly:
+```bash
+$ pytest tests/ -v --cov=deepwork --cov-branch --cov-report=term-missing # shows a verbose output of tests
 ```
 
 ## Python Ecosystem

@@ -243,3 +243,9 @@ cython_debug/
 
 # Hatch-VCS
 _version.py
+
+# Coverage file from pytest
+.coverage
+
+# Development file from copier
+DEVELOPMENT.md
