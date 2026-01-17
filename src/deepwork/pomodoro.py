@@ -300,7 +300,7 @@ def create_dataframe_with_metadata(schedule: list[dict], work_session_count: int
     if len(df) > 0:
         total_work = df[df["type"] == "work"]["duration_minutes"].sum()
         total_break = df[df["type"].str.contains("break")]["duration_minutes"].sum()
-    else:
+    else: # will never actually trigger/for reference in the future
         total_work = 0
         total_break = 0
 
