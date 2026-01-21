@@ -121,6 +121,7 @@ precision = 2
 
 # Use UV to create Hatch environments
 [tool.hatch.envs.default]
+builder = true
 installer = "uv"
 
 ################################################################################
