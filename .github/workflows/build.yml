@@ -1,0 +1,63 @@
+name: ci
+
+on:
+  pull_request:
+    - branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+jobs:
+  unit-test-pytest:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+
+    steps:
+      - name: Check-out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install hatch
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install hatch
+
+      - name: Run tests with coverage
+        run: |
+          hatch run test:run tests/ -v --cov --cov-report=term --cov-branch --cov-report=xml
+
+      # - name: Upload to codecov # pending codecov step
+      #   uses: codecov/codecov-action@v5
+      #   with:
+      #     verbose: true
+      #     files: ./coverage.xml
+
+  style-check:
+    name: Run linter and format check (ruff)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install hatch
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install hatch
+
+      - name: Run ruff linter
+        run: hatch run lint:check
+
+      - name: Run ruff formatter
+        run: hatch run lint:format
