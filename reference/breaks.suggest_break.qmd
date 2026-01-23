@@ -1,0 +1,45 @@
+# breaks.suggest_break { #deepwork.breaks.suggest_break }
+
+```python
+breaks.suggest_break(
+    minutes_worked,
+    energy_level,
+    break_type='any',
+    duration=5,
+    indoor_only=False,
+    seed=None,
+)
+```
+
+Suggest a break activity based on current state and preferences.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name           | Type   | Description                                                                                       | Default    |
+|----------------|--------|---------------------------------------------------------------------------------------------------|------------|
+| minutes_worked | int    | How long you've been working (in minutes). This will influence the length of the suggested break. | _required_ |
+| energy_level   | int    | Your current energy level on a scale of 1-10.                                                     | _required_ |
+| break_type     | str    | Preferred break type: 'active', 'rest', 'social', 'mindful', or 'any'. Default is 'any'.          | `'any'`    |
+| duration       | int    | Desired break duration: 5, 10, 15, or 20 minutes. Default is 5.                                   | `5`        |
+| indoor_only    | bool   | If True, only suggest indoor activities. Default is False.                                        | `False`    |
+| seed           | int    | Random seed for reproducible selection.                                                           | `None`     |
+
+## Returns {.doc-section .doc-section-returns}
+
+| Name   | Type   | Description                                                                                              |
+|--------|--------|----------------------------------------------------------------------------------------------------------|
+|        | dict   | Activity dictionary with keys: name, description, duration_minutes, category, energy_required, location. |
+
+## Raises {.doc-section .doc-section-raises}
+
+| Name   | Type       | Description                                                           |
+|--------|------------|-----------------------------------------------------------------------|
+|        | TypeError  | If minutes_worked, energy_level, or duration are not integers.        |
+|        | ValueError | If energy_level not in 1-10, break_type invalid, or duration invalid. |
+
+## Examples {.doc-section .doc-section-examples}
+
+```python
+>>> activity = suggest_break(minutes_worked=90, energy_level=4, break_type="active")
+>>> print(activity['name'])
+```

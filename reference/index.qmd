@@ -1,0 +1,12 @@
+# Function reference {.doc .doc-index}
+
+## Productivity Tools
+
+Functions to help developers stay focused and energized.
+
+| | |
+| --- | --- |
+| [pomodoro.plan_pomodoro](pomodoro.plan_pomodoro.qmd#deepwork.pomodoro.plan_pomodoro) | Calculate a Pomodoro-style work/break schedule within a fixed time budget. |
+| [prioritize.prioritize_tasks](prioritize.prioritize_tasks.qmd#deepwork.prioritize.prioritize_tasks) | Rank tasks by priority using different prioritization methods. |
+| [breaks.suggest_break](breaks.suggest_break.qmd#deepwork.breaks.suggest_break) | Suggest a break activity based on current state and preferences. |
+| [affirmation.get_affirmation](affirmation.get_affirmation.qmd#deepwork.affirmation.get_affirmation) | Get a personalized developer affirmation based on mood and energy. |
