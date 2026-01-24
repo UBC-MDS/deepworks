@@ -1,4 +1,4 @@
-# prioritize.prioritize_tasks { #deepwork.prioritize.prioritize_tasks }
+# prioritize.prioritize_tasks { #deepworks.prioritize.prioritize_tasks }
 
 ```python
 prioritize.prioritize_tasks(tasks, method='weighted', weights=None)

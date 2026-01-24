@@ -1,4 +1,4 @@
-# affirmation.get_affirmation { #deepwork.affirmation.get_affirmation }
+# affirmation.get_affirmation { #deepworks.affirmation.get_affirmation }
 
 ```python
 affirmation.get_affirmation(name, mood, energy, category=None, seed=None)

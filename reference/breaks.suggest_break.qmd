@@ -1,4 +1,4 @@
-# breaks.suggest_break { #deepwork.breaks.suggest_break }
+# breaks.suggest_break { #deepworks.breaks.suggest_break }
 
 ```python
 breaks.suggest_break(
