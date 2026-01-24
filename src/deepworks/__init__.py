@@ -22,7 +22,7 @@
 # SOFTWARE.
 
 """
-deepwork: A Python package for developer productivity.
+deepworks: A Python package for developer productivity.
 
 This package helps engineers optimize their workflow by providing tools to:
 - Plan focus sessions using Pomodoro and other time-blocking techniques

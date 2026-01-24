@@ -2,7 +2,7 @@
 
 import pytest
 import pandas as pd
-from deepwork.pomodoro import plan_pomodoro
+from deepworks.pomodoro import plan_pomodoro
 
 
 def test_returns_dataframe():

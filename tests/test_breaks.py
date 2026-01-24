@@ -1,5 +1,5 @@
 import pytest
-from deepwork.breaks import suggest_break, ACTIVITIES, _format_result
+from deepworks.breaks import suggest_break, ACTIVITIES, _format_result
 
 
 # Basic functionality tests
@@ -212,7 +212,7 @@ def test_fallback_relaxes_duration_constraint(monkeypatch):
          "location": "indoor", "energy_required": "low",
          "description": "A long activity."},
     ]
-    monkeypatch.setattr("deepwork.breaks.ACTIVITIES", mock_activities)
+    monkeypatch.setattr("deepworks.breaks.ACTIVITIES", mock_activities)
 
     result = suggest_break(
         minutes_worked=30,
@@ -237,7 +237,7 @@ def test_ultimate_fallback_returns_all_activities(monkeypatch):
          "location": "outdoor", "energy_required": "high",
          "description": "An activity that won't match filters."},
     ]
-    monkeypatch.setattr("deepwork.breaks.ACTIVITIES", mock_activities)
+    monkeypatch.setattr("deepworks.breaks.ACTIVITIES", mock_activities)
 
     result = suggest_break(
         minutes_worked=30,

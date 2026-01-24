@@ -1,4 +1,4 @@
-"""Pomodoro session planning function for deepwork."""
+"""Pomodoro session planning function for deepworks."""
 
 import pandas as pd
 import warnings

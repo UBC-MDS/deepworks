@@ -11,7 +11,7 @@ requires = ["hatchling", "hatch-vcs"]
 ################################################################################
 
 [project]
-name = "deepwork"
+name = "deepworks"
 # Version is now dynamic, read from git tags via hatch-vcs
 dynamic = ["version"]
 
@@ -41,11 +41,11 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/UBC-MDS/deepwork"
-"Source Code" = "https://github.com/UBC-MDS/deepwork"
-"Bug Tracker" = "https://github.com/UBC-MDS/deepwork/issues"
-Documentation = "https://github.com/UBC-MDS/deepwork/blob/main/README.md"
-Download = "https://pypi.org/project/deepwork/#files"
+Homepage = "https://github.com/UBC-MDS/deepworks"
+"Source Code" = "https://github.com/UBC-MDS/deepworks"
+"Bug Tracker" = "https://github.com/UBC-MDS/deepworks/issues"
+Documentation = "https://github.com/UBC-MDS/deepworks/blob/main/README.md"
+Download = "https://pypi.org/project/deepworks/#files"
 
 [project.optional-dependencies]
 # The groups below should be in the [development-groups] table
@@ -88,14 +88,14 @@ only-packages = true
 # This tells Hatch to build the package from the src/ directory.
 # Read more about src layouts here: https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-structure.html
 [tool.hatch.build.targets.wheel]
-packages = ["src/deepwork"]
+packages = ["src/deepworks"]
 
 #--------------- Version from git tags ---------------#
 [tool.hatch.version]
 source = "vcs"
 
 [tool.hatch.build.hooks.vcs]
-version-file = "src/deepwork/_version.py"
+version-file = "src/deepworks/_version.py"
 
 
 
@@ -106,8 +106,8 @@ markers = ["raises"] # Tells pytest to not raise a warning if you use @pytest.ma
 
 [tool.coverage.paths]
 source = [
-    "src/deepwork",
-    "*/site-packages/deepwork",
+    "src/deepworks",
+    "*/site-packages/deepworks",
 ]
 
 [tool.coverage.run]
@@ -158,7 +158,7 @@ features = [
 python = ["3.10", "3.11", "3.12", "3.13"]
 
 [tool.hatch.envs.test.scripts]
-run = "pytest {args:--cov=deepwork --cov-branch --cov-report=term-missing --cov-report=xml}"
+run = "pytest {args:-v --cov=deepworks --cov-branch --cov-report=term-missing --cov-report=xml}"
 
 #--------------- Build and preview your documentation ---------------#
 
@@ -174,8 +174,8 @@ features = [
 # hatch run docs:build will build your documentation
 # hatch run docs:serve will serve them 'live' on your computer locally
 [tool.hatch.envs.docs.scripts]
-build = ["quartodoc build", "quarto render"]
-serve = ["quartodoc build", "quarto preview"]
+build = ["quartodoc build --verbose", "quarto render"]
+serve = ["quartodoc build --verbose", "quarto preview"]
 
 
 

@@ -1,4 +1,4 @@
-# pomodoro.plan_pomodoro { #deepwork.pomodoro.plan_pomodoro }
+# pomodoro.plan_pomodoro { #deepworks.pomodoro.plan_pomodoro }
 
 ```python
 pomodoro.plan_pomodoro(

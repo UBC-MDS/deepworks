@@ -1,6 +1,4 @@
-### Step 2: Final Consolidated Implementation
-
-"""Affirmation module for deepwork."""
+"""Affirmation module for deepworks."""
 
 import random
 from typing import Optional

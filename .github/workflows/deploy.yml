@@ -1,4 +1,4 @@
-name: Deploy to Test PyPI
+name: CD
 
 on:
   # push:
@@ -36,9 +36,9 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          hatch run test:run tests/ -v --cov --cov-report=term --cov-branch --cov-report=xml
+          hatch run test:run
 
-      - name: Upload to codecov # pending codecov step
+      - name: Upload to codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -67,7 +67,7 @@ jobs:
         run: hatch run lint:check
 
       - name: Run ruff formatter
-        run: hatch run lint:format
+        run: hatch run lint:format --check
 
   build:
     name: Build package
@@ -108,7 +108,6 @@ jobs:
 
   publish-testpypi:
     name: Publish to Test PyPI
-    if: github.repository_owner == 'UBC-MDS' && github.event_name == 'release'
     needs:
       - build
     runs-on: ubuntu-latest

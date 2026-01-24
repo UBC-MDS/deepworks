@@ -1,0 +1,254 @@
+[
+  {
+    "objectID": "reference/prioritize.prioritize_tasks.html",
+    "href": "reference/prioritize.prioritize_tasks.html",
+    "title": "prioritize.prioritize_tasks",
+    "section": "",
+    "text": "prioritize.prioritize_tasks(tasks, method='weighted', weights=None)\nRank tasks by priority using different prioritization methods.\nThis function takes a list of task dictionaries and returns a pandas DataFrame with tasks sorted by priority score in descending order (highest priority first). Two prioritization methods are available: ‘weighted’ (balances importance, effort, and deadline) and ‘deadline’ (prioritizes purely by deadline proximity).\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntasks\nlist of dict\nList of task dictionaries. Each task should have: - ‘name’ : str (required) The task name or description. - ‘deadline’ : str, optional (format: ‘YYYY-MM-DD’) The task deadline. Tasks without deadlines receive a default middle urgency score (3 out of 5) in weighted method, or score 0 in deadline method. - ‘effort’ : int, optional (1-5 scale, where 1 = low effort, 5 = high) Lower effort tasks are prioritized higher. Default is 3. - ‘importance’ : int, optional (1-5 scale, where 5 = most important) Higher importance tasks are prioritized higher. Default is 3.\nrequired\n\n\nmethod\nstr\nPrioritization method to use. Default is ‘weighted’. - ‘weighted’: Calculates a composite score using importance, effort, and deadline urgency. Effort is inverted (low effort = high score). Deadline is converted to urgency (1-5) based on days remaining. - ‘deadline’: Prioritizes solely by deadline proximity. Score is calculated as max(0, 100 - days_until_deadline). Tasks without deadlines receive a score of 0.\n'weighted'\n\n\nweights\ndict\nCustom weights for the ‘weighted’ method. Keys are ‘importance’, ‘effort’, and ‘deadline’. Values should sum to 1.0 for normalized scoring. Default is {‘importance’: 0.5, ‘effort’: 0.3, ‘deadline’: 0.2}. This parameter is ignored when using the ‘deadline’ method.\nNone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\npd.DataFrame\nDataFrame sorted by priority (highest first) with columns: - All original task fields (name, importance, effort, deadline, etc.) - ‘priority_score’ : float - The calculated priority score - ‘rank’ : int - The task rank (1 = highest priority) - ‘days_until_deadline’ : int (only with ‘deadline’ method)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nTypeError\nIf tasks is not a list, contains non-dict items, or weights is not a dict.\n\n\n\nValueError\nIf tasks is empty, method is invalid, or a task is missing the required ‘name’ field.\n\n\n\n\n\n\nWeighted Method Scoring:\nThe weighted method combines three factors into a single score:\n\nImportance (default weight: 0.5): Used directly (1-5 scale)\nEffort (default weight: 0.3): Inverted as 6 - effort so that low-effort tasks score higher\nDeadline urgency (default weight: 0.2): Converted from days remaining to urgency level:\n\n&lt;= 1 day: urgency 5\n&lt;= 3 days: urgency 4\n&lt;= 7 days: urgency 3\n&lt;= 14 days: urgency 2\n\n14 days: urgency 1\n\nNo deadline: urgency 3 (neutral)\n\n\nFinal score: importance * w_imp + (6 - effort) * w_eff + urgency * w_dead\nDeadline Method Scoring:\nScore = max(0, 100 - days_until_deadline)\nTasks due today score 100, tasks due in 50 days score 50, and tasks without deadlines score 0.\n\n\n\nBasic usage with weighted method (default):\n&gt;&gt;&gt; tasks = [\n...     {\"name\": \"Fix critical bug\", \"importance\": 5, \"effort\": 2},\n...     {\"name\": \"Write documentation\", \"importance\": 3, \"effort\": 4},\n...     {\"name\": \"Refactor module\", \"importance\": 4, \"effort\": 3}\n... ]\n&gt;&gt;&gt; df = prioritize_tasks(tasks)\n&gt;&gt;&gt; df[[\"name\", \"priority_score\", \"rank\"]]\n                 name  priority_score  rank\n0    Fix critical bug            4.30     1\n1     Refactor module            3.70     2\n2  Write documentation            2.70     3\nUsing deadline method for time-sensitive prioritization:\n&gt;&gt;&gt; from datetime import date, timedelta\n&gt;&gt;&gt; today = date.today().strftime(\"%Y-%m-%d\")\n&gt;&gt;&gt; next_week = (date.today() + timedelta(days=7)).strftime(\"%Y-%m-%d\")\n&gt;&gt;&gt; tasks = [\n...     {\"name\": \"Urgent report\", \"deadline\": today},\n...     {\"name\": \"Weekly review\", \"deadline\": next_week},\n...     {\"name\": \"Backlog item\"}  # No deadline\n... ]\n&gt;&gt;&gt; df = prioritize_tasks(tasks, method=\"deadline\")\n&gt;&gt;&gt; df[[\"name\", \"priority_score\", \"days_until_deadline\"]]\n            name  priority_score  days_until_deadline\n0  Urgent report             100                    0\n1  Weekly review              93                    7\n2   Backlog item               0                 None\nCustom weights emphasizing effort over importance:\n&gt;&gt;&gt; tasks = [\n...     {\"name\": \"Quick win\", \"importance\": 2, \"effort\": 1},\n...     {\"name\": \"Big project\", \"importance\": 5, \"effort\": 5}\n... ]\n&gt;&gt;&gt; custom_weights = {\"importance\": 0.2, \"effort\": 0.6, \"deadline\": 0.2}\n&gt;&gt;&gt; df = prioritize_tasks(tasks, weights=custom_weights)\n&gt;&gt;&gt; df[[\"name\", \"priority_score\", \"rank\"]]\n          name  priority_score  rank\n0    Quick win            4.00     1\n1  Big project            2.00     2\nMinimal task (only required field):\n&gt;&gt;&gt; tasks = [{\"name\": \"Simple task\"}]\n&gt;&gt;&gt; df = prioritize_tasks(tasks)\n&gt;&gt;&gt; df[\"priority_score\"].iloc[0]  # Uses defaults: importance=3, effort=3\n3.1"
+  },
+  {
+    "objectID": "reference/prioritize.prioritize_tasks.html#parameters",
+    "href": "reference/prioritize.prioritize_tasks.html#parameters",
+    "title": "prioritize.prioritize_tasks",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\ntasks\nlist of dict\nList of task dictionaries. Each task should have: - ‘name’ : str (required) The task name or description. - ‘deadline’ : str, optional (format: ‘YYYY-MM-DD’) The task deadline. Tasks without deadlines receive a default middle urgency score (3 out of 5) in weighted method, or score 0 in deadline method. - ‘effort’ : int, optional (1-5 scale, where 1 = low effort, 5 = high) Lower effort tasks are prioritized higher. Default is 3. - ‘importance’ : int, optional (1-5 scale, where 5 = most important) Higher importance tasks are prioritized higher. Default is 3.\nrequired\n\n\nmethod\nstr\nPrioritization method to use. Default is ‘weighted’. - ‘weighted’: Calculates a composite score using importance, effort, and deadline urgency. Effort is inverted (low effort = high score). Deadline is converted to urgency (1-5) based on days remaining. - ‘deadline’: Prioritizes solely by deadline proximity. Score is calculated as max(0, 100 - days_until_deadline). Tasks without deadlines receive a score of 0.\n'weighted'\n\n\nweights\ndict\nCustom weights for the ‘weighted’ method. Keys are ‘importance’, ‘effort’, and ‘deadline’. Values should sum to 1.0 for normalized scoring. Default is {‘importance’: 0.5, ‘effort’: 0.3, ‘deadline’: 0.2}. This parameter is ignored when using the ‘deadline’ method.\nNone"
+  },
+  {
+    "objectID": "reference/prioritize.prioritize_tasks.html#returns",
+    "href": "reference/prioritize.prioritize_tasks.html#returns",
+    "title": "prioritize.prioritize_tasks",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\npd.DataFrame\nDataFrame sorted by priority (highest first) with columns: - All original task fields (name, importance, effort, deadline, etc.) - ‘priority_score’ : float - The calculated priority score - ‘rank’ : int - The task rank (1 = highest priority) - ‘days_until_deadline’ : int (only with ‘deadline’ method)"
+  },
+  {
+    "objectID": "reference/prioritize.prioritize_tasks.html#raises",
+    "href": "reference/prioritize.prioritize_tasks.html#raises",
+    "title": "prioritize.prioritize_tasks",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\nTypeError\nIf tasks is not a list, contains non-dict items, or weights is not a dict.\n\n\n\nValueError\nIf tasks is empty, method is invalid, or a task is missing the required ‘name’ field."
+  },
+  {
+    "objectID": "reference/prioritize.prioritize_tasks.html#notes",
+    "href": "reference/prioritize.prioritize_tasks.html#notes",
+    "title": "prioritize.prioritize_tasks",
+    "section": "",
+    "text": "Weighted Method Scoring:\nThe weighted method combines three factors into a single score:\n\nImportance (default weight: 0.5): Used directly (1-5 scale)\nEffort (default weight: 0.3): Inverted as 6 - effort so that low-effort tasks score higher\nDeadline urgency (default weight: 0.2): Converted from days remaining to urgency level:\n\n&lt;= 1 day: urgency 5\n&lt;= 3 days: urgency 4\n&lt;= 7 days: urgency 3\n&lt;= 14 days: urgency 2\n\n14 days: urgency 1\n\nNo deadline: urgency 3 (neutral)\n\n\nFinal score: importance * w_imp + (6 - effort) * w_eff + urgency * w_dead\nDeadline Method Scoring:\nScore = max(0, 100 - days_until_deadline)\nTasks due today score 100, tasks due in 50 days score 50, and tasks without deadlines score 0."
+  },
+  {
+    "objectID": "reference/prioritize.prioritize_tasks.html#examples",
+    "href": "reference/prioritize.prioritize_tasks.html#examples",
+    "title": "prioritize.prioritize_tasks",
+    "section": "",
+    "text": "Basic usage with weighted method (default):\n&gt;&gt;&gt; tasks = [\n...     {\"name\": \"Fix critical bug\", \"importance\": 5, \"effort\": 2},\n...     {\"name\": \"Write documentation\", \"importance\": 3, \"effort\": 4},\n...     {\"name\": \"Refactor module\", \"importance\": 4, \"effort\": 3}\n... ]\n&gt;&gt;&gt; df = prioritize_tasks(tasks)\n&gt;&gt;&gt; df[[\"name\", \"priority_score\", \"rank\"]]\n                 name  priority_score  rank\n0    Fix critical bug            4.30     1\n1     Refactor module            3.70     2\n2  Write documentation            2.70     3\nUsing deadline method for time-sensitive prioritization:\n&gt;&gt;&gt; from datetime import date, timedelta\n&gt;&gt;&gt; today = date.today().strftime(\"%Y-%m-%d\")\n&gt;&gt;&gt; next_week = (date.today() + timedelta(days=7)).strftime(\"%Y-%m-%d\")\n&gt;&gt;&gt; tasks = [\n...     {\"name\": \"Urgent report\", \"deadline\": today},\n...     {\"name\": \"Weekly review\", \"deadline\": next_week},\n...     {\"name\": \"Backlog item\"}  # No deadline\n... ]\n&gt;&gt;&gt; df = prioritize_tasks(tasks, method=\"deadline\")\n&gt;&gt;&gt; df[[\"name\", \"priority_score\", \"days_until_deadline\"]]\n            name  priority_score  days_until_deadline\n0  Urgent report             100                    0\n1  Weekly review              93                    7\n2   Backlog item               0                 None\nCustom weights emphasizing effort over importance:\n&gt;&gt;&gt; tasks = [\n...     {\"name\": \"Quick win\", \"importance\": 2, \"effort\": 1},\n...     {\"name\": \"Big project\", \"importance\": 5, \"effort\": 5}\n... ]\n&gt;&gt;&gt; custom_weights = {\"importance\": 0.2, \"effort\": 0.6, \"deadline\": 0.2}\n&gt;&gt;&gt; df = prioritize_tasks(tasks, weights=custom_weights)\n&gt;&gt;&gt; df[[\"name\", \"priority_score\", \"rank\"]]\n          name  priority_score  rank\n0    Quick win            4.00     1\n1  Big project            2.00     2\nMinimal task (only required field):\n&gt;&gt;&gt; tasks = [{\"name\": \"Simple task\"}]\n&gt;&gt;&gt; df = prioritize_tasks(tasks)\n&gt;&gt;&gt; df[\"priority_score\"].iloc[0]  # Uses defaults: importance=3, effort=3\n3.1"
+  },
+  {
+    "objectID": "reference/index.html",
+    "href": "reference/index.html",
+    "title": "Function reference",
+    "section": "",
+    "text": "Functions to help developers stay focused and energized.\n\n\n\npomodoro.plan_pomodoro\nCalculate a Pomodoro-style work/break schedule within a fixed time budget.\n\n\nprioritize.prioritize_tasks\nRank tasks by priority using different prioritization methods.\n\n\nbreaks.suggest_break\nSuggest a break activity based on current state and preferences.\n\n\naffirmation.get_affirmation\nGet a personalized developer affirmation based on mood and energy."
+  },
+  {
+    "objectID": "reference/index.html#productivity-tools",
+    "href": "reference/index.html#productivity-tools",
+    "title": "Function reference",
+    "section": "",
+    "text": "Functions to help developers stay focused and energized.\n\n\n\npomodoro.plan_pomodoro\nCalculate a Pomodoro-style work/break schedule within a fixed time budget.\n\n\nprioritize.prioritize_tasks\nRank tasks by priority using different prioritization methods.\n\n\nbreaks.suggest_break\nSuggest a break activity based on current state and preferences.\n\n\naffirmation.get_affirmation\nGet a personalized developer affirmation based on mood and energy."
+  },
+  {
+    "objectID": "reference/affirmation.get_affirmation.html",
+    "href": "reference/affirmation.get_affirmation.html",
+    "title": "affirmation.get_affirmation",
+    "section": "",
+    "text": "affirmation.get_affirmation(name, mood, energy, category=None, seed=None)\nGet a personalized developer affirmation based on mood and energy.\nThe function uses a weighted random algorithm to select the most appropriate affirmation. It prioritizes matches that align with both the category and the energy level, allowing for variety while maintaining personalization.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nname\nstr\nUser’s name for personalization.\nrequired\n\n\nmood\nstr\nCurrent mood. Valid options: ‘happy’, ‘stressed’, ‘anxious’, ‘tired’, ‘frustrated’, ‘motivated’, ‘neutral’.\nrequired\n\n\nenergy\nint\nEnergy level on a scale of 1-10. - 1-3: Low (calming/reassuring) - 4-7: Medium (balanced/steady) - 8-10: High (energetic/driving)\nrequired\n\n\ncategory\nstr\nSpecific category constraint (e.g., ‘motivation’, ‘growth’). If provided, this overrides the default mood-to-category mapping.\nNone\n\n\nseed\nint\nRandom seed for reproducible selection. Uses a local random instance to avoid affecting global state.\nNone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ndict\nAffirmation with keys: text, category, mood_alignment."
+  },
+  {
+    "objectID": "reference/affirmation.get_affirmation.html#parameters",
+    "href": "reference/affirmation.get_affirmation.html#parameters",
+    "title": "affirmation.get_affirmation",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nname\nstr\nUser’s name for personalization.\nrequired\n\n\nmood\nstr\nCurrent mood. Valid options: ‘happy’, ‘stressed’, ‘anxious’, ‘tired’, ‘frustrated’, ‘motivated’, ‘neutral’.\nrequired\n\n\nenergy\nint\nEnergy level on a scale of 1-10. - 1-3: Low (calming/reassuring) - 4-7: Medium (balanced/steady) - 8-10: High (energetic/driving)\nrequired\n\n\ncategory\nstr\nSpecific category constraint (e.g., ‘motivation’, ‘growth’). If provided, this overrides the default mood-to-category mapping.\nNone\n\n\nseed\nint\nRandom seed for reproducible selection. Uses a local random instance to avoid affecting global state.\nNone"
+  },
+  {
+    "objectID": "reference/affirmation.get_affirmation.html#returns",
+    "href": "reference/affirmation.get_affirmation.html#returns",
+    "title": "affirmation.get_affirmation",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\ndict\nAffirmation with keys: text, category, mood_alignment."
+  },
+  {
+    "objectID": "README.html",
+    "href": "README.html",
+    "title": "deepworks",
+    "section": "",
+    "text": "Testing\n  \n\n\nPackage\n](https://test.pypi.org/project/deepworks/) [](https://github.com/UBC-MDS/deepworks/releases) [ \n\n\nMeta\n \n\n\n\ndeepworks is a Python package for developer productivity that helps developers stay focused and energized throughout the workday. deepworks provides tools to plan focus (pomodoro) sessions, prioritize tasks, take effective breaks, and stay motivated with personalized affirmations. The perfect package for developers looking to optimize their workflow.\n\n\nTo install the latest release from Test PyPi:\npip install -i https://test.pypi.org/simple/ deepworks\n\n\nThis package contains four main functions:\n\nprioritize_tasks(): Rank a list of tasks by priority using different methods including weighted scoring or deadline-based sorting. Returns a DataFrame with priority scores and rankings.\nplan_pomodoro(): Calculate a work/break schedule based on your available time and preferred technique (Pomodoro, 52-17, 90-20, or custom). Returns a DataFrame with a complete session schedule.\nsuggest_break(): Get a recommended break activity based on how long you’ve worked, your current energy level, and preferences for activity type and duration. Returns a dictionary with activity details and instructions.\nget_affirmation(): Receive a personalized developer-focused affirmation based on your current mood and energy level. Returns a dictionary with the affirmation text and metadata.\n\nThis package does not include any datasets and all functions work based on user-provided inputs.\n\n\n\ndeepworks requires the following libraries:\n\nPython 3.10+: Required runtime environment.\nPandas: Used for data manipulation and the structured table display of schedules and tasks.\npip: Used for package installation.\n\n\n\n\n\nfrom deepworks.affirmation import get_affirmation\nfrom deepworks.pomodoro import plan_pomodoro\nfrom deepworks.prioritize import prioritize_tasks\nfrom deepworks.breaks import suggest_break\n\n# Get a motivational affirmation\naffirmation = get_affirmation(name=\"Alice\", mood=\"stressed\", energy=4)\nprint(affirmation['text'])\n\n# Plan a 2-hour focus session\nschedule = plan_pomodoro(total_minutes=120, technique=\"pomodoro\")\nprint(schedule)\n\n# Prioritize your tasks\ntasks = [\n    {\"name\": \"Fix bug\", \"deadline\": \"2026-01-10\", \"effort\": 2, \"importance\": 5},\n    {\"name\": \"Write docs\", \"deadline\": \"2026-01-15\", \"effort\": 3, \"importance\": 3},\n]\nranked = prioritize_tasks(tasks, method=\"weighted\")\nprint(ranked)\n\n# Get a break suggestion after working\nactivity = suggest_break(minutes_worked=90, energy_level=4, break_type=\"active\")\nprint(activity['name'], \"-\", activity['description'])\n\n\n\n\nTo set up the development environment, first install pipx and then Hatch: &gt; For more information on how to use Hatch, check out this tutorial from pyOpenSci here.\n\npip install pipx\npipx install hatch\n\nClone the repository:\n\ngit clone https://github.com/UBC-MDS/deepworks\ncd deepworks\n\nInstall the package in development mode using Hatch:\n\nhatch shell\nThis will create a virtual environment and install the package with all dependencies.\nIf you want to leave the developer environment, simply type the following command:\nexit\nAlternatively, if you want to install the package on a particular environment run:\npip install -e .\n\n\n\nTo run the tests for this package using Hatch:\nhatch run test:run\nThis runs pytest with coverage reporting in the test environment.\n\n\n\nThe documentation is built using Quarto and quartodoc through Hatch.\n\nInstall the Quarto CLI:\n\npip install quarto-cli\n\nTo preview the documentation locally with live reload:\n\nhatch run docs:serve\n\nBuild and render the documentation:\n\nhatch run docs:build\nThe generated documentation will be in the docs/ directory.\n\n\n\nThis project uses GitHub Actions for continuous integration and deployment.\n\n\nRuns on pushes and pull requests to main and develop branches: - Runs the test suite across Python 3.10, 3.11, 3.12, and 3.13 - Uploads coverage reports to Codecov - Runs linting and formatting checks with Ruff\n\n\n\nRuns on new version tags (v*.*.*): - Runs the full test suite and style checks - Builds the package using Hatch - Publishes to Test PyPI\n\n\n\nRuns on pushes and pull requests to main: - Builds the quartodoc API reference - Renders the Quarto site - Publishes to GitHub Pages (gh-pages branch)\n\n\n\n\ndeepworks combines productivity and wellness features into a single cohesive library. While there are separate packages for individual features like tomato-timer for Pomodoro timing and various task management libraries, deepworks uniquely integrates focus session planning, task prioritization, break suggestions, and motivational affirmations into one package, specifically designed for developers. This holistic approach helps developers maintain both productivity and well-being without needing multiple tools.\n\n\n\n\nJingbo Wang - @jimmy2026-V\nJennifer Onyebuchi - @Jenniferonyebuchi\nShanzé Khemani - @shanzekhem\nJiro Amato - @jiroamato\n\n\n\n\nInterested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.\n\n\n\n\nCopyright © 2026 Jingbo Wang, Jennifer Onyebuchi, Shanzé Khemani, Jiro Amato.\nFree software distributed under the MIT License."
+  },
+  {
+    "objectID": "README.html#installation",
+    "href": "README.html#installation",
+    "title": "deepworks",
+    "section": "",
+    "text": "To install the latest release from Test PyPi:\npip install -i https://test.pypi.org/simple/ deepworks\n\n\nThis package contains four main functions:\n\nprioritize_tasks(): Rank a list of tasks by priority using different methods including weighted scoring or deadline-based sorting. Returns a DataFrame with priority scores and rankings.\nplan_pomodoro(): Calculate a work/break schedule based on your available time and preferred technique (Pomodoro, 52-17, 90-20, or custom). Returns a DataFrame with a complete session schedule.\nsuggest_break(): Get a recommended break activity based on how long you’ve worked, your current energy level, and preferences for activity type and duration. Returns a dictionary with activity details and instructions.\nget_affirmation(): Receive a personalized developer-focused affirmation based on your current mood and energy level. Returns a dictionary with the affirmation text and metadata.\n\nThis package does not include any datasets and all functions work based on user-provided inputs.\n\n\n\ndeepworks requires the following libraries:\n\nPython 3.10+: Required runtime environment.\nPandas: Used for data manipulation and the structured table display of schedules and tasks.\npip: Used for package installation."
+  },
+  {
+    "objectID": "README.html#usage",
+    "href": "README.html#usage",
+    "title": "deepworks",
+    "section": "",
+    "text": "from deepworks.affirmation import get_affirmation\nfrom deepworks.pomodoro import plan_pomodoro\nfrom deepworks.prioritize import prioritize_tasks\nfrom deepworks.breaks import suggest_break\n\n# Get a motivational affirmation\naffirmation = get_affirmation(name=\"Alice\", mood=\"stressed\", energy=4)\nprint(affirmation['text'])\n\n# Plan a 2-hour focus session\nschedule = plan_pomodoro(total_minutes=120, technique=\"pomodoro\")\nprint(schedule)\n\n# Prioritize your tasks\ntasks = [\n    {\"name\": \"Fix bug\", \"deadline\": \"2026-01-10\", \"effort\": 2, \"importance\": 5},\n    {\"name\": \"Write docs\", \"deadline\": \"2026-01-15\", \"effort\": 3, \"importance\": 3},\n]\nranked = prioritize_tasks(tasks, method=\"weighted\")\nprint(ranked)\n\n# Get a break suggestion after working\nactivity = suggest_break(minutes_worked=90, energy_level=4, break_type=\"active\")\nprint(activity['name'], \"-\", activity['description'])"
+  },
+  {
+    "objectID": "README.html#developer-setup",
+    "href": "README.html#developer-setup",
+    "title": "deepworks",
+    "section": "",
+    "text": "To set up the development environment, first install pipx and then Hatch: &gt; For more information on how to use Hatch, check out this tutorial from pyOpenSci here.\n\npip install pipx\npipx install hatch\n\nClone the repository:\n\ngit clone https://github.com/UBC-MDS/deepworks\ncd deepworks\n\nInstall the package in development mode using Hatch:\n\nhatch shell\nThis will create a virtual environment and install the package with all dependencies.\nIf you want to leave the developer environment, simply type the following command:\nexit\nAlternatively, if you want to install the package on a particular environment run:\npip install -e ."
+  },
+  {
+    "objectID": "README.html#testing",
+    "href": "README.html#testing",
+    "title": "deepworks",
+    "section": "",
+    "text": "To run the tests for this package using Hatch:\nhatch run test:run\nThis runs pytest with coverage reporting in the test environment."
+  },
+  {
+    "objectID": "README.html#building-documentation",
+    "href": "README.html#building-documentation",
+    "title": "deepworks",
+    "section": "",
+    "text": "The documentation is built using Quarto and quartodoc through Hatch.\n\nInstall the Quarto CLI:\n\npip install quarto-cli\n\nTo preview the documentation locally with live reload:\n\nhatch run docs:serve\n\nBuild and render the documentation:\n\nhatch run docs:build\nThe generated documentation will be in the docs/ directory."
+  },
+  {
+    "objectID": "README.html#deployment",
+    "href": "README.html#deployment",
+    "title": "deepworks",
+    "section": "",
+    "text": "This project uses GitHub Actions for continuous integration and deployment.\n\n\nRuns on pushes and pull requests to main and develop branches: - Runs the test suite across Python 3.10, 3.11, 3.12, and 3.13 - Uploads coverage reports to Codecov - Runs linting and formatting checks with Ruff\n\n\n\nRuns on new version tags (v*.*.*): - Runs the full test suite and style checks - Builds the package using Hatch - Publishes to Test PyPI\n\n\n\nRuns on pushes and pull requests to main: - Builds the quartodoc API reference - Renders the Quarto site - Publishes to GitHub Pages (gh-pages branch)"
+  },
+  {
+    "objectID": "README.html#python-ecosystem",
+    "href": "README.html#python-ecosystem",
+    "title": "deepworks",
+    "section": "",
+    "text": "deepworks combines productivity and wellness features into a single cohesive library. While there are separate packages for individual features like tomato-timer for Pomodoro timing and various task management libraries, deepworks uniquely integrates focus session planning, task prioritization, break suggestions, and motivational affirmations into one package, specifically designed for developers. This holistic approach helps developers maintain both productivity and well-being without needing multiple tools."
+  },
+  {
+    "objectID": "README.html#contributors",
+    "href": "README.html#contributors",
+    "title": "deepworks",
+    "section": "",
+    "text": "Jingbo Wang - @jimmy2026-V\nJennifer Onyebuchi - @Jenniferonyebuchi\nShanzé Khemani - @shanzekhem\nJiro Amato - @jiroamato"
+  },
+  {
+    "objectID": "README.html#contributing",
+    "href": "README.html#contributing",
+    "title": "deepworks",
+    "section": "",
+    "text": "Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms."
+  },
+  {
+    "objectID": "README.html#copyright",
+    "href": "README.html#copyright",
+    "title": "deepworks",
+    "section": "",
+    "text": "Copyright © 2026 Jingbo Wang, Jennifer Onyebuchi, Shanzé Khemani, Jiro Amato.\nFree software distributed under the MIT License."
+  },
+  {
+    "objectID": "CONTRIBUTING.html",
+    "href": "CONTRIBUTING.html",
+    "title": "Contributing",
+    "section": "",
+    "text": "Contributions of all kinds are welcome here, and they are greatly appreciated! Every little bit helps, and credit will always be given.\n\n\nYou can contribute in many ways, for example:\n\nReport bugs\nFix Bugs\nImplement Features\nWrite Documentation\nSubmit Feedback\n\n\n\nReport bugs at https://github.com/UBC-MDS/deepworks/issues.\nIf you are reporting a bug, please follow the template guidelines. The more detailed your report, the easier and thus faster we can help you.\n\n\n\nLook through the GitHub issues for bugs. Anything labelled with bug and help wanted is open to whoever wants to implement it. When you decide to work on such an issue, please assign yourself to it and add a comment that you’ll be working on that, too. If you see another issue without the help wanted label, just post a comment, the maintainers are usually happy for any support that they can get.\n\n\n\nLook through the GitHub issues for features. Anything labelled with enhancement and help wanted is open to whoever wants to implement it. As for fixing bugs, please assign yourself to the issue and add a comment that you’ll be working on that, too. If another enhancement catches your fancy, but it doesn’t have the help wanted label, just post a comment, the maintainers are usually happy for any support that they can get.\n\n\n\ndeepworks could always use more documentation, whether as part of the official documentation, in docstrings, or even on the web in blog posts, articles, and such. Just open an issue to let us know what you will be working on so that we can provide you with guidance.\n\n\n\nThe best way to send feedback is to file an issue at https://github.com/UBC-MDS/deepworks/issues. If your feedback fits the format of one of the issue templates, please use that. Remember that this is a volunteer-driven project and everybody has limited time.\n\n\n\n\nWe use a branching workflow based on GitHub Flow. Here’s how it works:\n\n\nmain\n └── develop\n      ├── feature/feature-name\n      │    └── test/feature-name\n      └── fix/bug-name\n\n\n\n\nmain branch: The stable, production-ready branch. Only receives merges from develop after milestone completion.\ndevelop branch: The integration branch where all features and fixes are merged. Branched from main.\nFeature branches: For new features, branch from develop:\ngit switch develop\ngit pull origin develop\ngit checkout -b feature/your-feature-name\ngit push origin feature/your-feature-name\nFix branches: For bug fixes, branch from develop:\ngit switch develop\ngit pull origin develop\ngit checkout -b fix/bug-name\ngit push origin fix/bug-name\nTest branches: For writing tests, branch from your feature branch:\ngit switch feature/your-feature-name\ngit checkout -b test/your-feature-name\ngit push origin test/your-feature-name\nWhen tests are complete, create a PR from test/your-feature-name → feature/your-feature-name.\nMerging back: Once your feature is complete (code + tests), create a PR from feature/your-feature-name → develop.\n\n\n\n\n\nEnsure all tests pass locally before creating a PR\nRequest review from at least one team member\nAddress all review comments before merging\nAfter approval, merge and delete the feature branch\n\n\n\n\n\nReady to contribute? Here’s how to set up deepworks for local development.\n\nFork the https://github.com/UBC-MDS/deepworks repository on GitHub.\nClone your fork locally (if you want to work locally)\ngit clone git@github.com:your_name_here/deepworks\n.git\nInstall Hatch. &gt; Install hatch using the link above or through pipx\npipx install hatch\nCreate a branch for local development using the default branch (typically main) as a starting point. Use fix or feat as a prefix for your branch name.\ngit checkout develop\ngit checkout -b fix-name-of-your-bugfix\nNow you can make your changes locally.\nWhen you’re done making changes, apply the quality assurance tools and check that your changes pass our test suite. This is all included with tox\nhatch run test:run\nCommit your changes and push your branch to GitHub. Please use semantic commit messages.\ngit add .\ngit commit -m \"fix: summarize your changes\"\ngit push -u origin fix-name-of-your-bugfix\nOpen the link displayed in the message when pushing your new branch in order to submit a pull request.\n\n\n\nBefore you submit a pull request, check that it meets these guidelines:\n\nThe pull request should include tests.\nIf the pull request adds functionality, the docs should be updated. Put your new functionality into a function with a docstring.\nYour pull request will automatically be checked by the full test suite. It needs to pass all of them before it can be considered for merging."
+  },
+  {
+    "objectID": "CONTRIBUTING.html#example-contributions",
+    "href": "CONTRIBUTING.html#example-contributions",
+    "title": "Contributing",
+    "section": "",
+    "text": "You can contribute in many ways, for example:\n\nReport bugs\nFix Bugs\nImplement Features\nWrite Documentation\nSubmit Feedback\n\n\n\nReport bugs at https://github.com/UBC-MDS/deepworks/issues.\nIf you are reporting a bug, please follow the template guidelines. The more detailed your report, the easier and thus faster we can help you.\n\n\n\nLook through the GitHub issues for bugs. Anything labelled with bug and help wanted is open to whoever wants to implement it. When you decide to work on such an issue, please assign yourself to it and add a comment that you’ll be working on that, too. If you see another issue without the help wanted label, just post a comment, the maintainers are usually happy for any support that they can get.\n\n\n\nLook through the GitHub issues for features. Anything labelled with enhancement and help wanted is open to whoever wants to implement it. As for fixing bugs, please assign yourself to the issue and add a comment that you’ll be working on that, too. If another enhancement catches your fancy, but it doesn’t have the help wanted label, just post a comment, the maintainers are usually happy for any support that they can get.\n\n\n\ndeepworks could always use more documentation, whether as part of the official documentation, in docstrings, or even on the web in blog posts, articles, and such. Just open an issue to let us know what you will be working on so that we can provide you with guidance.\n\n\n\nThe best way to send feedback is to file an issue at https://github.com/UBC-MDS/deepworks/issues. If your feedback fits the format of one of the issue templates, please use that. Remember that this is a volunteer-driven project and everybody has limited time."
+  },
+  {
+    "objectID": "CONTRIBUTING.html#git-workflow",
+    "href": "CONTRIBUTING.html#git-workflow",
+    "title": "Contributing",
+    "section": "",
+    "text": "We use a branching workflow based on GitHub Flow. Here’s how it works:\n\n\nmain\n └── develop\n      ├── feature/feature-name\n      │    └── test/feature-name\n      └── fix/bug-name\n\n\n\n\nmain branch: The stable, production-ready branch. Only receives merges from develop after milestone completion.\ndevelop branch: The integration branch where all features and fixes are merged. Branched from main.\nFeature branches: For new features, branch from develop:\ngit switch develop\ngit pull origin develop\ngit checkout -b feature/your-feature-name\ngit push origin feature/your-feature-name\nFix branches: For bug fixes, branch from develop:\ngit switch develop\ngit pull origin develop\ngit checkout -b fix/bug-name\ngit push origin fix/bug-name\nTest branches: For writing tests, branch from your feature branch:\ngit switch feature/your-feature-name\ngit checkout -b test/your-feature-name\ngit push origin test/your-feature-name\nWhen tests are complete, create a PR from test/your-feature-name → feature/your-feature-name.\nMerging back: Once your feature is complete (code + tests), create a PR from feature/your-feature-name → develop.\n\n\n\n\n\nEnsure all tests pass locally before creating a PR\nRequest review from at least one team member\nAddress all review comments before merging\nAfter approval, merge and delete the feature branch"
+  },
+  {
+    "objectID": "CONTRIBUTING.html#get-started",
+    "href": "CONTRIBUTING.html#get-started",
+    "title": "Contributing",
+    "section": "",
+    "text": "Ready to contribute? Here’s how to set up deepworks for local development.\n\nFork the https://github.com/UBC-MDS/deepworks repository on GitHub.\nClone your fork locally (if you want to work locally)\ngit clone git@github.com:your_name_here/deepworks\n.git\nInstall Hatch. &gt; Install hatch using the link above or through pipx\npipx install hatch\nCreate a branch for local development using the default branch (typically main) as a starting point. Use fix or feat as a prefix for your branch name.\ngit checkout develop\ngit checkout -b fix-name-of-your-bugfix\nNow you can make your changes locally.\nWhen you’re done making changes, apply the quality assurance tools and check that your changes pass our test suite. This is all included with tox\nhatch run test:run\nCommit your changes and push your branch to GitHub. Please use semantic commit messages.\ngit add .\ngit commit -m \"fix: summarize your changes\"\ngit push -u origin fix-name-of-your-bugfix\nOpen the link displayed in the message when pushing your new branch in order to submit a pull request.\n\n\n\nBefore you submit a pull request, check that it meets these guidelines:\n\nThe pull request should include tests.\nIf the pull request adds functionality, the docs should be updated. Put your new functionality into a function with a docstring.\nYour pull request will automatically be checked by the full test suite. It needs to pass all of them before it can be considered for merging."
+  },
+  {
+    "objectID": "reference/breaks.suggest_break.html",
+    "href": "reference/breaks.suggest_break.html",
+    "title": "breaks.suggest_break",
+    "section": "",
+    "text": "breaks.suggest_break(\n    minutes_worked,\n    energy_level,\n    break_type='any',\n    duration=5,\n    indoor_only=False,\n    seed=None,\n)\nSuggest a break activity based on current state and preferences.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nminutes_worked\nint\nHow long you’ve been working (in minutes). This will influence the length of the suggested break.\nrequired\n\n\nenergy_level\nint\nYour current energy level on a scale of 1-10.\nrequired\n\n\nbreak_type\nstr\nPreferred break type: ‘active’, ‘rest’, ‘social’, ‘mindful’, or ‘any’. Default is ‘any’.\n'any'\n\n\nduration\nint\nDesired break duration: 5, 10, 15, or 20 minutes. Default is 5.\n5\n\n\nindoor_only\nbool\nIf True, only suggest indoor activities. Default is False.\nFalse\n\n\nseed\nint\nRandom seed for reproducible selection.\nNone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\ndict\nActivity dictionary with keys: name, description, duration_minutes, category, energy_required, location.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nTypeError\nIf minutes_worked, energy_level, or duration are not integers.\n\n\n\nValueError\nIf energy_level not in 1-10, break_type invalid, or duration invalid.\n\n\n\n\n\n\n&gt;&gt;&gt; activity = suggest_break(minutes_worked=90, energy_level=4, break_type=\"active\")\n&gt;&gt;&gt; print(activity['name'])"
+  },
+  {
+    "objectID": "reference/breaks.suggest_break.html#parameters",
+    "href": "reference/breaks.suggest_break.html#parameters",
+    "title": "breaks.suggest_break",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nminutes_worked\nint\nHow long you’ve been working (in minutes). This will influence the length of the suggested break.\nrequired\n\n\nenergy_level\nint\nYour current energy level on a scale of 1-10.\nrequired\n\n\nbreak_type\nstr\nPreferred break type: ‘active’, ‘rest’, ‘social’, ‘mindful’, or ‘any’. Default is ‘any’.\n'any'\n\n\nduration\nint\nDesired break duration: 5, 10, 15, or 20 minutes. Default is 5.\n5\n\n\nindoor_only\nbool\nIf True, only suggest indoor activities. Default is False.\nFalse\n\n\nseed\nint\nRandom seed for reproducible selection.\nNone"
+  },
+  {
+    "objectID": "reference/breaks.suggest_break.html#returns",
+    "href": "reference/breaks.suggest_break.html#returns",
+    "title": "breaks.suggest_break",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\ndict\nActivity dictionary with keys: name, description, duration_minutes, category, energy_required, location."
+  },
+  {
+    "objectID": "reference/breaks.suggest_break.html#raises",
+    "href": "reference/breaks.suggest_break.html#raises",
+    "title": "breaks.suggest_break",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\nTypeError\nIf minutes_worked, energy_level, or duration are not integers.\n\n\n\nValueError\nIf energy_level not in 1-10, break_type invalid, or duration invalid."
+  },
+  {
+    "objectID": "reference/breaks.suggest_break.html#examples",
+    "href": "reference/breaks.suggest_break.html#examples",
+    "title": "breaks.suggest_break",
+    "section": "",
+    "text": "&gt;&gt;&gt; activity = suggest_break(minutes_worked=90, energy_level=4, break_type=\"active\")\n&gt;&gt;&gt; print(activity['name'])"
+  },
+  {
+    "objectID": "reference/pomodoro.plan_pomodoro.html",
+    "href": "reference/pomodoro.plan_pomodoro.html",
+    "title": "pomodoro.plan_pomodoro",
+    "section": "",
+    "text": "pomodoro.plan_pomodoro(\n    total_minutes,\n    technique='pomodoro',\n    work_length=None,\n    short_break=None,\n    long_break=None,\n    long_break_interval=4,\n)\nCalculate a Pomodoro-style work/break schedule within a fixed time budget.\nThe schedule always starts with a work session at minute 0 and alternates work and break sessions until total_minutes is reached. If there is not enough time remaining for a full next session, the final session is truncated to fit exactly within total_minutes. Zero-length sessions are never included.\nTechnique presets set the default work/break lengths: - “pomodoro”: 25 work, 5 short break - “52-17”: 52 work, 17 short break - “90-20”: 90 work, 20 short break - “custom”: user-specified lengths via work_length and short_break\nLong breaks: after every long_break_interval-th work session, the next break is a long break (type “long_break”) with duration long_break (or short_break if long_break is not provided). Otherwise breaks are short (type “short_break”). Long-break settings apply for all techniques.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\ntotal_minutes\nint\nTotal available time in minutes. Must be &gt; 0.\nrequired\n\n\ntechnique\nstr\nPreset name: “pomodoro”, “52-17”, “90-20”, or “custom”. Default “pomodoro”.\n'pomodoro'\n\n\nwork_length\nint\nWork period length in minutes. Required if technique=“custom”.\nNone\n\n\nshort_break\nint\nShort break length in minutes. Required if technique=“custom”.\nNone\n\n\nlong_break\nint\nLong break length in minutes. If None, defaults to short_break.\nNone\n\n\nlong_break_interval\nint\nNumber of work sessions between long breaks. Must be &gt;= 1. Default 4.\n4\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\npd.DataFrame\nSchedule with one row per session, in chronological order, with columns: - session : int 1-based sequential session number. - type : str One of {“work”, “short_break”, “long_break”}. - duration_minutes : int Session length in minutes (may be shorter than the preset/parameter value only for the final truncated session). - start_minute : int Inclusive start minute from 0. - end_minute : int Exclusive end minute; equals start_minute + duration_minutes and never exceeds total_minutes.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nTypeError\nIf any numeric parameter is not an integer (bool is not accepted).\n\n\n\nValueError\nIf total_minutes &lt;= 0; if technique is invalid; if technique=“custom” and required parameters are missing; or if any provided duration is &lt;= 0 or long_break_interval &lt; 1.\n\n\n\n\n\n\n&gt;&gt;&gt; schedule = plan_pomodoro(total_minutes=120, technique=\"pomodoro\")\n&gt;&gt;&gt; schedule = plan_pomodoro(total_minutes=60, technique=\"custom\", work_length=20, short_break=5)\n&gt;&gt;&gt; schedule = plan_pomodoro(total_minutes=10, technique=\"pomodoro\")  # final work session truncated to 10"
+  },
+  {
+    "objectID": "reference/pomodoro.plan_pomodoro.html#parameters",
+    "href": "reference/pomodoro.plan_pomodoro.html#parameters",
+    "title": "pomodoro.plan_pomodoro",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\ntotal_minutes\nint\nTotal available time in minutes. Must be &gt; 0.\nrequired\n\n\ntechnique\nstr\nPreset name: “pomodoro”, “52-17”, “90-20”, or “custom”. Default “pomodoro”.\n'pomodoro'\n\n\nwork_length\nint\nWork period length in minutes. Required if technique=“custom”.\nNone\n\n\nshort_break\nint\nShort break length in minutes. Required if technique=“custom”.\nNone\n\n\nlong_break\nint\nLong break length in minutes. If None, defaults to short_break.\nNone\n\n\nlong_break_interval\nint\nNumber of work sessions between long breaks. Must be &gt;= 1. Default 4.\n4"
+  },
+  {
+    "objectID": "reference/pomodoro.plan_pomodoro.html#returns",
+    "href": "reference/pomodoro.plan_pomodoro.html#returns",
+    "title": "pomodoro.plan_pomodoro",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\npd.DataFrame\nSchedule with one row per session, in chronological order, with columns: - session : int 1-based sequential session number. - type : str One of {“work”, “short_break”, “long_break”}. - duration_minutes : int Session length in minutes (may be shorter than the preset/parameter value only for the final truncated session). - start_minute : int Inclusive start minute from 0. - end_minute : int Exclusive end minute; equals start_minute + duration_minutes and never exceeds total_minutes."
+  },
+  {
+    "objectID": "reference/pomodoro.plan_pomodoro.html#raises",
+    "href": "reference/pomodoro.plan_pomodoro.html#raises",
+    "title": "pomodoro.plan_pomodoro",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\n\nTypeError\nIf any numeric parameter is not an integer (bool is not accepted).\n\n\n\nValueError\nIf total_minutes &lt;= 0; if technique is invalid; if technique=“custom” and required parameters are missing; or if any provided duration is &lt;= 0 or long_break_interval &lt; 1."
+  },
+  {
+    "objectID": "reference/pomodoro.plan_pomodoro.html#examples",
+    "href": "reference/pomodoro.plan_pomodoro.html#examples",
+    "title": "pomodoro.plan_pomodoro",
+    "section": "",
+    "text": "&gt;&gt;&gt; schedule = plan_pomodoro(total_minutes=120, technique=\"pomodoro\")\n&gt;&gt;&gt; schedule = plan_pomodoro(total_minutes=60, technique=\"custom\", work_length=20, short_break=5)\n&gt;&gt;&gt; schedule = plan_pomodoro(total_minutes=10, technique=\"pomodoro\")  # final work session truncated to 10"
+  }
+]
