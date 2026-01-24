@@ -1,7 +1,7 @@
 """Tests for get_affirmation function."""
 
 import pytest
-from deepwork.affirmation import get_affirmation
+from deepworks.affirmation import get_affirmation
 
 
 # Basic functionality tests

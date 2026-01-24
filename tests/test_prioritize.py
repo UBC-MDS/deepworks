@@ -2,7 +2,7 @@
 
 import pytest
 import pandas as pd
-from deepwork.prioritize import prioritize_tasks
+from deepworks.prioritize import prioritize_tasks
 
 
 def test_weighted_method_returns_dataframe():
