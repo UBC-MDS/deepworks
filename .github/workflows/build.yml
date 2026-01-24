@@ -1,10 +1,11 @@
-name: ci
+name: CI
 
 on:
   pull_request:
-    - branches: [main, develop]
+    branches: [main, develop]
   push:
     branches: [main, develop]
+  workflow-dispatch:
 
 jobs:
   unit-test-pytest:
@@ -30,13 +31,13 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          hatch run test:run tests/ -v --cov --cov-report=term --cov-branch --cov-report=xml
+          hatch run test:run
 
-      # - name: Upload to codecov # pending codecov step
-      #   uses: codecov/codecov-action@v5
-      #   with:
-      #     verbose: true
-      #     files: ./coverage.xml
+      - name: Upload to codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
 
   style-check:
     name: Run linter and format check (ruff)
@@ -61,3 +62,8 @@ jobs:
 
       - name: Run ruff formatter
         run: hatch run lint:format
+
+      - name: Commit formatting changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "style: auto-format with ruff"
