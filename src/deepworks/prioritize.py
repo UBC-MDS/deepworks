@@ -1,4 +1,4 @@
-"""Task prioritization function for deepwork."""
+"""Task prioritization function for deepworks."""
 
 import pandas as pd
 from datetime import datetime, date

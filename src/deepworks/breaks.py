@@ -1,3 +1,5 @@
+"""Breaks module for deepworks."""
+
 import random
 import warnings 
 from typing import Optional
