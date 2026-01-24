@@ -1,16 +1,19 @@
-# deepwork
+# deepworks
 
-|  |  |
-|------------------------------------|------------------------------------|
-| Package | [![PyPI Version](https://img.shields.io/badge/PyPI-v0.1.0-lightgrey.svg)](#) [![Python Versions](https://img.shields.io/badge/Python-3.10%2B-lightgrey.svg)](#) |
-| Meta | [![Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md) |
+| | |
+| --- | --- |
+| Testing | [![CI](https://github.com/UBC-MDS/deepworks/actions/workflows/build.yml/badge.svg)](https://github.com/UBC-MDS/deepworks/actions/workflows/build.yml) [![CD](https://github.com/UBC-MDS/deepworks/actions/workflows/deploy.yml/badge.svg)](https://github.com/UBC-MDS/deepworks/actions/workflows/deploy.yml) [![Coverage](https://codecov.io/github/UBC-MDS/deepworks/coverage.svg?branch=main)](https://codecov.io/gh/UBC-MDS/deepworks) |
+| Package | [![Test PyPI Latest Release](https://img.shields.io/badge/dynamic/json?url=https://test.pypi.org/pypi/deepworks/json&query=$.info.version&label=TestPyPI&color=green)](https://test.pypi.org/project/deepworks/) [![GitHub Release](https://img.shields.io/github/v/release/UBC-MDS/deepworks?color=green)](https://github.com/UBC-MDS/deepworks/releases) [![Python Version](https://img.shields.io/badge/dynamic/json?url=https://test.pypi.org/pypi/deepworks/json&query=$.info.requires_python&label=Python&color=green)](https://test.pypi.org/project/deepworks/) [![Repo Status](https://img.shields.io/badge/repo%20status-Active-brightgreen)](https://github.com/UBC-MDS/deepworks) |
+| Meta | [![Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md) [![License - MIT](https://img.shields.io/badge/dynamic/json?url=https://test.pypi.org/pypi/deepworks/json&query=$.info.license&label=License&color=blue)](https://github.com/UBC-MDS/num_theory/blob/main/LICENSE) |
 
-`deepwork` is a Python package for developer productivity that helps developers stay focused and energized throughout the workday. `deepwork` provides tools to plan focus (pomodoro) sessions, prioritize tasks, take effective breaks, and stay motivated with personalized affirmations. The perfect package for developers looking to optimize their workflow.
+`deepworks` is a Python package for developer productivity that helps developers stay focused and energized throughout the workday. `deepworks` provides tools to plan focus (pomodoro) sessions, prioritize tasks, take effective breaks, and stay motivated with personalized affirmations. The perfect package for developers looking to optimize their workflow.
 
-## Get Started
-> To install the latest release (latest tag) from GitHub, run the following:
-``` bash
-$ pip install git+https://github.com/UBC-MDS/deepwork@main
+## Installation
+
+To install the latest release from Test PyPi:
+
+```bash
+pip install -i https://test.pypi.org/simple/ deepworks
 ```
 
 ### Functions
@@ -29,7 +32,7 @@ This package contains four main functions:
 
 ### Dependencies
 
-`deepwork` requires the following libraries:
+`deepworks` requires the following libraries:
 
 -   **Python 3.10+**: Required runtime environment.
 -   **Pandas**: Used for data manipulation and the structured table display of schedules and tasks.
@@ -38,10 +41,10 @@ This package contains four main functions:
 ## Usage
 
 ``` python
-from deepwork.affirmation import get_affirmation
-from deepwork.pomodoro import plan_pomodoro
-from deepwork.prioritize import prioritize_tasks
-from deepwork.breaks import suggest_break
+from deepworks.affirmation import get_affirmation
+from deepworks.pomodoro import plan_pomodoro
+from deepworks.prioritize import prioritize_tasks
+from deepworks.breaks import suggest_break
 
 # Get a motivational affirmation
 affirmation = get_affirmation(name="Alice", mood="stressed", energy=4)
@@ -64,29 +67,105 @@ activity = suggest_break(minutes_worked=90, energy_level=4, break_type="active")
 print(activity['name'], "-", activity['description'])
 ```
 
+## Developer Setup
+
+1. To set up the development environment, first install [pipx](https://pipx.pypa.io/) and then [Hatch](https://hatch.pypa.io/):
+> For more information on how to use Hatch, check out this tutorial from pyOpenSci [here](https://www.pyopensci.org/python-package-guide/tutorials/get-to-know-hatch.html).
+
+```bash
+pip install pipx
+pipx install hatch
+```
+
+2. Clone the repository:
+
+```bash
+git clone https://github.com/UBC-MDS/deepworks
+cd deepworks
+```
+
+3. Install the package in development mode using Hatch:
+
+```bash
+hatch shell
+```
+
+This will create a virtual environment and install the package with all dependencies.
+
+If you want to leave the developer environment, simply type the following command:
+
+```bash
+exit
+```
+
+Alternatively, if you want to install the package on a particular environment run:
+
+```bash
+pip install -e .
+```
+
 ## Testing
 
-To run the tests for this package, clone the repository and install it with the test dependencies:
+To run the tests for this package using Hatch:
 
-1. Clone the repository:
-``` bash
-$ git clone https://github.com/UBC-MDS/deepwork
-```
-
-2. Install the package with test dependencies:
 ```bash
-$ cd path/to/deepwork
-$ pip install -e ".[tests]"
+hatch run test:run
 ```
 
-3. Run tests accordingly:
+This runs pytest with coverage reporting in the `test` environment.
+
+## Building Documentation
+
+The documentation is built using [Quarto](https://quarto.org/) and [quartodoc](https://machow.github.io/quartodoc/) through Hatch.
+
+1. Install the [Quarto CLI](https://quarto.org/docs/get-started/):
+
 ```bash
-$ pytest tests/ -v --cov=deepwork --cov-branch --cov-report=term-missing # shows a verbose output of tests
+pip install quarto-cli
 ```
+
+2. To preview the documentation locally with live reload:
+
+```bash
+hatch run docs:serve
+```
+
+3. Build and render the documentation:
+
+```bash
+hatch run docs:build
+```
+
+The generated documentation will be in the `docs/` directory.
+
+## Deployment
+
+This project uses GitHub Actions for continuous integration and deployment.
+
+### Continuous Integration (`build.yml`)
+
+Runs on pushes and pull requests to `main` and `develop` branches:
+- Runs the test suite across Python 3.10, 3.11, 3.12, and 3.13
+- Uploads coverage reports to Codecov
+- Runs linting and formatting checks with Ruff
+
+### Continuous Deployment (`deploy.yml`)
+
+Runs on new version tags (`v*.*.*`):
+- Runs the full test suite and style checks
+- Builds the package using Hatch
+- Publishes to Test PyPI
+
+### Documentation (`docs-publish.yml`)
+
+Runs on pushes and pull requests to `main`:
+- Builds the quartodoc API reference
+- Renders the Quarto site
+- Publishes to GitHub Pages (`gh-pages` branch)
 
 ## Python Ecosystem
 
-`deepwork` combines productivity and wellness features into a single cohesive library. While there are separate packages for individual features like [tomato-timer](https://pypi.org/project/tomato-timer/) for Pomodoro timing and various task management libraries, `deepwork` uniquely integrates focus session planning, task prioritization, break suggestions, and motivational affirmations into one package, specifically designed for developers. This holistic approach helps developers maintain both productivity and well-being without needing multiple tools.
+`deepworks` combines productivity and wellness features into a single cohesive library. While there are separate packages for individual features like [tomato-timer](https://pypi.org/project/tomato-timer/) for Pomodoro timing and various task management libraries, `deepworks` uniquely integrates focus session planning, task prioritization, break suggestions, and motivational affirmations into one package, specifically designed for developers. This holistic approach helps developers maintain both productivity and well-being without needing multiple tools.
 
 ## Contributors
 

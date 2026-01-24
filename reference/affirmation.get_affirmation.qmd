@@ -1,0 +1,27 @@
+# affirmation.get_affirmation { #deepwork.affirmation.get_affirmation }
+
+```python
+affirmation.get_affirmation(name, mood, energy, category=None, seed=None)
+```
+
+Get a personalized developer affirmation based on mood and energy.
+
+The function uses a weighted random algorithm to select the most appropriate 
+affirmation. It prioritizes matches that align with both the category and the 
+energy level, allowing for variety while maintaining personalization.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name     | Type   | Description                                                                                                                       | Default    |
+|----------|--------|-----------------------------------------------------------------------------------------------------------------------------------|------------|
+| name     | str    | User's name for personalization.                                                                                                  | _required_ |
+| mood     | str    | Current mood. Valid options: 'happy', 'stressed', 'anxious', 'tired',  'frustrated', 'motivated', 'neutral'.                      | _required_ |
+| energy   | int    | Energy level on a scale of 1-10. - 1-3: Low (calming/reassuring) - 4-7: Medium (balanced/steady) - 8-10: High (energetic/driving) | _required_ |
+| category | str    | Specific category constraint (e.g., 'motivation', 'growth'). If provided, this overrides the default mood-to-category mapping.    | `None`     |
+| seed     | int    | Random seed for reproducible selection. Uses a local random instance  to avoid affecting global state.                            | `None`     |
+
+## Returns {.doc-section .doc-section-returns}
+
+| Name   | Type   | Description                                            |
+|--------|--------|--------------------------------------------------------|
+|        | dict   | Affirmation with keys: text, category, mood_alignment. |
