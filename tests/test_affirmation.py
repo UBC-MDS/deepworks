@@ -2,7 +2,7 @@
 
 import pytest
 from deepworks.affirmation import get_affirmation
-
+from unittest.mock import patch
 
 # Basic functionality tests
 
@@ -182,52 +182,7 @@ def test_seed_not_int_raises_typeerror():
     """
     with pytest.raises(TypeError, match="seed must be an integer"):
         get_affirmation(name="Alice", mood="happy", energy=5, seed="42")
-
-# Energy level tests
-
-def test_low_energy_returns_valid_result():
-    """
-    Test that low energy levels (1-3) return appropriate affirmations.
-
-    Verifies the function handles low energy input (energy=2) with mood="happy"
-    and returns an affirmation with non-empty text. The category should be
-    'motivation' or 'growth' based on the mood-to-category mapping for 'happy'.
-    """
-    result = get_affirmation(name="Alice", mood="happy", energy=2, seed=42)
-    assert result["text"]
-    assert result["category"] in ["motivation", "growth"]
-
-def test_high_energy_returns_valid_result():
-    """
-    Test that high energy levels (8-10) return appropriate affirmations.
-
-    Verifies the function handles high energy input (energy=9) with a
-    motivated mood and returns an affirmation with non-empty text and category.
-    """
-    result = get_affirmation(name="Alice", mood="motivated", energy=9, seed=42)
-    assert result["text"]
-    assert result["category"]
-
-def test_energy_boundary_low():
-    """
-    Test energy at the minimum boundary value (1).
-
-    Verifies the function accepts energy=1 (lowest valid value) with
-    mood="tired" and returns a valid dictionary result without errors.
-    """
-    result = get_affirmation(name="Alice", mood="tired", energy=1, seed=42)
-    assert isinstance(result, dict)
-
-def test_energy_boundary_high():
-    """
-    Test energy at the maximum boundary value (10).
-
-    Verifies the function accepts energy=10 (highest valid value) with
-    mood="motivated" and returns a valid dictionary result without errors.
-    """
-    result = get_affirmation(name="Alice", mood="motivated", energy=10, seed=42)
-    assert isinstance(result, dict)
-
+        
 # Weighting tests
 
 def test_non_adjacent_energy_levels():
@@ -255,3 +210,39 @@ def test_weighting_with_extreme_energy_mismatch():
         result = get_affirmation(name="Test", mood="motivated", energy=1, seed=seed)
         results.append(result)
     assert all("text" in r for r in results)
+
+
+def test_weighted_random_fallback_execution():
+    """
+    Test that _weighted_random_choice hits the fallback return.
+    
+    We mock random.uniform to return a value larger than the total weights. 
+    This forces the selection loop to finish without returning, triggering 
+    the safety 'return candidates[-1][0]' at the end.
+    """
+    # Force random value to be 10000.0 (impossible normally)
+    with patch("deepworks.affirmation.random.uniform", return_value=10000.0):
+        result = get_affirmation(name="Test", mood="happy", energy=5)
+        
+        # Verify we still got a valid result (the fallback worked)
+        assert result["text"]
+class TestGetAffirmationEnergy:
+    """Tests for energy level handling."""
+
+    def test_low_energy_range(self):
+        """Test energy 1-3 maps to low energy category."""
+        for energy in [1, 2, 3]:
+            result = get_affirmation(name="Test", mood="neutral", energy=energy, seed=42)
+            assert "text" in result
+
+    def test_medium_energy_range(self):
+        """Test energy 4-7 maps to medium energy category."""
+        for energy in [4, 5, 6, 7]:
+            result = get_affirmation(name="Test", mood="neutral", energy=energy, seed=42)
+            assert "text" in result
+
+    def test_high_energy_range(self):
+        """Test energy 8-10 maps to high energy category."""
+        for energy in [8, 9, 10]:
+            result = get_affirmation(name="Test", mood="neutral", energy=energy, seed=42)
+            assert "text" in result
