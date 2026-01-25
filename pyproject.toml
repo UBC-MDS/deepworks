@@ -123,7 +123,6 @@ precision = 2
 
 # Use UV to create Hatch environments
 [tool.hatch.envs.default]
-builder = true
 installer = "uv"
 
 ################################################################################
@@ -135,8 +134,8 @@ installer = "uv"
 # This table installs the tools you need to test and build your package
 [tool.hatch.envs.build]
 description = """Test the installation the package."""
-features = [
-    "build",
+dependencies = [
+    "twine",
 ]
 detached = true
 builder = true
