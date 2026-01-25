@@ -1,7 +1,7 @@
 import pytest
 from deepworks import breaks
 import warnings
-from deepworks.breaks import suggest_break, _format_result, _filter_activities, _warn_if_overworked
+from deepworks.breaks import suggest_break, _weighted_random_choice, _format_result, _filter_activities, _warn_if_overworked
 
 # Basic functionality tests
 
@@ -72,36 +72,6 @@ def test_seed_reproducibility():
     result1 = suggest_break(minutes_worked=60, energy_level=5, seed=42)
     result2 = suggest_break(minutes_worked=60, energy_level=5, seed=42)
     assert result1["name"] == result2["name"]
-
-# ADDED TO TEST:
-def test_weighted_random_choice_with_seed():
-    from deepworks.breaks import _weighted_random_choice
-
-    weighted = [
-        ({"name": "A"}, 1.0),
-        ({"name": "B"}, 2.0)
-    ]
-
-    # Test with a seed
-    selected = _weighted_random_choice(weighted, seed=42)
-    assert selected["name"] in {"A", "B"}
-
-def test_weighted_random_choice_without_seed():
-    """
-    Tests seed=None in _weighted_random_choice.
-    """
-    from deepworks.breaks import _weighted_random_choice
-
-    weighted = [
-        ({"name": "A"}, 1.0),
-        ({"name": "B"}, 2.0)
-    ]
-
-    # Test without a seed
-    selected = _weighted_random_choice(weighted, seed=None)
-    assert selected["name"] in {"A", "B"}
-
-# COPIED CODE
 
 def test_weighted_random_branches():
     """
