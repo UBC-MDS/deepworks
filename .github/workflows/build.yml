@@ -5,7 +5,7 @@ on:
     branches: [main, develop]
   push:
     branches: [main, develop]
-  workflow-dispatch:
+  workflow_dispatch:
 
 jobs:
   unit-test-pytest:
