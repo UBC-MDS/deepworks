@@ -204,11 +204,16 @@ def _get_urgency_level(days_left: Optional[int]) -> int:
     if days_left is None:
         return 3  # Default middle score for no deadline
     
-    if days_left <= 1: return 5
-    elif days_left <= 3: return 4
-    elif days_left <= 7: return 3
-    elif days_left <= 14: return 2
-    else: return 1
+    if days_left <= 1:
+        return 5
+    elif days_left <= 3:
+        return 4
+    elif days_left <= 7:
+        return 3
+    elif days_left <= 14:
+        return 2
+    else:
+        return 1
 
 
 def _calculate_weighted_scores(tasks: list[dict], weights: dict) -> list[dict]:
