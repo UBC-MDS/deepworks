@@ -368,3 +368,22 @@ def test_urgency_level_beyond_fourteen_days_deadline():
     result = prioritize_tasks(tasks, method="weighted")
     # urgency 1: score = 3*0.5 + 3*0.3 + 1*0.2 = 1.5 + 0.9 + 0.2 = 2.6
     assert result.iloc[0]["priority_score"] == 2.6
+
+
+def test_lower_effort_ranks_higher():
+    """
+    Test that lower effort values result in higher priority rankings.
+
+    In the weighted method, effort is inverted as (6 - effort) so that
+    low-effort tasks are prioritized over high-effort tasks. With equal
+    importance and no deadline, a task with effort=1 should rank higher
+    than a task with effort=5.
+    """
+    tasks = [
+        {"name": "Hard", "importance": 3, "effort": 5},
+        {"name": "Easy", "importance": 3, "effort": 1},
+    ]
+    result = prioritize_tasks(tasks, method="weighted")
+    easy_rank = result[result["name"] == "Easy"]["rank"].values[0]
+    hard_rank = result[result["name"] == "Hard"]["rank"].values[0]
+    assert easy_rank < hard_rank  # Lower rank number = higher priority
