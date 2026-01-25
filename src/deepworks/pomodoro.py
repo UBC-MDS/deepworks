@@ -20,7 +20,7 @@ def plan_pomodoro(
     work_length: Optional[int] = None,
     short_break: Optional[int] = None,
     long_break: Optional[int] = None,
-    long_break_interval: int = 4
+    long_break_interval: int = 4,
 ) -> pd.DataFrame:
     """
     Calculate a Pomodoro-style work/break schedule within a fixed time budget.
@@ -90,7 +90,14 @@ def plan_pomodoro(
     >>> schedule = plan_pomodoro(total_minutes=60, technique="custom", work_length=20, short_break=5)
     >>> schedule = plan_pomodoro(total_minutes=10, technique="pomodoro")  # final work session truncated to 10
     """
-    _validate_inputs(total_minutes, technique, work_length, short_break, long_break, long_break_interval)
+    _validate_inputs(
+        total_minutes,
+        technique,
+        work_length,
+        short_break,
+        long_break,
+        long_break_interval,
+    )
 
     work, s_break, l_break, interval = _get_timing_config(
         technique, work_length, short_break, long_break, long_break_interval
@@ -98,7 +105,9 @@ def plan_pomodoro(
 
     _warn_if_too_short(total_minutes, work, s_break)
 
-    schedule, work_session_count = _build_schedule(total_minutes, work, s_break, l_break, interval)
+    schedule, work_session_count = _build_schedule(
+        total_minutes, work, s_break, l_break, interval
+    )
 
     return _create_dataframe_with_metadata(schedule, work_session_count)
 
@@ -109,7 +118,7 @@ def _validate_inputs(
     work_length: Optional[int],
     short_break: Optional[int],
     long_break: Optional[int],
-    long_break_interval: int
+    long_break_interval: int,
 ) -> None:
     """
     Validate all input parameters.
@@ -122,20 +131,30 @@ def _validate_inputs(
         If values are invalid or required parameters are missing.
     """
     if not isinstance(total_minutes, int):
-        raise TypeError(f"total_minutes must be an integer, got {type(total_minutes).__name__}")
+        raise TypeError(
+            f"total_minutes must be an integer, got {type(total_minutes).__name__}"
+        )
 
     if total_minutes <= 0:
         raise ValueError("total_minutes must be positive")
 
     if technique not in VALID_TECHNIQUES:
-        raise ValueError(f"Invalid technique '{technique}'. Must be one of: {', '.join(VALID_TECHNIQUES)}")
+        raise ValueError(
+            f"Invalid technique '{technique}'. Must be one of: {', '.join(VALID_TECHNIQUES)}"
+        )
 
     if technique == "custom":
         if work_length is None or short_break is None:
-            raise ValueError("Custom technique requires work_length and short_break parameters")
+            raise ValueError(
+                "Custom technique requires work_length and short_break parameters"
+            )
 
-    for name, val in [("work_length", work_length), ("short_break", short_break),
-                      ("long_break", long_break), ("long_break_interval", long_break_interval)]:
+    for name, val in [
+        ("work_length", work_length),
+        ("short_break", short_break),
+        ("long_break", long_break),
+        ("long_break_interval", long_break_interval),
+    ]:
         if val is not None:
             if not isinstance(val, int):
                 raise TypeError(f"{name} must be an integer, got {type(val).__name__}")
@@ -148,7 +167,7 @@ def _get_timing_config(
     work_length: Optional[int],
     short_break: Optional[int],
     long_break: Optional[int],
-    long_break_interval: int
+    long_break_interval: int,
 ) -> tuple[int, int, int, int]:
     """
     Get timing configuration based on technique and overrides.
@@ -202,7 +221,7 @@ def _warn_if_too_short(total_minutes: int, work: int, short_break: int) -> None:
     if total_minutes < work + short_break:
         warnings.warn(
             f"Total time ({total_minutes} min) is less than one work+break cycle ({work + short_break} min).",
-            UserWarning
+            UserWarning,
         )
 
 
@@ -211,7 +230,7 @@ def _build_schedule(
     work: int,
     short_break: int,
     long_break: int,
-    long_break_interval: int
+    long_break_interval: int,
 ) -> tuple[list[dict], int]:
     """
     Build the work/break schedule.
@@ -249,13 +268,15 @@ def _build_schedule(
         session_num += 1
         work_session_count += 1
 
-        schedule.append({
-            "session": session_num,
-            "type": "work",
-            "duration_minutes": work_duration,
-            "start_minute": current_time,
-            "end_minute": current_time + work_duration
-        })
+        schedule.append(
+            {
+                "session": session_num,
+                "type": "work",
+                "duration_minutes": work_duration,
+                "start_minute": current_time,
+                "end_minute": current_time + work_duration,
+            }
+        )
         current_time += work_duration
 
         # Check if we have time for a break
@@ -264,26 +285,30 @@ def _build_schedule(
             break
 
         # Determine break type
-        is_long_break = (work_session_count % long_break_interval == 0)
+        is_long_break = work_session_count % long_break_interval == 0
         break_duration = long_break if is_long_break else short_break
         break_type = "long_break" if is_long_break else "short_break"
 
         break_duration = min(break_duration, remaining)
         session_num += 1
 
-        schedule.append({
-            "session": session_num,
-            "type": break_type,
-            "duration_minutes": break_duration,
-            "start_minute": current_time,
-            "end_minute": current_time + break_duration
-        })
+        schedule.append(
+            {
+                "session": session_num,
+                "type": break_type,
+                "duration_minutes": break_duration,
+                "start_minute": current_time,
+                "end_minute": current_time + break_duration,
+            }
+        )
         current_time += break_duration
 
     return schedule, work_session_count
 
 
-def _create_dataframe_with_metadata(schedule: list[dict], work_session_count: int) -> pd.DataFrame:
+def _create_dataframe_with_metadata(
+    schedule: list[dict], work_session_count: int
+) -> pd.DataFrame:
     """
     Create DataFrame from schedule and add summary metadata.
 
@@ -304,7 +329,7 @@ def _create_dataframe_with_metadata(schedule: list[dict], work_session_count: in
     if len(df) > 0:
         total_work = df[df["type"] == "work"]["duration_minutes"].sum()
         total_break = df[df["type"].str.contains("break")]["duration_minutes"].sum()
-    else: # will never actually trigger/for reference in the future
+    else:  # will never actually trigger/for reference in the future
         total_work = 0
         total_break = 0
 

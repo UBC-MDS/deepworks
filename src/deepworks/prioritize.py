@@ -8,10 +8,9 @@ VALID_METHODS = ["weighted", "deadline"]
 DEFAULT_WEIGHTS = {"importance": 0.5, "effort": 0.3, "deadline": 0.2}
 DATE_FMT = "%Y-%m-%d"
 
+
 def prioritize_tasks(
-    tasks: list[dict],
-    method: str = "weighted",
-    weights: Optional[dict] = None
+    tasks: list[dict], method: str = "weighted", weights: Optional[dict] = None
 ) -> pd.DataFrame:
     """
     Rank tasks by priority using different prioritization methods.
@@ -177,12 +176,16 @@ def _validate_inputs(tasks: list, method: str, weights: Optional[dict]) -> None:
 
     for i, task in enumerate(tasks):
         if not isinstance(task, dict):
-            raise TypeError(f"Task at index {i} must be a dict, got {type(task).__name__}")
+            raise TypeError(
+                f"Task at index {i} must be a dict, got {type(task).__name__}"
+            )
         if "name" not in task:
             raise ValueError(f"Task at index {i} missing required field 'name'")
 
     if method not in VALID_METHODS:
-        raise ValueError(f"Invalid method '{method}'. Must be one of: {', '.join(VALID_METHODS)}")
+        raise ValueError(
+            f"Invalid method '{method}'. Must be one of: {', '.join(VALID_METHODS)}"
+        )
 
     if weights is not None and not isinstance(weights, dict):
         raise TypeError(f"weights must be a dict, got {type(weights).__name__}")
@@ -203,7 +206,7 @@ def _get_urgency_level(days_left: Optional[int]) -> int:
     """Converts days remaining into a 1-5 urgency score."""
     if days_left is None:
         return 3  # Default middle score for no deadline
-    
+
     if days_left <= 1:
         return 5
     elif days_left <= 3:
@@ -218,7 +221,7 @@ def _get_urgency_level(days_left: Optional[int]) -> int:
 
 def _calculate_weighted_scores(tasks: list[dict], weights: dict) -> list[dict]:
     scored = []
-    
+
     w_imp = weights.get("importance", 0.5)
     w_eff = weights.get("effort", 0.3)
     w_dead = weights.get("deadline", 0.2)
@@ -226,10 +229,10 @@ def _calculate_weighted_scores(tasks: list[dict], weights: dict) -> list[dict]:
     for task in tasks:
         importance = task.get("importance", 3)
         effort = task.get("effort", 3)
-        
+
         # 1. Get standardized days remaining
         days_left = _get_days_remaining(task.get("deadline"))
-        
+
         # 2. Convert to urgency level (1-5)
         deadline_score = _get_urgency_level(days_left)
 
@@ -237,7 +240,9 @@ def _calculate_weighted_scores(tasks: list[dict], weights: dict) -> list[dict]:
         effort_score = 6 - effort
 
         # 4. Final Weighted Calculation
-        score = (importance * w_imp) + (effort_score * w_eff) + (deadline_score * w_dead)
+        score = (
+            (importance * w_imp) + (effort_score * w_eff) + (deadline_score * w_dead)
+        )
 
         scored.append({**task, "priority_score": round(score, 2)})
 
@@ -246,21 +251,19 @@ def _calculate_weighted_scores(tasks: list[dict], weights: dict) -> list[dict]:
 
 def _calculate_deadline_scores(tasks: list[dict]) -> list[dict]:
     scored = []
-    
+
     for task in tasks:
         # 1. Reuse the same date parsing helper
         days_left = _get_days_remaining(task.get("deadline"))
-        
+
         score = 0
         if days_left is not None:
             # Higher score for closer deadlines (invert days)
             score = max(0, 100 - days_left)
 
-        scored.append({
-            **task,
-            "priority_score": score,
-            "days_until_deadline": days_left
-        })
+        scored.append(
+            {**task, "priority_score": score, "days_until_deadline": days_left}
+        )
 
     return scored
 
