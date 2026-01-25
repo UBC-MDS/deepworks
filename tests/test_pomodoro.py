@@ -258,3 +258,80 @@ def test_long_break_interval_not_positive_raises_valueerror():
     """
     with pytest.raises(ValueError, match="long_break_interval must be positive"):
         plan_pomodoro(total_minutes=60, technique="custom", work_length=25, short_break=5, long_break_interval=0)
+
+def test_custom_uses_explicit_long_break_and_can_truncate_break():
+    """
+    Custom technique should use provided long_break (not default to short_break).
+    Also validates that a break can be truncated if time runs out mid-break.
+    """
+    result = plan_pomodoro(
+        total_minutes=30,
+        technique="custom",
+        work_length=10,
+        short_break=5,
+        long_break=8,
+        long_break_interval=1,  # long break after every work session
+    )
+
+    assert result.iloc[1]["type"] == "long_break"
+    assert result.iloc[1]["duration_minutes"] == 8
+
+    # Total time should never exceed the budget
+    assert result["end_minute"].max() == 30
+
+    # With interval=1, breaks should all be long_breaks
+    assert (result[result["type"].str.contains("break")]["type"] == "long_break").all()
+
+def test_preset_allows_overrides_for_work_and_breaks():
+    """
+    Non-custom techniques should allow overriding work_length/short_break/long_break.
+    """
+    result = plan_pomodoro(
+        total_minutes=60,
+        technique="pomodoro",
+        work_length=10,
+        short_break=3,
+        long_break=9,
+    )
+
+    # First work session should use override (10)
+    assert result.iloc[0]["type"] == "work"
+    assert result.iloc[0]["duration_minutes"] == 10
+
+    # First break should use override short_break (3)
+    assert result.iloc[1]["type"] == "short_break"
+    assert result.iloc[1]["duration_minutes"] == 3
+
+def test_empty_schedule_metadata_defaults_to_zero(monkeypatch):
+    """
+    Force _build_schedule to return an empty schedule to cover the
+    defensive else-branch in _create_dataframe_with_metadata.
+    """
+    import deepworks.pomodoro as pomodoro_mod
+
+    def fake_build_schedule(total_minutes, work, short_break, long_break, interval):
+        return [], 0  # empty schedule, zero work sessions
+
+    monkeypatch.setattr(pomodoro_mod, "_build_schedule", fake_build_schedule)
+
+    df = pomodoro_mod.plan_pomodoro(total_minutes=10, technique="pomodoro")
+
+    assert df.empty
+    assert df.attrs["total_work_minutes"] == 0
+    assert df.attrs["total_break_minutes"] == 0
+    assert df.attrs["work_sessions"] == 0
+
+def test_schedule_ends_exactly_on_budget_and_triggers_final_loop_break():
+    """
+    Covers the top-of-loop 'remaining <= 0: break' by making the schedule
+    end exactly at total_minutes, so the next loop iteration immediately breaks.
+    """
+    df = plan_pomodoro(total_minutes=30, technique="pomodoro")
+
+    # Should end exactly at 30 minutes
+    assert df.iloc[-1]["end_minute"] == 30
+
+    # Should include exactly: 25 work + 5 short break
+    assert df["type"].tolist() == ["work", "short_break"]
+    assert df["duration_minutes"].tolist() == [25, 5]
+
