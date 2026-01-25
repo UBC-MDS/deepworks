@@ -152,6 +152,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
   <li><a href="#returns" id="toc-returns" class="nav-link" data-scroll-target="#returns">Returns</a></li>
+  <li><a href="#raises" id="toc-raises" class="nav-link" data-scroll-target="#raises">Raises</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -241,6 +243,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
+</section>
+<section id="raises" class="level2 doc-section doc-section-raises">
+<h2 class="doc-section doc-section-raises anchored" data-anchor-id="raises">Raises</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 2%">
+<col style="width: 4%">
+<col style="width: 93%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>TypeError</td>
+<td>If name, mood, or category are not strings; if energy or seed are not integers.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>ValueError</td>
+<td>If mood is not one of the valid moods (‘happy’, ‘stressed’, ‘anxious’, ‘tired’, ‘frustrated’, ‘motivated’, ‘neutral’); if energy is not between 1 and 10; if category is not one of the valid categories (‘motivation’, ‘confidence’, ‘persistence’, ‘self-care’, ‘growth’).</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="examples" class="level2 doc-section doc-section-examples">
+<h2 class="doc-section doc-section-examples anchored" data-anchor-id="examples">Examples</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> affirmation <span class="op">=</span> get_affirmation(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>...     name<span class="op">=</span><span class="st">"Alex"</span>, mood<span class="op">=</span><span class="st">"stressed"</span>, energy<span class="op">=</span><span class="dv">3</span>, seed<span class="op">=</span><span class="dv">5</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>... )</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(affirmation[<span class="st">'text'</span>])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>Alex, it<span class="st">'s okay to step away from the screen.</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;&gt;&gt; print</span>(affirmation[<span class="st">'category'</span>])</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="va">self</span><span class="op">-</span>care</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> affirmation <span class="op">=</span> get_affirmation(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>...     name<span class="op">=</span><span class="st">"Sam"</span>, mood<span class="op">=</span><span class="st">"motivated"</span>, energy<span class="op">=</span><span class="dv">8</span>, category<span class="op">=</span><span class="st">"growth"</span>, seed<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>... )</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(affirmation[<span class="st">'mood_alignment'</span>])</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fl">0.8</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
