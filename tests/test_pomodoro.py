@@ -2,6 +2,7 @@
 
 import pytest
 import pandas as pd
+import deepworks.pomodoro as pomodoro_mod
 from deepworks.pomodoro import plan_pomodoro
 
 
@@ -307,8 +308,6 @@ def test_empty_schedule_metadata_defaults_to_zero(monkeypatch):
     Force _build_schedule to return an empty schedule to cover the
     defensive else-branch in _create_dataframe_with_metadata.
     """
-    import deepworks.pomodoro as pomodoro_mod
-
     def fake_build_schedule(total_minutes, work, short_break, long_break, interval):
         return [], 0  # empty schedule, zero work sessions
 
