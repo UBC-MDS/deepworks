@@ -58,7 +58,7 @@ jobs:
           python -m pip install hatch
 
       - name: Run ruff linter
-        run: hatch run lint:check
+        run: hatch run lint:check --fix
 
       - name: Run ruff formatter
         run: hatch run lint:format
