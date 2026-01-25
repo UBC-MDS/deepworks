@@ -178,8 +178,21 @@ def suggest_break(
 
     Examples
     --------
-    >>> activity = suggest_break(minutes_worked=90, energy_level=4, break_type="active")
+    >>> activity = suggest_break(
+    ...     minutes_worked=90, energy_level=4, break_type="active", seed=42
+    ... )
     >>> print(activity['name'])
+    Jumping Jacks
+    >>> print(activity['duration_minutes'])
+    5
+    >>> print(activity['category'])
+    active
+
+    >>> activity = suggest_break(
+    ...     minutes_worked=30, energy_level=2, break_type="mindful", duration=10, seed=123
+    ... )
+    >>> print(activity)
+    {'name': 'Deep Breathing', 'description': 'Practice 4-7-8 breathing or box breathing.', 'duration_minutes': 5, 'category': 'mindful', 'energy_required': 'low', 'location': 'indoor'}
     """
     _validate_inputs(
         minutes_worked, energy_level, break_type, duration, indoor_only, seed
