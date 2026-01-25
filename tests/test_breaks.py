@@ -1,6 +1,7 @@
 import pytest
-from deepworks.breaks import suggest_break, ACTIVITIES, _format_result
-
+from deepworks import breaks
+import warnings
+from deepworks.breaks import suggest_break, _format_result, _filter_activities, _warn_if_overworked
 
 # Basic functionality tests
 
@@ -44,6 +45,22 @@ def test_active_break_type():
     assert result["category"] == "active"
 
 
+def test_any_break_type():
+    """
+    Test that specifying break_type='any' does not filter activities
+    """
+    result = suggest_break(minutes_worked=30, energy_level=5, break_type="any", seed=0)
+    assert result["category"] in {"active", "rest", "social", "mindful"}
+
+def test_rest_break_type():
+    """
+    Forces activity["category"] != break_type to be evaluated.
+    """
+    result = suggest_break(minutes_worked=30, energy_level=5, break_type="rest",
+        seed=0)
+    assert result["category"] == "rest"
+
+
 def test_seed_reproducibility():
     """
     Test that providing the same seed produces reproducible results.
@@ -55,6 +72,55 @@ def test_seed_reproducibility():
     result1 = suggest_break(minutes_worked=60, energy_level=5, seed=42)
     result2 = suggest_break(minutes_worked=60, energy_level=5, seed=42)
     assert result1["name"] == result2["name"]
+
+# ADDED TO TEST:
+def test_weighted_random_choice_with_seed():
+    from deepworks.breaks import _weighted_random_choice
+
+    weighted = [
+        ({"name": "A"}, 1.0),
+        ({"name": "B"}, 2.0)
+    ]
+
+    # Test with a seed
+    selected = _weighted_random_choice(weighted, seed=42)
+    assert selected["name"] in {"A", "B"}
+
+def test_weighted_random_choice_without_seed():
+    """
+    Tests seed=None in _weighted_random_choice.
+    """
+    from deepworks.breaks import _weighted_random_choice
+
+    weighted = [
+        ({"name": "A"}, 1.0),
+        ({"name": "B"}, 2.0)
+    ]
+
+    # Test without a seed
+    selected = _weighted_random_choice(weighted, seed=None)
+    assert selected["name"] in {"A", "B"}
+
+# COPIED CODE
+
+def test_weighted_random_branches():
+    """
+    To ensure both branches of _weighted_random_choice are covered:
+    """
+    from deepworks.breaks import _weighted_random_choice
+
+    activities = [
+        ({"name": "A"}, 1.0),
+        ({"name": "B"}, 1.0),
+    ]
+
+    # Test seed=None branch
+    result = _weighted_random_choice(activities, seed=None)
+    assert result["name"] in {"A", "B"}
+
+    # Test seed=int branch
+    result2 = _weighted_random_choice(activities, seed=42)
+    assert result2["name"] in {"A", "B"}
 
 
 def test_high_energy_category():
@@ -138,7 +204,17 @@ def test_overwork_warning():
     a longer break.
     """
     with pytest.warns(UserWarning, match="Consider taking a longer break"):
-        suggest_break(minutes_worked=130, energy_level=5)
+        _warn_if_overworked(minutes_worked=130)
+
+
+def test_no_overwork_warning():
+    """
+    Tests that no UserWarning is raised when minutes_worked is less than 120.
+    """
+    with warnings.catch_warnings():
+        warnings.simplefilter("error") 
+        from deepworks.breaks import _warn_if_overworked
+        _warn_if_overworked(minutes_worked=120)
 
 
 def test_long_session_weighting():
@@ -212,7 +288,7 @@ def test_fallback_relaxes_duration_constraint(monkeypatch):
          "location": "indoor", "energy_required": "low",
          "description": "A long activity."},
     ]
-    monkeypatch.setattr("deepworks.breaks.ACTIVITIES", mock_activities)
+    monkeypatch.setattr(breaks, "ACTIVITIES", mock_activities)
 
     result = suggest_break(
         minutes_worked=30,
@@ -237,7 +313,7 @@ def test_ultimate_fallback_returns_all_activities(monkeypatch):
          "location": "outdoor", "energy_required": "high",
          "description": "An activity that won't match filters."},
     ]
-    monkeypatch.setattr("deepworks.breaks.ACTIVITIES", mock_activities)
+    monkeypatch.setattr(breaks, "ACTIVITIES", mock_activities)
 
     result = suggest_break(
         minutes_worked=30,
@@ -247,6 +323,87 @@ def test_ultimate_fallback_returns_all_activities(monkeypatch):
         indoor_only=True
     )
     assert result["name"] == "Generic Activity"
+
+def test_filter_activity_continue(monkeypatch):
+    """
+    Tests that the continue statement in filter_activities is run when an activity entered does not match break_type
+    """
+    mock_activities = [
+        {"name": "Wrong Type", "category": "rest", "duration": 10,
+         "location": "indoor", "energy_required": "low",
+         "description": "Should be skipped because break_type='active'"},
+        {"name": "Correct Type", "category": "active", "duration": 10,
+         "location": "indoor", "energy_required": "low",
+         "description": "Should pass the filter"},
+    ]
+
+    monkeypatch.setattr(breaks, "ACTIVITIES", mock_activities)
+
+    result = _filter_activities(
+        break_type="active",
+        duration=20,
+        indoor_only=False,
+        energy_cat = "medium"
+    )
+
+    names = [act["name"] for act in result]
+    assert "Wrong Type" not in names
+    assert "Correct Type" in names
+
+def test_filter_activity_ultimate_fallback(monkeypatch):
+    """
+    Test for triggering the filter_activities fallback
+    """
+    mock_activities = [
+        {"name": "A", "category": "rest", "duration": 10, "location": "outdoor", "energy_required": "high"},
+    ]
+    monkeypatch.setattr(breaks, "ACTIVITIES", mock_activities)
+
+    result = _filter_activities(break_type="active", duration=5, indoor_only=True, energy_cat="low")
+
+    assert len(result) == 1  
+
+# just added:
+def test_filter_activities_fallback_internal_branches(monkeypatch):
+    """
+    Triggers the 'continue' statements for location and energy 
+    inside the fallback loop of _filter_activities.
+    """
+    mock_activities = [
+        # fails indoor_only
+        {"name": "Outdoor Social", "category": "social", "duration": 20, 
+         "location": "outdoor", "energy_required": "low"},
+        # fails energy
+        {"name": "High Energy Social", "category": "social", "duration": 20, 
+         "location": "indoor", "energy_required": "high"},
+    ]
+    monkeypatch.setattr(breaks, "ACTIVITIES", mock_activities)
+
+    result = _filter_activities(
+        break_type="social", 
+        duration=5, 
+        indoor_only=True, 
+        energy_cat="low"
+    )
+    
+    assert len(result) == 2
+
+def test_filter_activities_fallback_with_any(monkeypatch):
+    """
+    Ensures the fallback loop is tested with break_type='any' 
+    to cover the short-circuit branch.
+    """
+    mock_activities = [{"name": "A", "category": "rest", "duration": 20, 
+                        "location": "indoor", "energy_required": "low"}]
+    monkeypatch.setattr(breaks, "ACTIVITIES", mock_activities)
+
+    result = _filter_activities(
+        break_type="any", 
+        duration=5, 
+        indoor_only=False, 
+        energy_cat="medium"
+    )
+    assert result[0]["name"] == "A"
 
 
 # Exception tests
@@ -354,3 +511,6 @@ def test_seed_not_int_raises_typeerror():
     """
     with pytest.raises(TypeError, match="seed must be an integer"):
         suggest_break(60, 5, seed=1.5)
+
+
+

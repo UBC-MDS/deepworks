@@ -311,8 +311,9 @@ def _filter_activities(
     candidates = []
     for activity in ACTIVITIES:
         # Filter by break type
-        if break_type != "any" and activity["category"] != break_type:
-            continue
+        if break_type != "any":
+            if activity["category"] != break_type:
+                continue
         # Filter by duration
         if activity["duration"] > duration:
             continue
@@ -391,7 +392,10 @@ def _weighted_random_choice(
     dict
         Selected activity.
     """
-    rng = random.Random(seed)
+    if seed is None:
+        rng = random.Random()
+    else:
+        rng = random.Random(seed)
     activities, weights = zip(*weighted)
     return rng.choices(activities, weights=weights, k=1)[0]
 
