@@ -159,7 +159,7 @@ def prioritize_tasks(
 
     if method == "weighted":
         scored_tasks = _calculate_weighted_scores(tasks, effective_weights)
-    elif method == "deadline":
+    else:  # method == "deadline" (validated by _validate_inputs)
         scored_tasks = _calculate_deadline_scores(tasks)
 
     _assign_ranks(scored_tasks)
