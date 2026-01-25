@@ -260,7 +260,7 @@ def _build_schedule(
 
     while current_time < total_minutes:
         remaining = total_minutes - current_time
-        if remaining <= 0:
+        if remaining <= 0: # pragma: no cover
             break
 
         # Add work session
@@ -281,7 +281,7 @@ def _build_schedule(
 
         # Check if we have time for a break
         remaining = total_minutes - current_time
-        if remaining <= 0:
+        if remaining <= 0: 
             break
 
         # Determine break type
