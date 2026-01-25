@@ -295,11 +295,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>...     {<span class="st">"name"</span>: <span class="st">"Refactor module"</span>, <span class="st">"importance"</span>: <span class="dv">4</span>, <span class="st">"effort"</span>: <span class="dv">3</span>}</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>... ]</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> df <span class="op">=</span> prioritize_tasks(tasks)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> df[[<span class="st">"name"</span>, <span class="st">"priority_score"</span>, <span class="st">"rank"</span>]]</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                 name  priority_score  rank</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>    Fix critical bug            <span class="fl">4.30</span>     <span class="dv">1</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>     Refactor module            <span class="fl">3.70</span>     <span class="dv">2</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>  Write documentation            <span class="fl">2.70</span>     <span class="dv">3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>(df[<span class="st">"name"</span>])</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>[<span class="st">'Fix critical bug'</span>, <span class="st">'Refactor module'</span>, <span class="st">'Write documentation'</span>]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>(df[<span class="st">"priority_score"</span>])</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>[<span class="fl">4.3</span>, <span class="fl">3.5</span>, <span class="fl">2.7</span>]</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>(df[<span class="st">"rank"</span>])</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Using deadline method for time-sensitive prioritization:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> datetime <span class="im">import</span> date, timedelta</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> today <span class="op">=</span> date.today().strftime(<span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>)</span>
@@ -310,11 +311,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>...     {<span class="st">"name"</span>: <span class="st">"Backlog item"</span>}  <span class="co"># No deadline</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>... ]</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> df <span class="op">=</span> prioritize_tasks(tasks, method<span class="op">=</span><span class="st">"deadline"</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> df[[<span class="st">"name"</span>, <span class="st">"priority_score"</span>, <span class="st">"days_until_deadline"</span>]]</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            name  priority_score  days_until_deadline</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>  Urgent report             <span class="dv">100</span>                    <span class="dv">0</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  Weekly review              <span class="dv">93</span>                    <span class="dv">7</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>   Backlog item               <span class="dv">0</span>                 <span class="va">None</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>(df[<span class="st">"name"</span>])</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>[<span class="st">'Urgent report'</span>, <span class="st">'Weekly review'</span>, <span class="st">'Backlog item'</span>]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>(df[<span class="st">"priority_score"</span>])</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>[<span class="dv">100</span>, <span class="dv">93</span>, <span class="dv">0</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Custom weights emphasizing effort over importance:</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> tasks <span class="op">=</span> [</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>...     {<span class="st">"name"</span>: <span class="st">"Quick win"</span>, <span class="st">"importance"</span>: <span class="dv">2</span>, <span class="st">"effort"</span>: <span class="dv">1</span>},</span>
@@ -322,15 +322,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>... ]</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> custom_weights <span class="op">=</span> {<span class="st">"importance"</span>: <span class="fl">0.2</span>, <span class="st">"effort"</span>: <span class="fl">0.6</span>, <span class="st">"deadline"</span>: <span class="fl">0.2</span>}</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> df <span class="op">=</span> prioritize_tasks(tasks, weights<span class="op">=</span>custom_weights)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> df[[<span class="st">"name"</span>, <span class="st">"priority_score"</span>, <span class="st">"rank"</span>]]</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>          name  priority_score  rank</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="dv">0</span>    Quick win            <span class="fl">4.00</span>     <span class="dv">1</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  Big project            <span class="fl">2.00</span>     <span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>(df[<span class="st">"name"</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>[<span class="st">'Quick win'</span>, <span class="st">'Big project'</span>]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">list</span>(df[<span class="st">"priority_score"</span>])</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>[<span class="fl">4.0</span>, <span class="fl">2.2</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Minimal task (only required field):</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> tasks <span class="op">=</span> [{<span class="st">"name"</span>: <span class="st">"Simple task"</span>}]</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> df <span class="op">=</span> prioritize_tasks(tasks)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> df[<span class="st">"priority_score"</span>].iloc[<span class="dv">0</span>]  <span class="co"># Uses defaults: importance=3, effort=3</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fl">3.1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">float</span>(df[<span class="st">"priority_score"</span>].iloc[<span class="dv">0</span>])  <span class="co"># Uses defaults: importance=3, effort=3</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fl">3.0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>

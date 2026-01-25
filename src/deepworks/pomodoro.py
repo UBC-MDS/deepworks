@@ -86,9 +86,33 @@ def plan_pomodoro(
 
     Examples
     --------
+    **Standard pomodoro session (120 minutes):**
+
+    >>> import warnings
+    >>> warnings.filterwarnings('ignore')
     >>> schedule = plan_pomodoro(total_minutes=120, technique="pomodoro")
+    >>> len(schedule)
+    8
+    >>> schedule.attrs['work_sessions']
+    4
+    >>> schedule.attrs['total_work_minutes']
+    100
+    >>> schedule[['session', 'type', 'duration_minutes']].head(3).to_dict('records')
+    [{'session': 1, 'type': 'work', 'duration_minutes': 25}, {'session': 2, 'type': 'short_break', 'duration_minutes': 5}, {'session': 3, 'type': 'work', 'duration_minutes': 25}]
+
+    **Custom technique with shorter work periods:**
+
     >>> schedule = plan_pomodoro(total_minutes=60, technique="custom", work_length=20, short_break=5)
-    >>> schedule = plan_pomodoro(total_minutes=10, technique="pomodoro")  # final work session truncated to 10
+    >>> list(schedule['type'])
+    ['work', 'short_break', 'work', 'short_break', 'work']
+
+    **Short time budget truncates the work session:**
+
+    >>> schedule = plan_pomodoro(total_minutes=10, technique="pomodoro")
+    >>> int(schedule['duration_minutes'].iloc[0])
+    10
+    >>> schedule['type'].iloc[0]
+    'work'
     """
     _validate_inputs(
         total_minutes,

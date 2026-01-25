@@ -8,8 +8,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ##  [Unreleased]
 
 - Upcoming features and fixes:
-  - CI integration via GitHub Workflows
-  - Publish on PyPi  
+  - AI integration on GitHub issues
+
+## [v1.0.0] - (2026-01-25)
+
+### Added
+
+- CI integration via GitHub Workflows (`.github/workflows/build.yml`)
+- CD integration via GitHub Workflows (`.github/workflows/deploy.yml`)
+- Documentation build and deployment via GitHub Workflows (`.github/workflows/docs-publish.yml`)
+- Dynamic badges on `README.md`
+- Rendered documentation for the repo using [quartodoc](https://machow.github.io/quartodoc/) through Hatch
+- Publish on PyPi  
+
+### Changed
+
+- Renamed package from `deepwork` to `deepworks` to avoid naming conflicts when publishign to PyPi
+- Added additional unit tests, minor improvements and created a more in depth documentation for the following:
+  - `suggest_break`
+  - `get_affirmation`
+  - `plan_pomodoro()`
+  - `prioritize_tasks()`
+- Added the following sections on `README.md`:
+  - Developer Setup
+  - Building Documentation
+  - Deployment
+- New semantic versioning that follows `v*.*.*` convention
+- Removed the following workflows:
+  - `docs.yml`
+  - `release.yml`
+  - `test.yml`
+  - `dependabot.yml`
 
 ## [0.0.2] - (2026-01-17)
 

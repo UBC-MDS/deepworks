@@ -110,11 +110,12 @@ def prioritize_tasks(
     ...     {"name": "Refactor module", "importance": 4, "effort": 3}
     ... ]
     >>> df = prioritize_tasks(tasks)
-    >>> df[["name", "priority_score", "rank"]]
-                     name  priority_score  rank
-    0    Fix critical bug            4.30     1
-    1     Refactor module            3.70     2
-    2  Write documentation            2.70     3
+    >>> list(df["name"])
+    ['Fix critical bug', 'Refactor module', 'Write documentation']
+    >>> list(df["priority_score"])
+    [4.3, 3.5, 2.7]
+    >>> list(df["rank"])
+    [1, 2, 3]
 
     **Using deadline method for time-sensitive prioritization:**
 
@@ -127,11 +128,10 @@ def prioritize_tasks(
     ...     {"name": "Backlog item"}  # No deadline
     ... ]
     >>> df = prioritize_tasks(tasks, method="deadline")
-    >>> df[["name", "priority_score", "days_until_deadline"]]
-                name  priority_score  days_until_deadline
-    0  Urgent report             100                    0
-    1  Weekly review              93                    7
-    2   Backlog item               0                 None
+    >>> list(df["name"])
+    ['Urgent report', 'Weekly review', 'Backlog item']
+    >>> list(df["priority_score"])
+    [100, 93, 0]
 
     **Custom weights emphasizing effort over importance:**
 
@@ -141,17 +141,17 @@ def prioritize_tasks(
     ... ]
     >>> custom_weights = {"importance": 0.2, "effort": 0.6, "deadline": 0.2}
     >>> df = prioritize_tasks(tasks, weights=custom_weights)
-    >>> df[["name", "priority_score", "rank"]]
-              name  priority_score  rank
-    0    Quick win            4.00     1
-    1  Big project            2.00     2
+    >>> list(df["name"])
+    ['Quick win', 'Big project']
+    >>> list(df["priority_score"])
+    [4.0, 2.2]
 
     **Minimal task (only required field):**
 
     >>> tasks = [{"name": "Simple task"}]
     >>> df = prioritize_tasks(tasks)
-    >>> df["priority_score"].iloc[0]  # Uses defaults: importance=3, effort=3
-    3.1
+    >>> float(df["priority_score"].iloc[0])  # Uses defaults: importance=3, effort=3
+    3.0
     """
     _validate_inputs(tasks, method, weights)
 

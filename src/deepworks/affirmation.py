@@ -181,6 +181,33 @@ def get_affirmation(
     -------
     dict
         Affirmation with keys: text, category, mood_alignment.
+
+    Raises
+    ------
+    TypeError
+        If name, mood, or category are not strings; if energy or seed are not
+        integers.
+    ValueError
+        If mood is not one of the valid moods ('happy', 'stressed', 'anxious',
+        'tired', 'frustrated', 'motivated', 'neutral'); if energy is not
+        between 1 and 10; if category is not one of the valid categories
+        ('motivation', 'confidence', 'persistence', 'self-care', 'growth').
+
+    Examples
+    --------
+    >>> affirmation = get_affirmation(
+    ...     name="Alex", mood="stressed", energy=3, seed=5
+    ... )
+    >>> print(affirmation['text'])
+    Alex, it's okay to step away from the screen.
+    >>> print(affirmation['category'])
+    self-care
+
+    >>> affirmation = get_affirmation(
+    ...     name="Sam", mood="motivated", energy=8, category="growth", seed=42
+    ... )
+    >>> print(affirmation['mood_alignment'])
+    0.8
     """
     _validate_inputs(name, mood, energy, category, seed)
 
