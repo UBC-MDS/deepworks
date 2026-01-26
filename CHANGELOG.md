@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upcoming features and fixes:
   - AI integration on GitHub issues
 
+## [v1.0.1] - (2026-01-25)
+
+### Fixed
+
+- Rendering issues of dynamic badges due to `$` in query parameter when rendered in quartodoc
+
 ## [v1.0.0] - (2026-01-25)
 
 ### Added
