@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upcoming features and fixes:
   - AI integration on GitHub issues
 
+## [v1.0.2] - (2026-01-26)
+
+### Changed
+
+- Changed pip installation command to `pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ deepworks` in `README.md` in order to include Pandas in the pip installation from Test PyPi
+
 ## [v1.0.1] - (2026-01-25)
 
 ### Fixed

@@ -13,7 +13,7 @@
 To install the latest release from Test PyPi:
 
 ```bash
-pip install -i https://test.pypi.org/simple/ deepworks
+pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ deepworks
 ```
 
 ### Functions
