@@ -1,0 +1,10 @@
+name: critic-issues
+
+on:
+  issues:
+   types: [opened]
+  workflow_dispatch:
+
+permissions:
+  models: read
+  issues: write
