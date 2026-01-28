@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-deploy-preview:
-    if: github.event_name == 'pull_request' && github.event.action ! = 'closed'
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -15,7 +15,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
