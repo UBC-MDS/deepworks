@@ -1,6 +1,6 @@
 # From Ilya's Lecture 7
-# Example: AI Docstring Detective (GitHub Models)
-name: AI Docstring Detective
+# Example: AI Docstring Detective (Gemini API via curl)
+name: AI Docstring Detective - Gemini
 
 on:
   pull_request:
@@ -11,7 +11,6 @@ on:
 permissions:
   contents: read
   pull-requests: write
-  models: read
 
 jobs:
   doc-check:
@@ -25,43 +24,68 @@ jobs:
       - name: Get Diff
         id: diff
         run: |
-          git fetch origin main
+          # Use base_ref if available (PR), otherwise default to main
+          BASE=${{ github.base_ref || 'main' }}
+          git fetch origin $BASE
+          
           # Get diff, specifically looking for lines starting with + that might contain docstrings
-          DIFF=$(git diff origin/main HEAD -- src/ | head -c 8000)
+          # Limited to 8000 characters to manage token usage
+          DIFF=$(git diff origin/$BASE HEAD -- src/ | head -c 8000)
           
           echo "content<<EOF" >> $GITHUB_OUTPUT
           echo "$DIFF" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Analyze Docstrings
+      - name: Analyze Docstrings (Gemini)
         id: ai
-        uses: actions/ai-inference@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max-tokens: 1000
-          system-prompt: |
-            You are a novice Python user who is easily confused. You hate jargon.
-            Your job is to read the code diffs, specifically focusing on Docstrings (""" ... """).
-            
-            If you see new or changed docstrings:
-            1. Read them as if you know nothing about the internal logic.
-            2. If they are perfectly clear, output "LGTM".
-            3. If they use undefined units (e.g., "wind_speed" without "km/h"), vague terms, or complex grammar, complain about it.
-            
-            Ask clarifying questions like:
-            - "Wait, is this in Celcius or Fahrenheit?"
-            - "What happens if this input is None?"
-            - "I don't understand this word."
-            
-            Be brief but strictly helpful in your confusion.
-          prompt: |
-            Here are the changes:
-            
-            ```diff
-            ${{ steps.diff.outputs.content }}
-            ```
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DIFF: ${{ steps.diff.outputs.content }}
+        run: |
+          # 1. Define the System Prompt (The Persona)
+          SYSTEM_PROMPT="You are a novice Python user who is easily confused. You hate jargon.
+          Your job is to read the code diffs, specifically focusing on Docstrings (\"\"\" ... \"\"\").
+          
+          If you see new or changed docstrings:
+          1. Read them as if you know nothing about the internal logic.
+          2. If they are perfectly clear, output \"LGTM\".
+          3. If they use undefined units (e.g., \"wind_speed\" without \"km/h\"), vague terms, or complex grammar, complain about it.
+          
+          Ask clarifying questions like:
+          - \"Wait, is this in Celcius or Fahrenheit?\"
+          - \"What happens if this input is None?\"
+          - \"I don't understand this word.\"
+          
+          Be brief but strictly helpful in your confusion."
+          
+          # 2. Construct the JSON payload securely using jq
+          jq -n \
+            --arg system_prompt "$SYSTEM_PROMPT" \
+            --arg diff "$DIFF" \
+            '{
+              contents: [{ parts: [{ text: ("Here are the changes:\n\n```diff\n" + $diff + "\n```") }] }],
+              system_instruction: { parts: [{ text: $system_prompt }] }
+            }' > payload.json
+
+          # 3. Call Gemini API (gemini-2.5-flash)
+          RESPONSE=$(curl -s -X POST \
+            -H "Content-Type: application/json" \
+            -H "x-goog-api-key: $GEMINI_API_KEY" \
+            -d @payload.json \
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent")
+
+          # 4. Parse the output text using jq
+          # If no response or error, default to empty string so we don't comment erroneously
+          REVIEW=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text // ""')
+
+          # 5. Set the output for the next step
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "response<<$EOF" >> "$GITHUB_OUTPUT"
+          echo "$REVIEW" >> "$GITHUB_OUTPUT"
+          echo "$EOF" >> "$GITHUB_OUTPUT"
 
       - name: Post Comment
+        # Only comment if Gemini had something to say AND it wasn't just "LGTM"
         if: steps.ai.outputs.response != 'LGTM' && steps.ai.outputs.response != ''
         uses: peter-evans/create-or-update-comment@v4
         with:
