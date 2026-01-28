@@ -1,0 +1,14 @@
+# From Ilya's Lecture 5
+# Example 4b: AI Code Critic PR (GitHub Models)
+name: 04b-ai-critic-pr
+
+on:
+  workflow_dispatch:
+  pull_request:
+   paths:
+     - 'src/**/*.py' # Only run on python source changes
+
+permissions:
+  models: read
+  contents: read
+  pull-requests: write
