@@ -2,7 +2,6 @@ name: Build and Preview Docs
 
 on:
   pull_request:
-    branches: [main, develop]
     types: [opened, reopen, synchronize, closed]
   workflow_dispatch:
 
@@ -27,7 +26,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install hatch
-          
+
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
