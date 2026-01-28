@@ -5,3 +5,77 @@ on:
     branches: [main, develop]
     types: [opened, reopen, synchronize, closed]
   workflow_dispatch:
+
+jobs:
+  build-deploy-preview:
+    if: github.event_name == 'pull_request' && github.event.action ! = 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      deployments: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install hatch
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install hatch
+          
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Build and render
+        run: hatch run docs:build
+
+      # Deploy to Netlify
+      - name: Configure release name
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "RELEASE_NAME=pr-${{ github.event.number }}" >> $GITHUB_ENV
+            echo "DEPLOY_ALIAS=pr-${{ github.event.number }}" >> $GITHUB_ENV
+          else
+            # Clean ref name for Netlify alias (replace / with -)
+            CLEAN_REF=$(echo "${{ github.ref_name }}" | sed 's/\//-/g')
+            echo "RELEASE_NAME=manual-${CLEAN_REF}" >> $GITHUB_ENV
+            echo "DEPLOY_ALIAS=manual-${CLEAN_REF}" >> $GITHUB_ENV
+          fi
+
+      - name: Create deployment status
+        uses: bobheadxi/deployments@v1
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: ${{ env.RELEASE_NAME }}
+          ref: ${{ github.head_ref || github.ref }}
+          logs: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+      
+      - name: Deploy to Netlify
+        id: netlify
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run: |
+          npm install -g netlify-cli
+          netlify deploy --dir=_site/ --alias="${{ env.DEPLOY_ALIAS }}" 2>&1 | tee deploy.log
+          DEPLOY_URL=$(grep -oP 'https://[^\s]+' deploy.log | grep -E '(netlify\.app|--.*\.netlify\.app)' | head -n 1)
+          echo "url=${DEPLOY_URL}" >> $GITHUB_OUTPUT
+
+      - name: Update deployment status
+        uses: bobheadxi/deployments@v1
+        if: always()
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          env: ${{ steps.deployment.outputs.env }}
+          env_url: ${{ steps.netlify.outputs.url }}
+          logs: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
