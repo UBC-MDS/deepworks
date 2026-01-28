@@ -1,0 +1,12 @@
+# From Ilya's Lecture 5
+# Example 4a: AI Code Critic Issues (GitHub Models)
+name: critic-issues
+
+on:
+  issues:
+   types: [opened]
+  workflow_dispatch:
+
+permissions:
+  models: read
+  issues: write
