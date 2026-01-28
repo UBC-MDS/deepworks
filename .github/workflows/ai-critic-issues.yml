@@ -10,3 +10,41 @@ on:
 permissions:
   models: read
   issues: write
+
+jobs:
+  analyze_issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask AI critic
+        id: ai-response
+        uses: actions/ai-inference@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max-tokens: 1000
+          system-prompt: |
+            You are a helpful issue triage assistant for this repository.
+            Your task is to analyze newly opened issues for completeness and clarity.                                                                                                                                      
+
+            If the issue is clear, detailed, and includes reproducibility steps, thank the contributor and confirm the issue is well-documented.
+
+            If the issue is vague, missing steps to reproduce, or poorly formatted, politely point out what's missing. Offer specific suggestions on how to improve it, such as adding environment details, expected vs.   
+            actual behavior, or error messages.
+
+            Be encouraging and constructive—remember that contributors may be new to open source.
+
+            Identify any missing information that would help resolve the issue faster.
+            Always respond with ready-to-use markdown content.
+          prompt: |
+            New issue was opened by ${{ github.event.issue.user.login }}
+            Title: ${{ github.event.issue.title }}
+            Body:
+            ---
+            ${{ github.event.issue.body }}
+            ---
+
+      - name: Comment results on the issue
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: ${{ steps.ai-response.outputs.response }}
