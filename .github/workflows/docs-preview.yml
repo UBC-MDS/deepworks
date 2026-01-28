@@ -1,0 +1,7 @@
+name: Build and Preview Docs
+
+on:
+  pull_request:
+    branches: [main, develop]
+    types: [opened, reopen, synchronize, closed]
+  workflow_dispatch:

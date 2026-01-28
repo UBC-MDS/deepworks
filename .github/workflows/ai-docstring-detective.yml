@@ -1,0 +1,14 @@
+# From Ilya's Lecture 7
+# Example: AI Docstring Detective (GitHub Models)
+name: AI Docstring Detective
+
+on:
+  pull_request:
+    paths:
+      - 'src/**/*.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  models: read
