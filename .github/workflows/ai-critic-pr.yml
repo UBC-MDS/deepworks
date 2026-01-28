@@ -5,6 +5,7 @@ name: 04b-ai-critic-pr-gemini
 on:
   workflow_dispatch:
   pull_request:
+   types: [opened, reopened]
    paths:
      - 'src/**/*.py' # Only run on python source changes
 
