@@ -136,3 +136,47 @@ print(f"Mindful Activity: {mindful_break['name']}")
 print(f"Location: {mindful_break['location']}")
 print(f"Description: {mindful_break['description']}")
 ```
+
+### The Full Workflow
+
+Putting it all together, here's a complete morning productivity session:
+
+```{python}
+from deepworks.affirmation import get_affirmation
+from deepworks.pomodoro import plan_pomodoro
+from deepworks.prioritize import prioritize_tasks
+from deepworks.breaks import suggest_break
+
+# Step 1: Get motivated
+print("=== MORNING MOTIVATION ===")
+motivation = get_affirmation(name="Developer", mood="tired", energy=5)
+print(f"\"{motivation['text']}\"\n")
+
+# Step 2: Plan the session
+print("=== TODAY'S SCHEDULE ===")
+my_schedule = plan_pomodoro(total_minutes=90, technique="pomodoro")
+work_count = len(my_schedule[my_schedule["type"] == "work"])
+work_mins = my_schedule[my_schedule["type"] == "work"]["duration_minutes"].sum()
+break_mins = my_schedule[my_schedule["type"] != "work"]["duration_minutes"].sum()
+print(f"Sessions: {work_count} work blocks")
+print(f"Format: {work_mins}min work / {break_mins}min breaks\n")
+
+# Step 3: Know what to work on
+print("=== PRIORITY TASKS ===")
+my_tasks = [
+    {"name": "Ship feature X", "importance": 5, "effort": 3},
+    {"name": "Code review", "importance": 4, "effort": 1},
+    {"name": "Team meeting prep", "importance": 3, "effort": 2},
+]
+priorities = prioritize_tasks(my_tasks, method="weighted")
+for _, task in priorities.iterrows():
+    print(f"  {int(task['rank'])}. {task['name']} (score: {task['priority_score']:.1f})")
+
+# Step 4: Scheduled break
+print("\n=== BREAK TIME ===")
+my_break = suggest_break(minutes_worked=25, energy_level=6, break_type="any", duration=5)
+print(f"Activity: {my_break['name']}")
+print(f"Instructions: {my_break['description']}")
+```
+
+You've now got the tools to turn any chaotic workday into a focused, productive session. Go ship some code!
