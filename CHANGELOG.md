@@ -20,8 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `docs-preview` for previewing documentation in PR's (`.github/workflows/docs-preview.yml`)
 
 ### Changed
-
-- Placeholder
+- `prioritize.py`:
+  - Refactored `_calculate_weighted_scores()` to use `DEFAULT_WEIGHTS` constant for fallback values instead of hardcoded numbers
+  - Simplified docstring example headers by removing bold markdown formatting and expanding descriptions for clarity
 
 ## [v1.0.2] - (2026-01-26)
 
