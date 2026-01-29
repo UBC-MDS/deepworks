@@ -1,0 +1,27 @@
+---
+title: "Deepwork Tutorial"
+---
+
+## The Developer's Monday
+
+It's 9:00 AM. You sit down at your desk with a coffee that's already getting cold. Your inbox has 47 unread emails, Slack is buzzing, and you have a vague sense that something is due today.
+
+**How will you survive?** Using the `deepworks` package, we can transform chaos into focused productivity.
+
+### Starting the Day Right
+
+Before diving into the abyss of notifications, let's get centered. The `get_affirmation` function provides personalized motivation based on your current state.
+
+```{python}
+from deepworks.affirmation import get_affirmation
+
+# Monday morning reality check
+name = "Developer"
+mood = "stressed"
+energy = 4  # Coffee hasn't kicked in yet
+
+affirmation = get_affirmation(name=name, mood=mood, energy=energy)
+
+print(f"Category: {affirmation['category']}")
+print(f"\n\"{affirmation['text']}\"")
+```
