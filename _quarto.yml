@@ -6,6 +6,7 @@ project:
     - README.md
     - CONTRIBUTING.md
     - tutorial.qmd
+    - RETROSPECTIVE.md
     - reference/
 
 website:
@@ -19,6 +20,8 @@ website:
         href: reference/index.qmd
       - text: "Contributing"
         href: CONTRIBUTING.md
+      - text: "Retrospective"
+        href: RETROSPECTIVE.md
 
 format:
   html:

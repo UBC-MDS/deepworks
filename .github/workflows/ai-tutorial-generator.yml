@@ -67,4 +67,31 @@ jobs:
             --arg diff "$DIFF" \
             '{
               contents: [{ parts: [{ text: ("Here are the recent code changes:\n\n```diff\n" + $diff + "\n```") }] }],
-              system_instruction
+              system_instruction: { parts: [{ text: $system_prompt }] }
+            }' > payload.json
+
+          # 3. Call Gemini API
+          RESPONSE=$(curl -s -X POST \
+            -H "Content-Type: application/json" \
+            -H "x-goog-api-key: $GEMINI_API_KEY" \
+            -d @payload.json \
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent")
+
+          # 4. Parse the output text using jq
+          TUTORIAL=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text // "Error: Failed to get response from Gemini. Check logs for details."')
+
+          # 5. Set the output for the next step
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "response<<$EOF" >> "$GITHUB_OUTPUT"
+          echo "$TUTORIAL" >> "$GITHUB_OUTPUT"
+          echo "$EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Comment tutorial suggestion on PR
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## 📚 Tutorial Suggestion
+
+            ${{ steps.ai.outputs.response }}
