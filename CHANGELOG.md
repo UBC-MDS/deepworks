@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Upcoming features and fixes:
+- Upcoming features and fixes
 
 ## [v2.0.0] - (2026-01-31)
 
@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Interactive tutorial (`tutorial.qmd`) demonstrating all package functions with executable Python cells
 - Jupyter dependency to docs optional dependencies for executable documentation code cells
 - Tutorial link added to documentation navbar
+- CC-BY-4.0 license for documentation
 
 ### Changed
 
@@ -46,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `CONTRIBUTING.md` with developer setup instructions using Hatch
 - Improved `README.md` with updated usage examples and test case for a single module
 - Updated dynamic badges in `README.md` for CI/CD, package info, and metadata
+- Added all contributor emails in `pyproject.toml`
+- Added `raw-options` to `pyproject.toml` to avoid versioning issues in deployment
 
 ## [v1.0.2] - (2026-01-26)
 

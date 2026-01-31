@@ -69,6 +69,8 @@ print(activity["name"], "-", activity["description"])
 
 ## Developer Setup
 
+For a more comprehensive guild on development guidelines for this package, check out our contributing page [here](./CONTRIBUTING.md)
+
 1. To set up the development environment, first install [pipx](https://pipx.pypa.io/) and then [Hatch](https://hatch.pypa.io/):
 
 > For more information on how to use Hatch, check out this tutorial from pyOpenSci [here](https://www.pyopensci.org/python-package-guide/tutorials/get-to-know-hatch.html).
@@ -186,10 +188,11 @@ Runs on pushes and pull requests to `main`:
 
 ## Contributing
 
-Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.
+Interested in contributing? Check out the contributing guidelines [here](./CONTRIBUTING.md). Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.
 
 ## Copyright
 
 - Copyright © 2026 Jingbo Wang, Jennifer Onyebuchi, Shanzé Khemani, Jiro Amato.
 
-- Free software distributed under the [MIT License](./LICENSE).
+- Free software distributed under the [MIT License](./LICENSE.md).
+- Documentation made available under **Creative Commons By 4.0 - Attribution 4.0 International** ([CC-BY-4.0](./LICENSE.md))
