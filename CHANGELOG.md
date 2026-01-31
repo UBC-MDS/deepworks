@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Upcoming features and fixes:
+- Upcoming features and fixes
 
 ## [v2.0.0] - (2026-01-31)
 
@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Interactive tutorial (`tutorial.qmd`) demonstrating all package functions with executable Python cells
 - Jupyter dependency to docs optional dependencies for executable documentation code cells
 - Tutorial link added to documentation navbar
+- CC-BY-4.0 license for documentation
 
 ### Changed
 
