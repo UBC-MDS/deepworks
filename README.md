@@ -22,7 +22,7 @@ This package contains four main functions:
 
 - **`prioritize_tasks()`**: Rank a list of tasks by priority using different methods including weighted scoring or deadline-based sorting. Returns a DataFrame with priority scores and rankings.
 
-- **`plan_pomodoro()`**: Calculate a work/break schedule based on your available time and preferred technique (Pomodoro, 52-17, 90-20, or custom). Returns a DataFrame with a complete session schedule.
+- **`plan_pomodoro()`**: The [Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) is a time management method that uses a timer to break work into focused intervals (traditionally 25 minutes) separated by short breaks. This function calculates a work/break schedule based on your available time and preferred technique (Pomodoro, 52-17, 90-20, or custom). Returns a DataFrame with a complete session schedule.
 
 - **`suggest_break()`**: Get a recommended break activity based on how long you've worked, your current energy level, and preferences for activity type and duration. Returns a dictionary with activity details and instructions.
 
