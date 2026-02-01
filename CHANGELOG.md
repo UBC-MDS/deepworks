@@ -12,21 +12,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v2.0.0] - (2026-01-31)
 
 ### Added
+
 - Improvements to `get_affirmation()`Comprehensive test coverage for `get_affirmation()`:
-    - `ENERGY_ORDER` module-level constant for energy level ordering (previously defined locally in `_weight_affirmations`)
-    - Comment documenting fallback behavior in `_weighted_random_choice()` for floating-point edge cases
+  - `ENERGY_ORDER` module-level constant for energy level ordering (previously defined locally in `_weight_affirmations`)
+  - Comment documenting fallback behavior in `_weighted_random_choice()` for floating-point edge cases
+  - New `_matches_filters()` helper function that consolidates activity filtering logic into a reusable function in `suggest_break()`
 
 ### Changed
+
 - Enhanced `get_affirmation()` docstring with detailed mood-category mappings and energy level descriptions:
-    - Added Notes section to docstring explaining the weighting algorithm and mood alignment score calculation
-    - Improved docstring examples with reproducible seed values
+  - Added Notes section to docstring explaining the weighting algorithm and mood alignment score calculation
+  - Improved docstring examples with reproducible seed values
+  - Enhanced `suggest_break()` docstring with more detailed parameter descriptions, including energy level category mappings (1-3 = low, 4-7 = medium, 8-10 = high), expanded return value documentation, and updated examples
+  - Refactored `_filter_activities()` to use list comprehensions with the new `_matches_filters()` helper for cleaner and more readable code
 
 ### Fixed
 
 - `affirmation.py`:
-    - Random seed isolation: Changed from `random.seed(seed)` to `rng = random.Random(seed)` to prevent polluting global random state when using the seed parameter
+  - Random seed isolation: Changed from `random.seed(seed)` to `rng = random.Random(seed)` to prevent polluting global random state when using the seed parameter
 
 ### Added
+
 - Added `RETROSPECTIVE.md` to the quarto website for project reflection
 
 ### Added
