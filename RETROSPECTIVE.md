@@ -1,7 +1,3 @@
----
-title: "Retrospective"
----
-
 # Retrospective
 
 This portion discusses the development tools, GitHub infrastructure, and organizational practices we learned and applied throughout this project, as well as recommendations for scaling up.
