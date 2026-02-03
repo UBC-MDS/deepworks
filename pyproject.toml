@@ -20,7 +20,10 @@ A package that helps developers optimize their workflow through focus session pl
 task prioritization, break management, and motivational affirmations.
 """
 authors = [
-    { name = "Jingbo Wang, Jennifer Onyebuchi, Shanzé Khemani, Jiro Amato" },
+    { name = "Jingbo Wang", email = "jingbo26@student.ubc.ca" },
+    { name = "Jennifer Onyebuchi", email = "jonyebuc@student.ubc.ca" },
+    { name = "Shanzé Khemani", email = "skhemani@student.ubc.ca" },
+    { name = "Jiro Amato", email = "jiromig@student.ubc.ca" },
 ]
 license = "MIT"
 requires-python = ">= 3.10" # Adjust based on the minimum version of Python that you support
@@ -59,6 +62,7 @@ dev = [
 
 docs = [
     "quartodoc",
+    "jupyter",
 ]
 
 build = [
@@ -93,6 +97,7 @@ packages = ["src/deepworks"]
 #--------------- Version from git tags ---------------#
 [tool.hatch.version]
 source = "vcs"
+raw-options = {version_scheme = "no-guess-dev", local_scheme = "no-local-version"}
 
 [tool.hatch.build.hooks.vcs]
 version-file = "src/deepworks/_version.py"

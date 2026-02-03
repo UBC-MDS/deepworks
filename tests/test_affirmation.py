@@ -1,6 +1,7 @@
 """Tests for get_affirmation function."""
 
 import pytest
+from unittest.mock import MagicMock
 from deepworks.affirmation import get_affirmation
 
 # Basic functionality tests
@@ -181,7 +182,7 @@ def test_seed_not_int_raises_typeerror():
     """
     with pytest.raises(TypeError, match="seed must be an integer"):
         get_affirmation(name="Alice", mood="happy", energy=5, seed="42")
-        
+
 # Weighting tests
 
 def test_non_adjacent_energy_levels():
@@ -215,12 +216,17 @@ def test_weighted_random_fallback_execution(monkeypatch):
     """
     Test that _weighted_random_choice hits the fallback return.
 
-    We mock random.uniform to return a value larger than the total weights.
-    This forces the selection loop to finish without returning, triggering
-    the safety 'return candidates[-1][0]' at the end.
+    We mock random.Random to return an instance whose uniform method
+    returns a value larger than the total weights. This forces the
+    selection loop to finish without returning, triggering the safety
+    'return candidates[-1][0]' at the end.
     """
-    # Force random value to be 10000.0 (impossible normally)
-    monkeypatch.setattr("deepworks.affirmation.random.uniform", lambda *args: 10000.0)
+    import deepworks.affirmation as affirmation_module
+
+    mock_rng = MagicMock()
+    mock_rng.uniform.return_value = 10000.0
+
+    monkeypatch.setattr(affirmation_module.random, "Random", lambda seed: mock_rng)
     result = get_affirmation(name="Test", mood="happy", energy=5)
 
     # Verify we still got a valid result (the fallback worked)

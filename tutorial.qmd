@@ -1,0 +1,185 @@
+---
+title: "Deepwork Tutorial"
+jupyter: python3
+execute:
+  python: python
+---
+
+## The Developer's Monday
+
+It's 9:00 AM. You sit down at your desk with a coffee that's already getting cold. Your inbox has 47 unread emails, Slack is buzzing, and you have a vague sense that something is due today.
+
+**How will you survive?** Using the `deepworks` package, we can transform chaos into focused productivity.
+
+### Starting the Day Right
+
+Before diving into the abyss of notifications, let's get centered. The `get_affirmation` function provides personalized motivation based on your current state.
+
+```{python}
+from deepworks.affirmation import get_affirmation
+
+# Monday morning reality check
+name = "Developer"
+mood = "stressed"
+energy = 4  # Coffee hasn't kicked in yet
+
+affirmation = get_affirmation(name=name, mood=mood, energy=energy)
+
+print(f"Category: {affirmation['category']}")
+print(f"\n\"{affirmation['text']}\"")
+```
+
+### Planning Your Focus Time
+
+You have 2 hours before the standup meeting. Let's make them count with a structured work schedule using the Pomodoro technique.
+
+```{python}
+from deepworks.pomodoro import plan_pomodoro
+
+# 2 hours of available time
+available_minutes = 120
+
+schedule = plan_pomodoro(total_minutes=available_minutes, technique="pomodoro")
+
+# Calculate summary stats from the schedule
+work_sessions = len(schedule[schedule["type"] == "work"])
+total_work = schedule[schedule["type"] == "work"]["duration_minutes"].sum()
+total_breaks = schedule[schedule["type"] != "work"]["duration_minutes"].sum()
+
+print(f"Work sessions planned: {work_sessions}")
+print(f"Total work time: {total_work} minutes")
+print(f"Total break time: {total_breaks} minutes")
+print()
+schedule
+```
+
+The classic Pomodoro technique uses 25-minute work blocks with 5-minute breaks. But maybe you prefer longer focus sessions?
+
+```{python}
+# Try the 52-17 technique for deeper focus
+deep_schedule = plan_pomodoro(total_minutes=available_minutes, technique="52-17")
+
+print("52-17 Technique Schedule:")
+deep_schedule
+```
+
+### Prioritizing the Chaos
+
+Now let's tackle that to-do list. You have several tasks competing for attention. The `prioritize_tasks` function ranks them based on importance, effort, and deadlines.
+
+```{python}
+from deepworks.prioritize import prioritize_tasks
+from datetime import date, timedelta
+
+# Your Monday task list
+today = date.today()
+
+tasks = [
+    {"name": "Fix critical bug in prod", "importance": 5, "effort": 2,
+     "deadline": today.strftime("%Y-%m-%d")},
+    {"name": "Review teammate's PR", "importance": 4, "effort": 1,
+     "deadline": (today + timedelta(days=1)).strftime("%Y-%m-%d")},
+    {"name": "Write unit tests", "importance": 3, "effort": 4,
+     "deadline": (today + timedelta(days=5)).strftime("%Y-%m-%d")},
+    {"name": "Update documentation", "importance": 2, "effort": 2,
+     "deadline": (today + timedelta(days=7)).strftime("%Y-%m-%d")},
+    {"name": "Refactor auth module", "importance": 4, "effort": 5,
+     "deadline": (today + timedelta(days=3)).strftime("%Y-%m-%d")},
+]
+
+ranked_tasks = prioritize_tasks(tasks, method="weighted")
+ranked_tasks[["name", "importance", "effort", "priority_score", "rank"]]
+```
+
+The weighted method balances importance (50%), effort efficiency (30%), and deadline urgency (20%). High importance + low effort + soon deadline = top priority.
+
+What if deadlines are all that matter?
+
+```{python}
+# Pure deadline-based prioritization
+deadline_ranked = prioritize_tasks(tasks, method="deadline")
+deadline_ranked[["name", "deadline", "days_until_deadline", "priority_score", "rank"]]
+```
+
+### Taking a Break
+
+You've completed two Pomodoro sessions. Your eyes are tired from staring at the screen, and your energy is dropping.
+
+```{python}
+from deepworks.breaks import suggest_break
+
+# After 50 minutes of work, energy is flagging
+minutes_worked = 50
+current_energy = 3
+
+break_suggestion = suggest_break(
+    minutes_worked=minutes_worked,
+    energy_level=current_energy,
+    break_type="active",
+    duration=5
+)
+
+print(f"Suggested Activity: {break_suggestion['name']}")
+print(f"Duration: {break_suggestion['duration_minutes']} minutes")
+print(f"Description: {break_suggestion['description']}")
+```
+
+Feeling more introspective? Try a mindful break.
+
+```{python}
+mindful_break = suggest_break(
+    minutes_worked=90,
+    energy_level=4,
+    break_type="mindful",
+    duration=10,
+    seed=42  # For reproducibility
+)
+
+print(f"Mindful Activity: {mindful_break['name']}")
+print(f"Location: {mindful_break['location']}")
+print(f"Description: {mindful_break['description']}")
+```
+
+### The Full Workflow
+
+Putting it all together, here's a complete morning productivity session:
+
+```{python}
+from deepworks.affirmation import get_affirmation
+from deepworks.pomodoro import plan_pomodoro
+from deepworks.prioritize import prioritize_tasks
+from deepworks.breaks import suggest_break
+
+# Step 1: Get motivated
+print("=== MORNING MOTIVATION ===")
+motivation = get_affirmation(name="Developer", mood="tired", energy=5)
+print(f"\"{motivation['text']}\"\n")
+
+# Step 2: Plan the session
+print("=== TODAY'S SCHEDULE ===")
+my_schedule = plan_pomodoro(total_minutes=90, technique="pomodoro")
+work_count = len(my_schedule[my_schedule["type"] == "work"])
+work_mins = my_schedule[my_schedule["type"] == "work"]["duration_minutes"].sum()
+break_mins = my_schedule[my_schedule["type"] != "work"]["duration_minutes"].sum()
+print(f"Sessions: {work_count} work blocks")
+print(f"Format: {work_mins}min work / {break_mins}min breaks\n")
+
+# Step 3: Know what to work on
+print("=== PRIORITY TASKS ===")
+my_tasks = [
+    {"name": "Ship feature X", "importance": 5, "effort": 3},
+    {"name": "Code review", "importance": 4, "effort": 1},
+    {"name": "Team meeting prep", "importance": 3, "effort": 2},
+]
+priorities = prioritize_tasks(my_tasks, method="weighted")
+for _, task in priorities.iterrows():
+    print(f"  {int(task['rank'])}. {task['name']} (score: {task['priority_score']:.1f})")
+
+# Step 4: Scheduled break
+print("\n=== BREAK TIME ===")
+my_break = suggest_break(minutes_worked=25, energy_level=6, break_type="any", duration=5)
+print(f"Activity: {my_break['name']}")
+print(f"Instructions: {my_break['description']}")
+```
+
+You've now got the tools to turn any chaotic workday into a focused, productive session. Go ship some code!

@@ -147,52 +147,99 @@ def suggest_break(
     """
     Suggest a break activity based on current state and preferences.
 
+    This function recommends a break activity by filtering available activities
+    based on the specified constraints (break type, duration, location) and
+    then applying weighted random selection. Activities are weighted based on
+    how well they match the user's current energy level, and restful activities
+    are boosted after long work sessions (>90 minutes).
+
     Parameters
     ----------
     minutes_worked : int
-        How long you've been working (in minutes). This will influence the length of the suggested break.
+        How long you've been working (in minutes). Values above 90 boost
+        the weight of restful activities. Values above 120 trigger a warning.
     energy_level : int
-        Your current energy level on a scale of 1-10.
+        Your current energy level on a scale of 1-10. Mapped to categories:
+        1-3 = "low", 4-7 = "medium", 8-10 = "high". Low energy users won't
+        be suggested high-energy activities.
     break_type : str, optional
         Preferred break type: 'active', 'rest', 'social', 'mindful', or 'any'.
         Default is 'any'.
     duration : int, optional
-        Desired break duration: 5, 10, 15, or 20 minutes. Default is 5.
+        Maximum break duration: 5, 10, 15, or 20 minutes. Activities with
+        durations at or below this value are preferred. Default is 5.
     indoor_only : bool, optional
-        If True, only suggest indoor activities. Default is False.
+        If True, only suggest indoor activities (excludes 'outdoor' location).
+        Default is False.
     seed : int, optional
-        Random seed for reproducible selection.
+        Random seed for reproducible selection. Useful for testing.
 
     Returns
     -------
     dict
-        Activity dictionary with keys: name, description, duration_minutes,
-        category, energy_required, location.
+        Activity dictionary with keys:
+        - name : str - Activity name
+        - description : str - What to do
+        - duration_minutes : int - How long the activity takes
+        - category : str - Break type ('active', 'rest', 'social', 'mindful')
+        - energy_required : str - Energy level needed ('low', 'medium', 'high')
+        - location : str - Where to do it ('indoor', 'outdoor', 'either')
 
     Raises
     ------
     TypeError
-        If minutes_worked, energy_level, or duration are not integers.
+        If minutes_worked, energy_level, or duration are not integers,
+        or if indoor_only is not a boolean.
     ValueError
-        If energy_level not in 1-10, break_type invalid, or duration invalid.
+        If energy_level is not between 1 and 10, break_type is not valid,
+        duration is not in [5, 10, 15, 20], or minutes_worked is negative.
 
     Examples
     --------
-    >>> activity = suggest_break(
-    ...     minutes_worked=90, energy_level=4, break_type="active", seed=42
-    ... )
-    >>> print(activity['name'])
-    Jumping Jacks
-    >>> print(activity['duration_minutes'])
-    5
-    >>> print(activity['category'])
-    active
+    Get an active break suggestion after working for 45 minutes:
 
     >>> activity = suggest_break(
-    ...     minutes_worked=30, energy_level=2, break_type="mindful", duration=10, seed=123
+    ...     minutes_worked=45,
+    ...     energy_level=5,
+    ...     break_type="active",
+    ...     duration=10,
+    ...     seed=3
     ... )
-    >>> print(activity)
-    {'name': 'Deep Breathing', 'description': 'Practice 4-7-8 breathing or box breathing.', 'duration_minutes': 5, 'category': 'mindful', 'energy_required': 'low', 'location': 'indoor'}
+    >>> activity["name"]
+    'Quick Walk'
+    >>> activity["duration_minutes"]
+    10
+    >>> activity["category"]
+    'active'
+
+    Get a mindful break when energy is low:
+
+    >>> activity = suggest_break(
+    ...     minutes_worked=30,
+    ...     energy_level=2,
+    ...     break_type="mindful",
+    ...     duration=5,
+    ...     seed=1
+    ... )
+    >>> activity["name"]
+    'Deep Breathing'
+    >>> activity["description"]
+    'Practice 4-7-8 breathing or box breathing.'
+
+    Get a rest activity, restricting to indoor locations:
+
+    >>> activity = suggest_break(
+    ...     minutes_worked=60,
+    ...     energy_level=3,
+    ...     break_type="rest",
+    ...     duration=10,
+    ...     indoor_only=True,
+    ...     seed=1
+    ... )
+    >>> activity["name"]
+    'Eye Rest'
+    >>> activity["location"]
+    'indoor'
     """
     _validate_inputs(
         minutes_worked, energy_level, break_type, duration, indoor_only, seed
@@ -299,6 +346,48 @@ def _get_energy_category(energy_level: int) -> str:
         return "high"
 
 
+def _matches_filters(
+    activity: dict,
+    break_type: str,
+    indoor_only: bool,
+    energy_cat: str,
+    check_duration: bool = True,
+    duration: int = 0,
+) -> bool:
+    """
+    Check if activity passes all specified filters.
+
+    Parameters
+    ----------
+    activity : dict
+        Activity to check.
+    break_type : str
+        Desired break type or 'any'.
+    indoor_only : bool
+        Whether to exclude outdoor activities.
+    energy_cat : str
+        User's energy category.
+    check_duration : bool, optional
+        Whether to apply duration filter. Default is True.
+    duration : int, optional
+        Maximum activity duration. Default is 0.
+
+    Returns
+    -------
+    bool
+        True if activity passes all filters, False otherwise.
+    """
+    if break_type != "any" and activity["category"] != break_type:
+        return False
+    if check_duration and activity["duration"] > duration:
+        return False
+    if indoor_only and activity["location"] == "outdoor":
+        return False
+    if energy_cat == "low" and activity["energy_required"] == "high":
+        return False
+    return True
+
+
 def _filter_activities(
     break_type: str, duration: int, indoor_only: bool, energy_cat: str
 ) -> list[dict]:
@@ -321,38 +410,23 @@ def _filter_activities(
     list of dict
         Filtered activity list.
     """
-    candidates = []
-    for activity in ACTIVITIES:
-        # Filter by break type
-        if break_type != "any":
-            if activity["category"] != break_type:
-                continue
-        # Filter by duration
-        if activity["duration"] > duration:
-            continue
-        # Filter by indoor constraint
-        if indoor_only and activity["location"] == "outdoor":
-            continue
-        # Filter by energy
-        if energy_cat == "low" and activity["energy_required"] == "high":
-            continue
-        candidates.append(activity)
+    # Primary filter with duration
+    candidates = [
+        a
+        for a in ACTIVITIES
+        if _matches_filters(a, break_type, indoor_only, energy_cat, True, duration)
+    ]
 
-    # Fallback to relax duration constraint if no matches
+    # Fallback: relax duration constraint
     if not candidates:
-        for activity in ACTIVITIES:
-            if break_type != "any" and activity["category"] != break_type:
-                continue
-            if indoor_only and activity["location"] == "outdoor":
-                continue
-            if energy_cat == "low" and activity["energy_required"] == "high":
-                continue
-            candidates.append(activity)
+        candidates = [
+            a
+            for a in ACTIVITIES
+            if _matches_filters(a, break_type, indoor_only, energy_cat, False)
+        ]
 
-    if not candidates:
-        candidates = list(ACTIVITIES)
-
-    return candidates
+    # Ultimate fallback
+    return candidates if candidates else list(ACTIVITIES)
 
 
 def _weight_activities(

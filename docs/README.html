@@ -125,12 +125,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
+    <a class="nav-link" href="./tutorial.html"> 
+<span class="menu-text">Tutorial</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./reference/index.html"> 
 <span class="menu-text">Reference</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./CONTRIBUTING.html"> 
 <span class="menu-text">Contributing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./RETROSPECTIVE.html"> 
+<span class="menu-text">Retrospective</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -184,8 +192,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="caption-top table">
 <tbody>
 <tr class="odd">
-<td>Testing</td>
-<td><a href="https://github.com/UBC-MDS/deepworks/actions/workflows/build.yml"><img src="https://github.com/UBC-MDS/deepworks/actions/workflows/build.yml/badge.svg" class="img-fluid" alt="CI"></a> <a href="https://github.com/UBC-MDS/deepworks/actions/workflows/deploy.yml"><img src="https://github.com/UBC-MDS/deepworks/actions/workflows/deploy.yml/badge.svg" class="img-fluid" alt="CD"></a> <a href="https://codecov.io/github/UBC-MDS/deepworks"><img src="https://codecov.io/github/UBC-MDS/deepworks/branch/main/graph/badge.svg?token=0mWtA6XJd5" class="img-fluid" alt="codecov"></a></td>
+<td>CI/CD</td>
+<td><a href="https://github.com/UBC-MDS/deepworks/actions/workflows/build.yml"><img src="https://github.com/UBC-MDS/deepworks/actions/workflows/build.yml/badge.svg" class="img-fluid" alt="CI"></a> <a href="https://github.com/UBC-MDS/deepworks/actions/workflows/deploy.yml"><img src="https://github.com/UBC-MDS/deepworks/actions/workflows/deploy.yml/badge.svg" class="img-fluid" alt="CD"></a> <a href="https://github.com/UBC-MDS/deepworks/actions/workflows/docs-publish.yml"><img src="https://github.com/UBC-MDS/deepworks/actions/workflows/docs-publish.yml/badge.svg" class="img-fluid" alt="Build and Deploy Docs"></a> <a href="https://codecov.io/github/UBC-MDS/deepworks"><img src="https://codecov.io/github/UBC-MDS/deepworks/branch/main/graph/badge.svg?token=0mWtA6XJd5" class="img-fluid" alt="codecov"></a></td>
 </tr>
 <tr class="even">
 <td>Package</td>
@@ -193,7 +201,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td>Meta</td>
-<td><a href="CODE_OF_CONDUCT.md"><img src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg" class="img-fluid" alt="Code of Conduct"></a> <a href="https://github.com/UBC-MDS/deepworks/blob/main/LICENSE"><img src="https://img.shields.io/badge/dynamic/json?url=https://test.pypi.org/pypi/deepworks/json&amp;query=$.info.license_expression&amp;label=License&amp;color=blue" class="img-fluid" alt="License - MIT"></a></td>
+<td><a href="CODE_OF_CONDUCT.md"><img src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg" class="img-fluid" alt="Code of Conduct"></a> <a href="https://github.com/UBC-MDS/deepworks/blob/main/LICENSE"><img src="https://img.shields.io/badge/dynamic/json?url=https://test.pypi.org/pypi/deepworks/json&amp;query=%24.info.license_expression&amp;label=License&amp;color=blue" class="img-fluid" alt="License - MIT"></a></td>
 </tr>
 </tbody>
 </table>
@@ -201,13 +209,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="installation" class="level2">
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
 <p>To install the latest release from Test PyPi:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-i</span> https://test.pypi.org/simple/ deepworks</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-i</span> https://test.pypi.org/simple/ <span class="at">--extra-index-url</span> https://pypi.org/simple/ deepworks</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="functions" class="level3">
 <h3 class="anchored" data-anchor-id="functions">Functions</h3>
 <p>This package contains four main functions:</p>
 <ul>
 <li><p><strong><code>prioritize_tasks()</code></strong>: Rank a list of tasks by priority using different methods including weighted scoring or deadline-based sorting. Returns a DataFrame with priority scores and rankings.</p></li>
-<li><p><strong><code>plan_pomodoro()</code></strong>: Calculate a work/break schedule based on your available time and preferred technique (Pomodoro, 52-17, 90-20, or custom). Returns a DataFrame with a complete session schedule.</p></li>
+<li><p><strong><code>plan_pomodoro()</code></strong>: The <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique">Pomodoro Technique</a> is a time management method that uses a timer to break work into focused intervals, traditionally 25 minutes separated by short breaks. This function calculates a work/break schedule based on your available time and preferred technique (Pomodoro, 52-17, 90-20, or custom). Returns a DataFrame with a complete session schedule.</p></li>
 <li><p><strong><code>suggest_break()</code></strong>: Get a recommended break activity based on how long you’ve worked, your current energy level, and preferences for activity type and duration. Returns a dictionary with activity details and instructions.</p></li>
 <li><p><strong><code>get_affirmation()</code></strong>: Receive a personalized developer-focused affirmation based on your current mood and energy level. Returns a dictionary with the affirmation text and metadata.</p></li>
 </ul>
@@ -231,38 +239,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepworks.breaks <span class="im">import</span> suggest_break</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a motivational affirmation</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>affirmation <span class="op">=</span> get_affirmation(name<span class="op">=</span><span class="st">"Alice"</span>, mood<span class="op">=</span><span class="st">"stressed"</span>, energy<span class="op">=</span><span class="dv">4</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(affirmation[<span class="st">'text'</span>])</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Plan a 2-hour focus session</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>schedule <span class="op">=</span> plan_pomodoro(total_minutes<span class="op">=</span><span class="dv">120</span>, technique<span class="op">=</span><span class="st">"pomodoro"</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(schedule)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Prioritize your tasks</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>tasks <span class="op">=</span> [</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Fix bug"</span>, <span class="st">"deadline"</span>: <span class="st">"2026-01-10"</span>, <span class="st">"effort"</span>: <span class="dv">2</span>, <span class="st">"importance"</span>: <span class="dv">5</span>},</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Write docs"</span>, <span class="st">"deadline"</span>: <span class="st">"2026-01-15"</span>, <span class="st">"effort"</span>: <span class="dv">3</span>, <span class="st">"importance"</span>: <span class="dv">3</span>},</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>ranked <span class="op">=</span> prioritize_tasks(tasks, method<span class="op">=</span><span class="st">"weighted"</span>)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ranked)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>affirmation <span class="op">=</span> get_affirmation(name<span class="op">=</span><span class="st">"Alex"</span>, mood<span class="op">=</span><span class="st">"stressed"</span>, energy<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(affirmation[<span class="st">"text"</span>])</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Output:</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Alex, you're on fire! Ship that feature!</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Plan a 60-minute focus session</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>schedule <span class="op">=</span> plan_pomodoro(total_minutes<span class="op">=</span><span class="dv">60</span>, technique<span class="op">=</span><span class="st">"pomodoro"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(schedule)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Output:</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#    session         type  duration_minutes  start_minute  end_minute</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 0        1         work                25             0          25</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 1        2  short_break                 5            25          30</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 2        3         work                25            30          55</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 3        4  short_break                 5            55          60</span></span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a break suggestion after working</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>activity <span class="op">=</span> suggest_break(minutes_worked<span class="op">=</span><span class="dv">90</span>, energy_level<span class="op">=</span><span class="dv">4</span>, break_type<span class="op">=</span><span class="st">"active"</span>)</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(activity[<span class="st">'name'</span>], <span class="st">"-"</span>, activity[<span class="st">'description'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Prioritize your tasks</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>tasks <span class="op">=</span> [</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Fix bug"</span>, <span class="st">"importance"</span>: <span class="dv">5</span>, <span class="st">"effort"</span>: <span class="dv">2</span>},</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"name"</span>: <span class="st">"Write docs"</span>, <span class="st">"importance"</span>: <span class="dv">3</span>, <span class="st">"effort"</span>: <span class="dv">4</span>},</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>ranked <span class="op">=</span> prioritize_tasks(tasks, method<span class="op">=</span><span class="st">"weighted"</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ranked)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Output:</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#          name  importance  effort  priority_score  rank</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 0     Fix bug           5       2             4.3     1</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># 1  Write docs           3       4             2.7     2</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Get a break suggestion</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>activity <span class="op">=</span> suggest_break(minutes_worked<span class="op">=</span><span class="dv">45</span>, energy_level<span class="op">=</span><span class="dv">5</span>, break_type<span class="op">=</span><span class="st">"active"</span>, duration<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(activity[<span class="st">"name"</span>], <span class="st">"-"</span>, activity[<span class="st">"description"</span>])</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Output:</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick Walk - Take a brisk walk around the office or outside.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="developer-setup" class="level2">
 <h2 class="anchored" data-anchor-id="developer-setup">Developer Setup</h2>
+<p>For a more comprehensive guild on development guidelines for this package, check out our contributing page <a href="./CONTRIBUTING.html">here</a></p>
 <ol type="1">
-<li>To set up the development environment, first install <a href="https://pipx.pypa.io/">pipx</a> and then <a href="https://hatch.pypa.io/">Hatch</a>: &gt; For more information on how to use Hatch, check out this tutorial from pyOpenSci <a href="https://www.pyopensci.org/python-package-guide/tutorials/get-to-know-hatch.html">here</a>.</li>
+<li>To set up the development environment, first install <a href="https://pipx.pypa.io/">pipx</a> and then <a href="https://hatch.pypa.io/">Hatch</a>:</li>
 </ol>
+<blockquote class="blockquote">
+<p>For more information on how to use Hatch, check out this tutorial from pyOpenSci <a href="https://www.pyopensci.org/python-package-guide/tutorials/get-to-know-hatch.html">here</a>.</p>
+</blockquote>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install pipx</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pipx</span> install hatch</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ol start="2" type="1">
+<ol type="1">
 <li>Clone the repository:</li>
 </ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/UBC-MDS/deepworks</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> deepworks</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ol start="3" type="1">
+<ol type="1">
 <li>Install the package in development mode using Hatch:</li>
 </ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">hatch</span> shell</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -277,6 +303,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>To run the tests for this package using Hatch:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">hatch</span> run test:run</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This runs pytest with coverage reporting in the <code>test</code> environment.</p>
+<p>To run a specific tests for a module run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">hatch</span> run test:run tests/test_<span class="op">&lt;</span>module_name<span class="op">&gt;</span>.py <span class="at">-v</span> <span class="at">--cov</span><span class="op">=</span>deepworks.<span class="op">&lt;</span>module_name<span class="op">&gt;</span> --cov-report=term-missing <span class="at">--cov-branch</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="building-documentation" class="level2">
 <h2 class="anchored" data-anchor-id="building-documentation">Building Documentation</h2>
@@ -284,15 +312,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>Install the <a href="https://quarto.org/docs/get-started/">Quarto CLI</a>:</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install quarto-cli</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ol start="2" type="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install quarto-cli</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol type="1">
 <li>To preview the documentation locally with live reload:</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">hatch</span> run docs:serve</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ol start="3" type="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">hatch</span> run docs:serve</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol type="1">
 <li>Build and render the documentation:</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">hatch</span> run docs:build</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">hatch</span> run docs:build</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The generated documentation will be in the <code>docs/</code> directory.</p>
 </section>
 <section id="deployment" class="level2">
@@ -300,15 +328,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This project uses GitHub Actions for continuous integration and deployment.</p>
 <section id="continuous-integration-build.yml" class="level3">
 <h3 class="anchored" data-anchor-id="continuous-integration-build.yml">Continuous Integration (<code>build.yml</code>)</h3>
-<p>Runs on pushes and pull requests to <code>main</code> and <code>develop</code> branches: - Runs the test suite across Python 3.10, 3.11, 3.12, and 3.13 - Uploads coverage reports to Codecov - Runs linting and formatting checks with Ruff</p>
+<p>Runs on pushes and pull requests to <code>main</code> and <code>develop</code> branches:</p>
+<ul>
+<li>Runs the test suite across Python 3.10, 3.11, 3.12, and 3.13</li>
+<li>Uploads coverage reports to Codecov</li>
+<li>Runs linting and formatting checks with Ruff</li>
+</ul>
 </section>
 <section id="continuous-deployment-deploy.yml" class="level3">
 <h3 class="anchored" data-anchor-id="continuous-deployment-deploy.yml">Continuous Deployment (<code>deploy.yml</code>)</h3>
-<p>Runs on new version tags (<code>v*.*.*</code>): - Runs the full test suite and style checks - Builds the package using Hatch - Publishes to Test PyPI</p>
+<p>Runs on new version tags (<code>v*.*.*</code>):</p>
+<ul>
+<li>Runs the full test suite and style checks</li>
+<li>Builds the package using Hatch</li>
+<li>Publishes to Test PyPI</li>
+</ul>
 </section>
 <section id="documentation-docs-publish.yml" class="level3">
 <h3 class="anchored" data-anchor-id="documentation-docs-publish.yml">Documentation (<code>docs-publish.yml</code>)</h3>
-<p>Runs on pushes and pull requests to <code>main</code>: - Builds the quartodoc API reference - Renders the Quarto site - Publishes to GitHub Pages (<code>gh-pages</code> branch)</p>
+<p>Runs on pushes and pull requests to <code>main</code>:</p>
+<ul>
+<li>Builds the quartodoc API reference</li>
+<li>Renders the Quarto site</li>
+<li>Publishes to GitHub Pages (<code>gh-pages</code> branch)</li>
+</ul>
 </section>
 </section>
 <section id="python-ecosystem" class="level2">
@@ -326,13 +369,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="contributing" class="level2">
 <h2 class="anchored" data-anchor-id="contributing">Contributing</h2>
-<p>Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.</p>
+<p>Interested in contributing? Check out the contributing guidelines <a href="./CONTRIBUTING.html">here</a>. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.</p>
 </section>
 <section id="copyright" class="level2">
 <h2 class="anchored" data-anchor-id="copyright">Copyright</h2>
 <ul>
 <li><p>Copyright © 2026 Jingbo Wang, Jennifer Onyebuchi, Shanzé Khemani, Jiro Amato.</p></li>
-<li><p>Free software distributed under the <a href="./LICENSE">MIT License</a>.</p></li>
+<li><p>Free software distributed under the <a href="./LICENSE.md">MIT License</a>.</p></li>
+<li><p>Documentation made available under <strong>Creative Commons By 4.0 - Attribution 4.0 International</strong> (<a href="./LICENSE.md">CC-BY-4.0</a>)</p></li>
 </ul>
 
 

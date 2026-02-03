@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>retrospective – deepworks</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-1ab76580b49a1110ec84de14477eeb4c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">deepworks</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./tutorial.html"> 
+<span class="menu-text">Tutorial</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./reference/index.html"> 
+<span class="menu-text">Reference</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./CONTRIBUTING.html"> 
+<span class="menu-text">Contributing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./RETROSPECTIVE.html" aria-current="page"> 
+<span class="menu-text">Retrospective</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#retrospective" id="toc-retrospective" class="nav-link active" data-scroll-target="#retrospective">Retrospective</a>
+  <ul class="collapse">
+  <li><a href="#project-analytics-data-driven-retrospective" id="toc-project-analytics-data-driven-retrospective" class="nav-link" data-scroll-target="#project-analytics-data-driven-retrospective">Project Analytics &amp; Data-Driven Retrospective</a>
+  <ul class="collapse">
+  <li><a href="#team-workload-distribution" id="toc-team-workload-distribution" class="nav-link" data-scroll-target="#team-workload-distribution">Team Workload Distribution</a></li>
+  <li><a href="#burn-up-chart-analysis" id="toc-burn-up-chart-analysis" class="nav-link" data-scroll-target="#burn-up-chart-analysis">Burn-up Chart Analysis</a></li>
+  <li><a href="#status-overview" id="toc-status-overview" class="nav-link" data-scroll-target="#status-overview">Status Overview</a></li>
+  <li><a href="#pull-request-contributions" id="toc-pull-request-contributions" class="nav-link" data-scroll-target="#pull-request-contributions">Pull Request Contributions</a></li>
+  </ul></li>
+  <li><a href="#retrospective-discussion-daki-framework" id="toc-retrospective-discussion-daki-framework" class="nav-link" data-scroll-target="#retrospective-discussion-daki-framework">Retrospective Discussion: DAKI Framework</a>
+  <ul class="collapse">
+  <li><a href="#drop" id="toc-drop" class="nav-link" data-scroll-target="#drop">Drop</a></li>
+  <li><a href="#add" id="toc-add" class="nav-link" data-scroll-target="#add">Add</a></li>
+  <li><a href="#keep" id="toc-keep" class="nav-link" data-scroll-target="#keep">Keep</a></li>
+  <li><a href="#improve" id="toc-improve" class="nav-link" data-scroll-target="#improve">Improve</a></li>
+  </ul></li>
+  <li><a href="#planning-accuracy-bottlenecks" id="toc-planning-accuracy-bottlenecks" class="nav-link" data-scroll-target="#planning-accuracy-bottlenecks">Planning Accuracy &amp; Bottlenecks</a></li>
+  <li><a href="#project-dimensions-communication-load-criticality" id="toc-project-dimensions-communication-load-criticality" class="nav-link" data-scroll-target="#project-dimensions-communication-load-criticality">Project Dimensions: Communication Load &amp; Criticality</a>
+  <ul class="collapse">
+  <li><a href="#communication-load" id="toc-communication-load" class="nav-link" data-scroll-target="#communication-load">Communication Load</a></li>
+  <li><a href="#criticality" id="toc-criticality" class="nav-link" data-scroll-target="#criticality">Criticality</a></li>
+  </ul></li>
+  <li><a href="#development-tools" id="toc-development-tools" class="nav-link" data-scroll-target="#development-tools">Development Tools</a>
+  <ul class="collapse">
+  <li><a href="#package-management-with-hatch" id="toc-package-management-with-hatch" class="nav-link" data-scroll-target="#package-management-with-hatch">Package Management with Hatch</a></li>
+  <li><a href="#code-quality-with-ruff" id="toc-code-quality-with-ruff" class="nav-link" data-scroll-target="#code-quality-with-ruff">Code Quality with Ruff</a></li>
+  <li><a href="#testing-with-pytest" id="toc-testing-with-pytest" class="nav-link" data-scroll-target="#testing-with-pytest">Testing with Pytest</a></li>
+  <li><a href="#documentation-with-quarto-and-quartodoc" id="toc-documentation-with-quarto-and-quartodoc" class="nav-link" data-scroll-target="#documentation-with-quarto-and-quartodoc">Documentation with Quarto and Quartodoc</a></li>
+  </ul></li>
+  <li><a href="#github-infrastructure" id="toc-github-infrastructure" class="nav-link" data-scroll-target="#github-infrastructure">GitHub Infrastructure</a>
+  <ul class="collapse">
+  <li><a href="#git-workflow" id="toc-git-workflow" class="nav-link" data-scroll-target="#git-workflow">Git Workflow</a></li>
+  <li><a href="#cicd-pipelines" id="toc-cicd-pipelines" class="nav-link" data-scroll-target="#cicd-pipelines">CI/CD Pipelines</a></li>
+  <li><a href="#ai-powered-workflows" id="toc-ai-powered-workflows" class="nav-link" data-scroll-target="#ai-powered-workflows">AI-Powered Workflows</a></li>
+  <li><a href="#code-coverage-with-codecov" id="toc-code-coverage-with-codecov" class="nav-link" data-scroll-target="#code-coverage-with-codecov">Code Coverage with Codecov</a></li>
+  </ul></li>
+  <li><a href="#organizational-practices" id="toc-organizational-practices" class="nav-link" data-scroll-target="#organizational-practices">Organizational Practices</a>
+  <ul class="collapse">
+  <li><a href="#contributing-guidelines" id="toc-contributing-guidelines" class="nav-link" data-scroll-target="#contributing-guidelines">Contributing Guidelines</a></li>
+  <li><a href="#code-of-conduct" id="toc-code-of-conduct" class="nav-link" data-scroll-target="#code-of-conduct">Code of Conduct</a></li>
+  <li><a href="#semantic-versioning" id="toc-semantic-versioning" class="nav-link" data-scroll-target="#semantic-versioning">Semantic Versioning</a></li>
+  </ul></li>
+  <li><a href="#sprint-based-development-with-milestones" id="toc-sprint-based-development-with-milestones" class="nav-link" data-scroll-target="#sprint-based-development-with-milestones">Sprint-Based Development with Milestones</a>
+  <ul class="collapse">
+  <li><a href="#project-board-management" id="toc-project-board-management" class="nav-link" data-scroll-target="#project-board-management">Project Board Management</a></li>
+  </ul></li>
+  <li><a href="#scaling-recommendations" id="toc-scaling-recommendations" class="nav-link" data-scroll-target="#scaling-recommendations">Scaling Recommendations</a>
+  <ul class="collapse">
+  <li><a href="#formality-scaling-framework" id="toc-formality-scaling-framework" class="nav-link" data-scroll-target="#formality-scaling-framework">Formality Scaling Framework</a></li>
+  <li><a href="#summary-current-project-formality" id="toc-summary-current-project-formality" class="nav-link" data-scroll-target="#summary-current-project-formality">Summary: Current Project Formality</a></li>
+  <li><a href="#recommended-github-actions-for-scale" id="toc-recommended-github-actions-for-scale" class="nav-link" data-scroll-target="#recommended-github-actions-for-scale">Recommended GitHub Actions for Scale</a></li>
+  <li><a href="#enhanced-testing-infrastructure" id="toc-enhanced-testing-infrastructure" class="nav-link" data-scroll-target="#enhanced-testing-infrastructure">Enhanced Testing Infrastructure</a></li>
+  <li><a href="#advanced-cicd" id="toc-advanced-cicd" class="nav-link" data-scroll-target="#advanced-cicd">Advanced CI/CD</a></li>
+  <li><a href="#documentation-improvements" id="toc-documentation-improvements" class="nav-link" data-scroll-target="#documentation-improvements">Documentation Improvements</a></li>
+  <li><a href="#team-collaboration" id="toc-team-collaboration" class="nav-link" data-scroll-target="#team-collaboration">Team Collaboration</a></li>
+  <li><a href="#genai-integration-for-development" id="toc-genai-integration-for-development" class="nav-link" data-scroll-target="#genai-integration-for-development">GenAI Integration for Development</a></li>
+  <li><a href="#monitoring-and-observability" id="toc-monitoring-and-observability" class="nav-link" data-scroll-target="#monitoring-and-observability">Monitoring and Observability</a></li>
+  <li><a href="#security-practices" id="toc-security-practices" class="nav-link" data-scroll-target="#security-practices">Security Practices</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="retrospective" class="level1">
+<h1>Retrospective</h1>
+<p>This portion discusses the development tools, GitHub infrastructure, and organizational practices we learned and applied throughout this project, as well as recommendations for scaling up.</p>
+<section id="project-analytics-data-driven-retrospective" class="level2">
+<h2 class="anchored" data-anchor-id="project-analytics-data-driven-retrospective">Project Analytics &amp; Data-Driven Retrospective</h2>
+<section id="team-workload-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="team-workload-distribution">Team Workload Distribution</h3>
+<p>Based on our <a href="https://github.com/orgs/UBC-MDS/projects/353/views/10">Team Workload View</a>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Contributor</th>
+<th>Issues Assigned</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Jennifer Onyebuchi (<span class="citation" data-cites="Jenniferonyebuchi">@Jenniferonyebuchi</span>)</td>
+<td>34</td>
+</tr>
+<tr class="even">
+<td>Jingbo Wang (<span class="citation" data-cites="jimmy2026-V">@jimmy2026-V</span>)</td>
+<td>34</td>
+</tr>
+<tr class="odd">
+<td>Shanzé Khemani (<span class="citation" data-cites="shanzekhem">@shanzekhem</span>)</td>
+<td>42</td>
+</tr>
+<tr class="even">
+<td>Jiro Amato (<span class="citation" data-cites="jiroamato">@jiroamato</span>)</td>
+<td>63</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Insight:</strong> While the raw numbers show variation, this reflects the nature of different tasks rather than unequal contribution. Jiro took on many smaller coordination and integration tasks (such as testing workflows), while the rest of the team members handled larger, more complex features. Otherwise, team members shared responsibility equally for major milestone deliverables, with pull requests showing collaborative co-assignment during integration phases.</p>
+</section>
+<section id="burn-up-chart-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="burn-up-chart-analysis">Burn-up Chart Analysis</h3>
+<p>Based on our <a href="https://github.com/orgs/UBC-MDS/projects/353/insights/8">Burn-up Chart</a>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Contributor</th>
+<th>M1</th>
+<th>M2</th>
+<th>M3</th>
+<th>M4</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Jennifer Onyebuchi (<span class="citation" data-cites="Jenniferonyebuchi">@Jenniferonyebuchi</span>)</td>
+<td>7</td>
+<td>4</td>
+<td>8</td>
+<td>15</td>
+<td>34</td>
+</tr>
+<tr class="even">
+<td>Jingbo Wang (<span class="citation" data-cites="jimmy2026-V">@jimmy2026-V</span>)</td>
+<td>7</td>
+<td>4</td>
+<td>8</td>
+<td>15</td>
+<td>34</td>
+</tr>
+<tr class="odd">
+<td>Shanzé Khemani (<span class="citation" data-cites="shanzekhem">@shanzekhem</span>)</td>
+<td>7</td>
+<td>5</td>
+<td>9</td>
+<td>21</td>
+<td>42</td>
+</tr>
+<tr class="even">
+<td>Jiro Amato (<span class="citation" data-cites="jiroamato">@jiroamato</span>)</td>
+<td>8</td>
+<td>9</td>
+<td>14</td>
+<td>32</td>
+<td>63</td>
+</tr>
+<tr class="odd">
+<td><strong>Total</strong></td>
+<td><strong>29</strong></td>
+<td><strong>22</strong></td>
+<td><strong>39</strong></td>
+<td><strong>83</strong></td>
+<td><strong>173</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Insight:</strong> Total issues completed increased from 29 in Milestone 1 to 83 in Milestone 4, representing sustained project acceleration and completion momentum. M4 had the highest volume due to the addition of AI workflows, peer review feedback, documentation improvements, and final polish tasks.</p>
+</section>
+<section id="status-overview" class="level3">
+<h3 class="anchored" data-anchor-id="status-overview">Status Overview</h3>
+<p>Based on our <a href="https://github.com/orgs/UBC-MDS/projects/353/insights/6">Status Chart</a>:</p>
+<ul>
+<li><strong>Milestones 1-4</strong>: 100% completion (all tasks closed)</li>
+</ul>
+</section>
+<section id="pull-request-contributions" class="level3">
+<h3 class="anchored" data-anchor-id="pull-request-contributions">Pull Request Contributions</h3>
+<p>Based on our <a href="https://github.com/orgs/UBC-MDS/projects/353/insights/4">PR per Contributor</a> view, the team collectively completed <strong>52 merged pull requests</strong> across four milestones. All team members contributed PRs covering feature implementations, documentation, bug fixes, and CI/CD improvements.</p>
+</section>
+</section>
+<section id="retrospective-discussion-daki-framework" class="level2">
+<h2 class="anchored" data-anchor-id="retrospective-discussion-daki-framework">Retrospective Discussion: DAKI Framework</h2>
+<p>Using the <strong>DAKI (Drop, Add, Keep, Improve)</strong> framework to reflect on our practices:</p>
+<section id="drop" class="level3">
+<h3 class="anchored" data-anchor-id="drop">Drop</h3>
+<ul>
+<li><strong>Real-life communication dependency:</strong> Reliance on real-life meetings could be reduced with better async/digital practices</li>
+</ul>
+</section>
+<section id="add" class="level3">
+<h3 class="anchored" data-anchor-id="add">Add</h3>
+<ul>
+<li><strong>CODEOWNERS file:</strong> Would have auto-assigned reviewers by file path, reducing “who should review this?” questions</li>
+<li><strong>Stale issue automation:</strong> GitHub Actions like <code>actions/stale</code> to auto-close inactive issues</li>
+<li><strong>Automated labeling:</strong> <code>actions/labeler</code> to tag PRs based on changed files</li>
+</ul>
+</section>
+<section id="keep" class="level3">
+<h3 class="anchored" data-anchor-id="keep">Keep</h3>
+<ul>
+<li><strong>Sprint-based milestones:</strong> Master issues with linked sub-issues provided clear scope and traceability</li>
+<li><strong>CI/CD pipelines:</strong> Automated testing and deployment caught issues early</li>
+<li><strong>AI-powered workflows:</strong> Gemini-based PR reviews and docstring checks improved quality</li>
+<li><strong>Code coverage tracking:</strong> Codecov integration ensured test quality</li>
+</ul>
+</section>
+<section id="improve" class="level3">
+<h3 class="anchored" data-anchor-id="improve">Improve</h3>
+<ul>
+<li><strong>Issue templates:</strong> More structured bug reports with required fields would reduce back-and-forth</li>
+<li><strong>Draft PRs:</strong> Better use of draft status to signal “work in progress”</li>
+<li><strong>Earlier documentation:</strong> Writing docs alongside code rather than after</li>
+</ul>
+</section>
+</section>
+<section id="planning-accuracy-bottlenecks" class="level2">
+<h2 class="anchored" data-anchor-id="planning-accuracy-bottlenecks">Planning Accuracy &amp; Bottlenecks</h2>
+<p><strong>Planning Observations:</strong></p>
+<ul>
+<li>M1 and M2 had relatively balanced scope (29 and 22 issues)</li>
+<li>M3 (CI/CD setup) required more issues (39) due to debugging workflows</li>
+<li>M4 had the highest count (78) due to comprehensive peer review feedback integration</li>
+</ul>
+<p><strong>Bottleneck Analysis:</strong></p>
+<ul>
+<li>PR reviews occasionally created small queues</li>
+<li>GitHub Actions debugging required more iterations than anticipated</li>
+<li>Integration testing across Python versions (3.10-3.13) caught edge cases late</li>
+</ul>
+<p><strong>Bus Factor Consideration:</strong></p>
+<p>Looking at workload distribution, if the contributor with the highest ticket count became unavailable, the project could have faced delays. Mitigation strategies include:</p>
+<ul>
+<li>Comprehensive documentation</li>
+<li>Code review ensuring multiple people understand each area</li>
+</ul>
+</section>
+<section id="project-dimensions-communication-load-criticality" class="level2">
+<h2 class="anchored" data-anchor-id="project-dimensions-communication-load-criticality">Project Dimensions: Communication Load &amp; Criticality</h2>
+<p>Following Alistair Cockburn’s framework (from the Agile Manifesto), we recognize that project methodology should match two key dimensions:</p>
+<section id="communication-load" class="level3">
+<h3 class="anchored" data-anchor-id="communication-load">Communication Load</h3>
+<p>Our team of 4 required structured coordination tools:</p>
+<ul>
+<li><strong>GitHub Issues &amp; Milestones</strong> replaced informal verbal agreements</li>
+<li><strong>Project Boards</strong> provided visibility into what everyone was working on</li>
+<li><strong>PR-based workflow</strong> forced explicit code review and knowledge sharing</li>
+</ul>
+<p>As teams grow, “shouting across the room” stops working—tools must compensate for the inability to hold the entire project state in one person’s head.</p>
+</section>
+<section id="criticality" class="level3">
+<h3 class="anchored" data-anchor-id="criticality">Criticality</h3>
+<p>As a package deployed to PyPI for public use:</p>
+<ul>
+<li><strong>CI matrix testing</strong> across Python 3.10-3.13 mitigates “it works on my machine” issues</li>
+<li><strong>Codecov integration</strong> ensures we don’t ship untested code paths</li>
+<li><strong>Trusted publishing</strong> to PyPI ensures the repository code matches what users install</li>
+</ul>
+<p>Higher criticality justifies heavier infrastructure, not to “be good programmers,” but to mitigate risk.</p>
+</section>
+</section>
+<section id="development-tools" class="level2">
+<h2 class="anchored" data-anchor-id="development-tools">Development Tools</h2>
+<section id="package-management-with-hatch" class="level3">
+<h3 class="anchored" data-anchor-id="package-management-with-hatch">Package Management with Hatch</h3>
+<p>We use <a href="https://hatch.pypa.io/">Hatch</a> as our primary build and environment management tool. Hatch provides:</p>
+<ul>
+<li><strong>Isolated environments</strong> for different tasks (testing, documentation, linting)</li>
+<li><strong>Reproducible builds</strong> with <code>hatchling</code> as the build backend</li>
+<li><strong>Version control integration</strong> via <code>hatch-vcs</code> for automatic versioning from git tags</li>
+<li><strong>Script management</strong> for common tasks like <code>hatch run test:run</code> and <code>hatch run docs:build</code></li>
+</ul>
+</section>
+<section id="code-quality-with-ruff" class="level3">
+<h3 class="anchored" data-anchor-id="code-quality-with-ruff">Code Quality with Ruff</h3>
+<p><a href="https://docs.astral.sh/ruff/">Ruff</a> handles both linting and formatting:</p>
+<ul>
+<li>Automatic formatting ensures consistent code style</li>
+<li>Integrated into CI pipeline for automated checks</li>
+</ul>
+</section>
+<section id="testing-with-pytest" class="level3">
+<h3 class="anchored" data-anchor-id="testing-with-pytest">Testing with Pytest</h3>
+<p>Our test suite uses <a href="https://docs.pytest.org/">pytest</a> with several plugins:</p>
+<ul>
+<li><code>pytest-cov</code> for code coverage reporting</li>
+<li><code>pytest-randomly</code> to detect order-dependent tests</li>
+<li><code>pytest-xdist</code> for parallel test execution</li>
+<li>Multi-version testing across Python 3.10, 3.11, 3.12, and 3.13</li>
+</ul>
+</section>
+<section id="documentation-with-quarto-and-quartodoc" class="level3">
+<h3 class="anchored" data-anchor-id="documentation-with-quarto-and-quartodoc">Documentation with Quarto and Quartodoc</h3>
+<p>Documentation is built using:</p>
+<ul>
+<li><a href="https://quarto.org/">Quarto</a> for rendering the website</li>
+<li><a href="https://machow.github.io/quartodoc/">Quartodoc</a> for automatic API reference generation from docstrings</li>
+</ul>
+</section>
+</section>
+<section id="github-infrastructure" class="level2">
+<h2 class="anchored" data-anchor-id="github-infrastructure">GitHub Infrastructure</h2>
+<section id="git-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="git-workflow">Git Workflow</h3>
+<p>We follow a structured branching strategy based on GitHub Flow:</p>
+<pre><code>main
+ └── develop
+      ├── feature/feature-name
+      │    └── test/feature-name
+      └── fix/bug-name</code></pre>
+<ul>
+<li><strong><code>main</code></strong>: Stable, production-ready branch; only receives merges from <code>develop</code> after milestone completion</li>
+<li><strong><code>develop</code></strong>: Integration/staging branch where all features and fixes merge</li>
+<li><strong>Feature branches</strong>: For new features, branched from <code>develop</code></li>
+<li><strong>Fix branches</strong>: For bug fixes, branched from <code>develop</code></li>
+<li><strong>Test branches</strong>: For writing tests, branched from feature branches</li>
+</ul>
+<p>Check <a href="https://github.com/UBC-MDS/deepworks/network">here</a> for a better visualization of the branch structure that we have implemented so far.</p>
+</section>
+<section id="cicd-pipelines" class="level3">
+<h3 class="anchored" data-anchor-id="cicd-pipelines">CI/CD Pipelines</h3>
+<p>Our GitHub Actions workflows automate the development lifecycle:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 32%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Workflow</th>
+<th>Trigger</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>build.yml</code> (CI)</td>
+<td>Push/PR to <code>main</code>/<code>develop</code></td>
+<td>Run tests, coverage, and linting</td>
+</tr>
+<tr class="even">
+<td><code>deploy.yml</code> (CD)</td>
+<td>Version tags (<code>v*.*.*</code>)</td>
+<td>Build and publish to Test PyPI</td>
+</tr>
+<tr class="odd">
+<td><code>docs-publish.yml</code></td>
+<td>Push to <code>main</code></td>
+<td>Build and publish documentation to GitHub Pages</td>
+</tr>
+<tr class="even">
+<td><code>docs-preview.yml</code></td>
+<td>Pull requests</td>
+<td>Deploy preview documentation to Netlify</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ai-powered-workflows" class="level3">
+<h3 class="anchored" data-anchor-id="ai-powered-workflows">AI-Powered Workflows</h3>
+<p>We leverage AI in the following workflows using <a href="https://ai.google.dev/gemini-api/docs">Google Gemini API</a> (Gemini 2.5 Flash):</p>
+<ul>
+<li><strong>AI Critic (PR)</strong>: Uses to review pull request changes for quality, correctness, and maintainability - <a href="https://github.com/UBC-MDS/deepworks/pull/108#issuecomment-3827676383">example outout in #108</a></li>
+<li><strong>AI Docstring Detective</strong>: Analyzes docstrings from a novice user’s perspective to ensure clarity - <a href="https://github.com/UBC-MDS/deepworks/pull/109#issuecomment-3832175512">example output in #109</a></li>
+<li><strong>AI Tutorial Generator</strong>: Generates tutorials based on code changes - <a href="https://github.com/UBC-MDS/deepworks/pull/108#issuecomment-3827676410">example output in #108</a></li>
+<li><strong>AI Critic (Issues)</strong>: Reviews and provides feedback on new issues - <a href="https://github.com/UBC-MDS/deepworks/issues/68#issuecomment-3814188038">example output in #68</a></li>
+</ul>
+</section>
+<section id="code-coverage-with-codecov" class="level3">
+<h3 class="anchored" data-anchor-id="code-coverage-with-codecov">Code Coverage with Codecov</h3>
+<p>Integration with <a href="https://codecov.io/">Codecov</a> provides:</p>
+<ul>
+<li>Coverage reports on every PR - <a href="https://github.com/UBC-MDS/deepworks/pull/109#issuecomment-3827863018">example output in #109</a></li>
+<li>Historical tracking of code coverage trends</li>
+<li>Visualization of which lines are tested</li>
+<li>Dynamic badge in <code>README.md</code></li>
+</ul>
+</section>
+</section>
+<section id="organizational-practices" class="level2">
+<h2 class="anchored" data-anchor-id="organizational-practices">Organizational Practices</h2>
+<section id="contributing-guidelines" class="level3">
+<h3 class="anchored" data-anchor-id="contributing-guidelines">Contributing Guidelines</h3>
+<p>Our <a href="./CONTRIBUTING.html">CONTRIBUTING.md</a> provides:</p>
+<ul>
+<li>Clear instructions for different contribution types (bugs, features, documentation)</li>
+<li>Git workflow (noted above) practices</li>
+<li>Step-by-step setup guide for local development</li>
+<li>Pull request guidelines and review process</li>
+<li>Semantic commit message conventions</li>
+</ul>
+</section>
+<section id="code-of-conduct" class="level3">
+<h3 class="anchored" data-anchor-id="code-of-conduct">Code of Conduct</h3>
+<p>We adopt the Contributor Covenant to maintain a welcoming community for all contributors.</p>
+</section>
+<section id="semantic-versioning" class="level3">
+<h3 class="anchored" data-anchor-id="semantic-versioning">Semantic Versioning</h3>
+<p>We follow <a href="https://semver.org/">Semantic Versioning</a> with automated version extraction from git tags using <code>hatch-vcs</code>.</p>
+<p>We use the following format <code>v*.*.*</code> with the convention of <code>MAJOR.MINOR.PATCH</code>.</p>
+</section>
+</section>
+<section id="sprint-based-development-with-milestones" class="level2">
+<h2 class="anchored" data-anchor-id="sprint-based-development-with-milestones">Sprint-Based Development with Milestones</h2>
+<p>We operate in sprints organized around GitHub Milestones:</p>
+<ul>
+<li><strong>Master milestone issues</strong>: Each milestone begins with a master issue that outlines all deliverables and tasks for the sprint</li>
+<li><strong>Sub-issues</strong>: Individual tasks are created as sub-issues linked to the master issue, providing clear scope and traceability</li>
+<li><strong>Contributor assignment</strong>: Each sub-issue is assigned to specific contributors, establishing clear ownership and accountability</li>
+<li><strong>Progress tracking</strong>: The milestone view provides visibility into sprint progress and remaining work</li>
+</ul>
+<p>Examples of master issues in this project:</p>
+<ul>
+<li><a href="https://github.com/UBC-MDS/deepworks/issues/1">Milestone 1</a></li>
+<li><a href="https://github.com/UBC-MDS/deepworks/issues/22">Milestone 2</a></li>
+<li><a href="https://github.com/UBC-MDS/deepworks/issues/38">Milestone 3</a></li>
+<li><a href="https://github.com/UBC-MDS/deepworks/issues/68">Milestone 4</a></li>
+</ul>
+<section id="project-board-management" class="level3">
+<h3 class="anchored" data-anchor-id="project-board-management">Project Board Management</h3>
+<p>We leverage GitHub Project Boards to manage our workflow:</p>
+<ul>
+<li><strong>Kanban-style tracking</strong>: Issues move through columns (e.g., To Do, In Progress, Done) as work progresses</li>
+<li><strong>Cross-team visibility</strong>: All contributors can see what others are working on, reducing duplication and improving collaboration</li>
+</ul>
+</section>
+</section>
+<section id="scaling-recommendations" class="level2">
+<h2 class="anchored" data-anchor-id="scaling-recommendations">Scaling Recommendations</h2>
+<p>If we were to scale up this or another project, we would implement the following tools, infrastructure, and practices. The level of formality should match project needs—a 48-hour hackathon doesn’t need the same rigor as production tax software.</p>
+<section id="formality-scaling-framework" class="level3">
+<h3 class="anchored" data-anchor-id="formality-scaling-framework">Formality Scaling Framework</h3>
+<p>Drawing from course learnings, here’s how formality scales across project dimensions. We assess our <strong>current formality level</strong> and identify <strong>next steps</strong> for scaling.</p>
+<section id="verification-strategy-local-distributed" class="level4">
+<h4 class="anchored" data-anchor-id="verification-strategy-local-distributed">Verification Strategy (Local → Distributed)</h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 20%">
+<col style="width: 39%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Formality</th>
+<th>Practice</th>
+<th>Our Implementation</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Low</td>
+<td>Run <code>pytest</code> locally</td>
+<td>Initial development</td>
+<td>Past</td>
+</tr>
+<tr class="even">
+<td>Medium</td>
+<td>CI on standard runner</td>
+<td><code>build.yml</code> on Ubuntu</td>
+<td>Past</td>
+</tr>
+<tr class="odd">
+<td><strong>High</strong></td>
+<td><strong>Matrix testing + coverage gates</strong></td>
+<td><strong>Python 3.10-3.13, Codecov 80% threshold</strong></td>
+<td><strong>Current</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Current Level: High</strong> — We have matrix testing across 4 Python versions with coverage enforcement.</p>
+<p><strong>Next Level:</strong> Add OS matrix (Ubuntu, macOS, Windows), performance regression testing with <code>pytest-benchmark</code>, and mutation testing to verify test quality.</p>
+</section>
+<section id="release-management-manual-automated" class="level4">
+<h4 class="anchored" data-anchor-id="release-management-manual-automated">Release Management (Manual → Automated)</h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 20%">
+<col style="width: 39%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Formality</th>
+<th>Practice</th>
+<th>Our Implementation</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Low</td>
+<td>Zip and share</td>
+<td>N/A</td>
+<td>Past</td>
+</tr>
+<tr class="even">
+<td>Medium</td>
+<td>Semantic versioning + GitHub Releases</td>
+<td><code>hatch-vcs</code> for git tags</td>
+<td>Past</td>
+</tr>
+<tr class="odd">
+<td><strong>High</strong></td>
+<td><strong>CD pipelines with trusted publishing</strong></td>
+<td><strong><code>deploy.yml</code> to Test PyPI via OIDC</strong></td>
+<td><strong>Current</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Current Level: High</strong> — We use trusted publishing (OIDC) to Test PyPI without secret API keys.</p>
+<p><strong>Next Level:</strong> Add staged deployments (Test PyPI → PyPI) with manual approval gates, automatic changelog generation from conventional commits using <code>action-gh-release</code>, and signed releases with Sigstore.</p>
+</section>
+<section id="workflow-planning-ad-hoc-transparent" class="level4">
+<h4 class="anchored" data-anchor-id="workflow-planning-ad-hoc-transparent">Workflow &amp; Planning (Ad-hoc → Transparent)</h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 20%">
+<col style="width: 39%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Formality</th>
+<th>Practice</th>
+<th>Our Implementation</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Low</td>
+<td>Chat to decide tasks</td>
+<td>Early discussions</td>
+<td>Past</td>
+</tr>
+<tr class="even">
+<td>Medium</td>
+<td>Issues + Kanban board</td>
+<td>GitHub Projects</td>
+<td>Past</td>
+</tr>
+<tr class="odd">
+<td><strong>High</strong></td>
+<td><strong>Analytics, templates, CONTRIBUTING.md</strong></td>
+<td><strong>Project Insights, contribution guidelines</strong></td>
+<td><strong>Current</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Current Level: High</strong> — We have project analytics, structured contribution guidelines, and milestone-based planning.</p>
+<p><strong>Next Level:</strong> Add CODEOWNERS for automatic reviewer assignment, YAML-based issue templates with required fields, <code>actions/stale</code> for automatic issue cleanup, and <code>actions/labeler</code> for automatic PR categorization.</p>
+</section>
+<section id="code-review-collaboration" class="level4">
+<h4 class="anchored" data-anchor-id="code-review-collaboration">Code Review &amp; Collaboration</h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 20%">
+<col style="width: 39%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Formality</th>
+<th>Practice</th>
+<th>Our Implementation</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Low</td>
+<td>Informal review or none</td>
+<td>N/A</td>
+<td>Past</td>
+</tr>
+<tr class="even">
+<td><strong>Medium</strong></td>
+<td><strong>PR reviews</strong></td>
+<td><strong>Required reviews, status checks</strong></td>
+<td><strong>Current</strong></td>
+</tr>
+<tr class="odd">
+<td>High</td>
+<td>CODEOWNERS + multiple approvers + AI assist</td>
+<td>AI-powered reviews (partial)</td>
+<td>→ Next</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Current Level: Medium-High</strong> — We require PR reviews and have AI-powered review assistance, but lack CODEOWNERS.</p>
+<p><strong>Next Level:</strong> Add CODEOWNERS file mapping code areas to specific reviewers, require 2+ approvals for <code>main</code>, and integrate AI suggestions more deeply into the review workflow.</p>
+</section>
+</section>
+<section id="summary-current-project-formality" class="level3">
+<h3 class="anchored" data-anchor-id="summary-current-project-formality">Summary: Current Project Formality</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Current Level</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Verification</td>
+<td>High</td>
+</tr>
+<tr class="even">
+<td>Release Management</td>
+<td>High</td>
+</tr>
+<tr class="odd">
+<td>Workflow &amp; Planning</td>
+<td>High</td>
+</tr>
+<tr class="even">
+<td>Code Review</td>
+<td>Medium-High</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Overall Assessment:</strong> This project operates at <strong>high formality</strong> appropriate for an open-source package deployed to PyPI. The main gap is in code review automation (CODEOWNERS, multi-approver requirements).</p>
+</section>
+<section id="recommended-github-actions-for-scale" class="level3">
+<h3 class="anchored" data-anchor-id="recommended-github-actions-for-scale">Recommended GitHub Actions for Scale</h3>
+<p>These actions provide high value for growing projects:</p>
+<p><strong>Quality &amp; Compliance (“The Gatekeepers”):</strong></p>
+<ul>
+<li><a href="https://github.com/super-linter/super-linter">Super-Linter</a>: Checks Python, Markdown, YAML, Dockerfiles in one pass</li>
+<li><a href="https://github.com/codecov/codecov-action">Codecov Action</a>: PR comments showing coverage impact (we use this)</li>
+</ul>
+<p><strong>Release &amp; Deployment (“The Time Savers”):</strong></p>
+<ul>
+<li><a href="https://github.com/pypa/gh-action-pypi-publish">PyPI Publish</a>: Trusted publishing without secret API keys (we use this)</li>
+<li><a href="https://github.com/softprops/action-gh-release">GH Release</a>: Auto-generate releases from git tags</li>
+</ul>
+<p><strong>Project Hygiene (“The Janitors”):</strong></p>
+<ul>
+<li><a href="https://github.com/actions/stale">Stale</a>: Auto-close inactive issues/PRs</li>
+<li><a href="https://github.com/actions/labeler">Labeler</a>: Auto-label based on changed files</li>
+</ul>
+</section>
+<section id="enhanced-testing-infrastructure" class="level3">
+<h3 class="anchored" data-anchor-id="enhanced-testing-infrastructure">Enhanced Testing Infrastructure</h3>
+<ul>
+<li><strong>Performance benchmarking</strong> with <a href="https://pytest-benchmark.readthedocs.io/">pytest-benchmark</a> to catch regressions</li>
+</ul>
+</section>
+<section id="advanced-cicd" class="level3">
+<h3 class="anchored" data-anchor-id="advanced-cicd">Advanced CI/CD</h3>
+<ul>
+<li><strong>Matrix testing</strong> across multiple operating systems (Linux, macOS, Windows)</li>
+<li><strong>Dependency caching</strong> to speed up workflow execution</li>
+<li><strong>Staged deployments</strong> (Test PyPI → PyPI) with manual approval gates</li>
+<li><strong>Release automation</strong> with changelog generation from conventional commits</li>
+</ul>
+</section>
+<section id="documentation-improvements" class="level3">
+<h3 class="anchored" data-anchor-id="documentation-improvements">Documentation Improvements</h3>
+<ul>
+<li><strong>Versioned documentation</strong> to support multiple release versions</li>
+</ul>
+</section>
+<section id="team-collaboration" class="level3">
+<h3 class="anchored" data-anchor-id="team-collaboration">Team Collaboration</h3>
+<ul>
+<li><strong>Protected branches</strong> requiring multiple approvals for <code>main</code></li>
+<li><strong>CODEOWNERS</strong> file to automatically assign reviewers by file path</li>
+<li><strong>Issue and PR templates</strong> for feature requests, releases, and more with automatic labelling</li>
+<li><strong>Automated labeling</strong> based on file paths and PR content</li>
+<li><strong>Draft Pull Requests</strong> to signal “work in progress” and prevent premature reviews</li>
+</ul>
+</section>
+<section id="genai-integration-for-development" class="level3">
+<h3 class="anchored" data-anchor-id="genai-integration-for-development">GenAI Integration for Development</h3>
+<p>Our project already leverages AI-powered workflows. For scaling, we recommend:</p>
+<p><strong>Code Quality:</strong></p>
+<ul>
+<li>AI-powered PR reviews (we use Gemini 2.5 Flash via <code>ai-critic.yml</code>)</li>
+<li>Docstring quality analysis from novice user perspective (<code>ai-docstring-detective.yml</code>)</li>
+<li>Automated tutorial generation from code changes (<code>ai-tutorial.yml</code>)</li>
+</ul>
+<p><strong>Interaction Rules for GenAI Tools:</strong></p>
+<ul>
+<li>AI suggestions should be reviewed by humans before merging</li>
+<li>AI-generated code must pass all existing tests and linting</li>
+<li>AI should augment, not replace, code review discussions</li>
+<li>Document when AI tools are used (e.g., <code>Co-Authored-By</code> in commits)</li>
+</ul>
+</section>
+<section id="monitoring-and-observability" class="level3">
+<h3 class="anchored" data-anchor-id="monitoring-and-observability">Monitoring and Observability</h3>
+<ul>
+<li><strong>Download statistics</strong> tracking from PyPI (like downloads)</li>
+<li><strong>Performance monitoring</strong> to track response times and resource usage</li>
+</ul>
+</section>
+<section id="security-practices" class="level3">
+<h3 class="anchored" data-anchor-id="security-practices">Security Practices</h3>
+<ul>
+<li><strong>Signed commits</strong> with GPG for authenticity verification</li>
+<li><strong>Regular dependency audits</strong> with automated alerts</li>
+<li><strong>Secret scanning</strong> to prevent credential leaks</li>
+</ul>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
