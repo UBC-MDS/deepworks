@@ -1,5 +1,8 @@
 ---
 title: "Deepwork Tutorial"
+jupyter: python3
+execute:
+  python: python
 ---
 
 ## The Developer's Monday
