@@ -10,10 +10,10 @@ Based on our [Team Workload View](https://github.com/orgs/UBC-MDS/projects/353/v
 
 | Contributor | Issues Assigned |
 |-------------|-----------------|
-| Jennifer Onyebuchi (@Jenniferonyebuchi) | 33 |
-| Jingbo Wang (@jimmy2026-V) | 33 |
-| Shanzé Khemani (@shanzekhem) | 41 |
-| Jiro Amato (@jiroamato) | 61 |
+| Jennifer Onyebuchi (@Jenniferonyebuchi) | 34 |
+| Jingbo Wang (@jimmy2026-V) | 34 |
+| Shanzé Khemani (@shanzekhem) | 42 |
+| Jiro Amato (@jiroamato) | 63 |
 
 **Insight:** While the raw numbers show variation, this reflects the nature of different tasks rather than unequal contribution. Jiro took on many smaller coordination and integration tasks (such as testing workflows), while the rest of the team members handled larger, more complex features. Otherwise, team members shared responsibility equally for major milestone deliverables, with pull requests showing collaborative co-assignment during integration phases.
 
@@ -23,13 +23,13 @@ Based on our [Burn-up Chart](https://github.com/orgs/UBC-MDS/projects/353/insigh
 
 | Contributor | M1 | M2 | M3 | M4 | Total |
 |-------------|----|----|----|----|-------|
-| Jennifer Onyebuchi (@Jenniferonyebuchi) | 7 | 4 | 8 | 14 | 33 |
-| Jingbo Wang (@jimmy2026-V) | 7 | 4 | 8 | 14 | 33 |
-| Shanzé Khemani (@shanzekhem) | 7 | 5 | 9 | 20 | 41 |
-| Jiro Amato (@jiroamato) | 8 | 9 | 14 | 30 | 61 |
-| **Total** | **29** | **22** | **39** | **78** | **168** |
+| Jennifer Onyebuchi (@Jenniferonyebuchi) | 7 | 4 | 8 | 15 | 34 |
+| Jingbo Wang (@jimmy2026-V) | 7 | 4 | 8 | 15 | 34 |
+| Shanzé Khemani (@shanzekhem) | 7 | 5 | 9 | 21 | 42 |
+| Jiro Amato (@jiroamato) | 8 | 9 | 14 | 32 | 63 |
+| **Total** | **29** | **22** | **39** | **83** | **173** |
 
-**Insight:** Total issues completed increased from 29 in Milestone 1 to 78 in Milestone 4, representing sustained project acceleration and completion momentum. M4 had the highest volume due to the addition of AI workflows, peer review feedback, documentation improvements, and final polish tasks.
+**Insight:** Total issues completed increased from 29 in Milestone 1 to 83 in Milestone 4, representing sustained project acceleration and completion momentum. M4 had the highest volume due to the addition of AI workflows, peer review feedback, documentation improvements, and final polish tasks.
 
 ### Status Overview
 
@@ -39,7 +39,7 @@ Based on our [Status Chart](https://github.com/orgs/UBC-MDS/projects/353/insight
 
 ### Pull Request Contributions
 
-Based on our [PR per Contributor](https://github.com/orgs/UBC-MDS/projects/353/insights/4) view, the team collectively completed **49 merged pull requests** across four milestones. All team members contributed PRs covering feature implementations, documentation, bug fixes, and CI/CD improvements.
+Based on our [PR per Contributor](https://github.com/orgs/UBC-MDS/projects/353/insights/4) view, the team collectively completed **52 merged pull requests** across four milestones. All team members contributed PRs covering feature implementations, documentation, bug fixes, and CI/CD improvements.
 
 ## Retrospective Discussion: DAKI Framework
 
