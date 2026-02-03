@@ -13,48 +13,85 @@ breaks.suggest_break(
 
 Suggest a break activity based on current state and preferences.
 
+This function recommends a break activity by filtering available activities
+based on the specified constraints (break type, duration, location) and
+then applying weighted random selection. Activities are weighted based on
+how well they match the user's current energy level, and restful activities
+are boosted after long work sessions (>90 minutes).
+
 ## Parameters {.doc-section .doc-section-parameters}
 
-| Name           | Type   | Description                                                                                       | Default    |
-|----------------|--------|---------------------------------------------------------------------------------------------------|------------|
-| minutes_worked | int    | How long you've been working (in minutes). This will influence the length of the suggested break. | _required_ |
-| energy_level   | int    | Your current energy level on a scale of 1-10.                                                     | _required_ |
-| break_type     | str    | Preferred break type: 'active', 'rest', 'social', 'mindful', or 'any'. Default is 'any'.          | `'any'`    |
-| duration       | int    | Desired break duration: 5, 10, 15, or 20 minutes. Default is 5.                                   | `5`        |
-| indoor_only    | bool   | If True, only suggest indoor activities. Default is False.                                        | `False`    |
-| seed           | int    | Random seed for reproducible selection.                                                           | `None`     |
+| Name           | Type   | Description                                                                                                                                                                 | Default    |
+|----------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|
+| minutes_worked | int    | How long you've been working (in minutes). Values above 90 boost the weight of restful activities. Values above 120 trigger a warning.                                      | _required_ |
+| energy_level   | int    | Your current energy level on a scale of 1-10. Mapped to categories: 1-3 = "low", 4-7 = "medium", 8-10 = "high". Low energy users won't be suggested high-energy activities. | _required_ |
+| break_type     | str    | Preferred break type: 'active', 'rest', 'social', 'mindful', or 'any'. Default is 'any'.                                                                                    | `'any'`    |
+| duration       | int    | Maximum break duration: 5, 10, 15, or 20 minutes. Activities with durations at or below this value are preferred. Default is 5.                                             | `5`        |
+| indoor_only    | bool   | If True, only suggest indoor activities (excludes 'outdoor' location). Default is False.                                                                                    | `False`    |
+| seed           | int    | Random seed for reproducible selection. Useful for testing.                                                                                                                 | `None`     |
 
 ## Returns {.doc-section .doc-section-returns}
 
-| Name   | Type   | Description                                                                                              |
-|--------|--------|----------------------------------------------------------------------------------------------------------|
-|        | dict   | Activity dictionary with keys: name, description, duration_minutes, category, energy_required, location. |
+| Name   | Type   | Description                                                                                                                                                                                                                                                                                                                                                         |
+|--------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|        | dict   | Activity dictionary with keys: - name : str - Activity name - description : str - What to do - duration_minutes : int - How long the activity takes - category : str - Break type ('active', 'rest', 'social', 'mindful') - energy_required : str - Energy level needed ('low', 'medium', 'high') - location : str - Where to do it ('indoor', 'outdoor', 'either') |
 
 ## Raises {.doc-section .doc-section-raises}
 
-| Name   | Type       | Description                                                           |
-|--------|------------|-----------------------------------------------------------------------|
-|        | TypeError  | If minutes_worked, energy_level, or duration are not integers.        |
-|        | ValueError | If energy_level not in 1-10, break_type invalid, or duration invalid. |
+| Name   | Type       | Description                                                                                                                          |
+|--------|------------|--------------------------------------------------------------------------------------------------------------------------------------|
+|        | TypeError  | If minutes_worked, energy_level, or duration are not integers, or if indoor_only is not a boolean.                                   |
+|        | ValueError | If energy_level is not between 1 and 10, break_type is not valid, duration is not in [5, 10, 15, 20], or minutes_worked is negative. |
 
 ## Examples {.doc-section .doc-section-examples}
 
-```python
->>> activity = suggest_break(
-...     minutes_worked=90, energy_level=4, break_type="active", seed=42
-... )
->>> print(activity['name'])
-Jumping Jacks
->>> print(activity['duration_minutes'])
-5
->>> print(activity['category'])
-active
-```
+Get an active break suggestion after working for 45 minutes:
 
 ```python
 >>> activity = suggest_break(
-...     minutes_worked=30, energy_level=2, break_type="mindful", duration=10, seed=123
+...     minutes_worked=45,
+...     energy_level=5,
+...     break_type="active",
+...     duration=10,
+...     seed=3
 ... )
->>> print(activity)
-{'name': 'Deep Breathing', 'description': 'Practice 4-7-8 breathing or box breathing.', 'duration_minutes': 5, 'category': 'mindful', 'energy_required': 'low', 'location': 'indoor'}
+>>> activity["name"]
+'Quick Walk'
+>>> activity["duration_minutes"]
+10
+>>> activity["category"]
+'active'
+```
+
+Get a mindful break when energy is low:
+
+```python
+>>> activity = suggest_break(
+...     minutes_worked=30,
+...     energy_level=2,
+...     break_type="mindful",
+...     duration=5,
+...     seed=1
+... )
+>>> activity["name"]
+'Deep Breathing'
+>>> activity["description"]
+'Practice 4-7-8 breathing or box breathing.'
+```
+
+Get a rest activity, restricting to indoor locations:
+
+```python
+>>> activity = suggest_break(
+...     minutes_worked=60,
+...     energy_level=3,
+...     break_type="rest",
+...     duration=10,
+...     indoor_only=True,
+...     seed=1
+... )
+>>> activity["name"]
+'Eye Rest'
+>>> activity["location"]
+'indoor'
 ```

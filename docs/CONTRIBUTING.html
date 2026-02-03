@@ -125,12 +125,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
+    <a class="nav-link" href="./tutorial.html"> 
+<span class="menu-text">Tutorial</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./reference/index.html"> 
 <span class="menu-text">Reference</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./CONTRIBUTING.html" aria-current="page"> 
 <span class="menu-text">Contributing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./RETROSPECTIVE.html"> 
+<span class="menu-text">Retrospective</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -164,7 +172,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#workflow-steps" id="toc-workflow-steps" class="nav-link" data-scroll-target="#workflow-steps">Workflow Steps</a></li>
   <li><a href="#pull-request-process" id="toc-pull-request-process" class="nav-link" data-scroll-target="#pull-request-process">Pull Request Process</a></li>
   </ul></li>
-  <li><a href="#get-started" id="toc-get-started" class="nav-link" data-scroll-target="#get-started">Get Started!</a>
+  <li><a href="#developer-setup" id="toc-developer-setup" class="nav-link" data-scroll-target="#developer-setup">Developer Setup</a>
   <ul class="collapse">
   <li><a href="#pull-request-guidelines" id="toc-pull-request-guidelines" class="nav-link" data-scroll-target="#pull-request-guidelines">Pull Request Guidelines</a></li>
   </ul></li>
@@ -210,7 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="submit-feedback" class="level3">
 <h3 class="anchored" data-anchor-id="submit-feedback">Submit Feedback</h3>
-<p>The best way to send feedback is to file an issue at https://github.com/UBC-MDS/deepworks/issues. If your feedback fits the format of one of the issue templates, please use that. Remember that this is a volunteer-driven project and everybody has limited time.</p>
+<p>The best way to send feedback is to file an issue at <a href="https://github.com/UBC-MDS/deepworks/issues" class="uri">https://github.com/UBC-MDS/deepworks/issues</a>. If your feedback fits the format of one of the issue templates, please use that. Remember that this is a volunteer-driven project and everybody has limited time.</p>
 </section>
 </section>
 <section id="git-workflow" class="level2">
@@ -257,21 +265,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 </section>
 </section>
-<section id="get-started" class="level2">
-<h2 class="anchored" data-anchor-id="get-started">Get Started!</h2>
+<section id="developer-setup" class="level2">
+<h2 class="anchored" data-anchor-id="developer-setup">Developer Setup</h2>
 <p>Ready to contribute? Here’s how to set up deepworks for local development.</p>
 <ol type="1">
-<li><p>Fork the https://github.com/UBC-MDS/deepworks repository on GitHub.</p></li>
+<li><p>Fork the <a href="https://github.com/UBC-MDS/deepworks" class="uri">https://github.com/UBC-MDS/deepworks</a> repository on GitHub.</p></li>
 <li><p>Clone your fork locally (<em>if you want to work locally</em>)</p>
 <pre class="shell"><code>git clone git@github.com:your_name_here/deepworks
 .git</code></pre></li>
-<li><p><a href="https://hatch.pypa.io/latest/install/">Install Hatch</a>. &gt; Install hatch using the link above or through <code>pipx</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pipx</span> install hatch</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
-<li><p>Create a branch for local development using the default branch (typically <code>main</code>) as a starting point. Use <code>fix</code> or <code>feat</code> as a prefix for your branch name.</p>
+<li><p><a href="https://pipx.pypa.io/">Install pipx</a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install pipx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><a href="https://hatch.pypa.io/latest/install/">Install Hatch</a>.</p></li>
+</ol>
+<blockquote class="blockquote">
+<p>Install hatch using the link above or through <code>pipx</code></p>
+</blockquote>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pipx</span> install hatch</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol type="1">
+<li><p>Install the package in development mode using Hatch</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">hatch</span> shell</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ol>
+<p>This will create a virtual environment and install the package with all dependencies.</p>
+<p>If you want to leave the developer environment, simply type the following command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Alternatively, if you want to install the package on a particular environment run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-e</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol type="1">
+<li><p>Create a branch for local development using the default branch (typically <code>main</code>) as a starting point. Use <code>fix</code> or <code>feature</code> as a prefix for your branch name.</p>
 <pre class="shell"><code>git checkout develop
 git checkout -b fix-name-of-your-bugfix</code></pre>
 <p>Now you can make your changes locally.</p></li>
-<li><p>When you’re done making changes, apply the quality assurance tools and check that your changes pass our test suite. This is all included with tox</p>
+<li><p>When you’re done making changes, apply the quality assurance tools and check that your changes pass our test suite. This is all included with tox.</p>
 <pre class="shell"><code>hatch run test:run</code></pre></li>
 <li><p>Commit your changes and push your branch to GitHub. Please use <a href="https://www.conventionalcommits.org/">semantic commit messages</a>.</p>
 <pre class="shell"><code>git add .

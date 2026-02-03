@@ -56,36 +56,44 @@ is a long break (type "long_break") with duration `long_break` (or
 
 ## Examples {.doc-section .doc-section-examples}
 
-**Standard pomodoro session (120 minutes):**
+**Standard pomodoro session (60 minutes):**
 
 ```python
 >>> import warnings
->>> warnings.filterwarnings('ignore')
->>> schedule = plan_pomodoro(total_minutes=120, technique="pomodoro")
+>>> warnings.filterwarnings("ignore")
+>>> schedule = plan_pomodoro(total_minutes=60, technique="pomodoro")
 >>> len(schedule)
-8
->>> schedule.attrs['work_sessions']
 4
->>> schedule.attrs['total_work_minutes']
-100
->>> schedule[['session', 'type', 'duration_minutes']].head(3).to_dict('records')
-[{'session': 1, 'type': 'work', 'duration_minutes': 25}, {'session': 2, 'type': 'short_break', 'duration_minutes': 5}, {'session': 3, 'type': 'work', 'duration_minutes': 25}]
+>>> print(schedule)
+   session         type  duration_minutes  start_minute  end_minute
+0        1         work                25             0          25
+1        2  short_break                 5            25          30
+2        3         work                25            30          55
+3        4  short_break                 5            55          60
 ```
 
-**Custom technique with shorter work periods:**
+**Custom technique with user-defined work and break lengths:**
 
 ```python
->>> schedule = plan_pomodoro(total_minutes=60, technique="custom", work_length=20, short_break=5)
->>> list(schedule['type'])
-['work', 'short_break', 'work', 'short_break', 'work']
+>>> schedule = plan_pomodoro(
+...     total_minutes=50,
+...     technique="custom",
+...     work_length=20,
+...     short_break=5
+... )
+>>> list(schedule["type"])
+   session         type  duration_minutes  start_minute  end_minute
+0        1         work                20             0          20
+1        2  short_break                 5            20          25
+2        3         work                20            25          45
+3        4  short_break                 5            45          50
 ```
 
-**Short time budget truncates the work session:**
+**Short time budget truncates the final session:**
 
 ```python
 >>> schedule = plan_pomodoro(total_minutes=10, technique="pomodoro")
->>> int(schedule['duration_minutes'].iloc[0])
-10
->>> schedule['type'].iloc[0]
-'work'
+>>> print(schedule)
+   session  type  duration_minutes  start_minute  end_minute
+0        1  work                10             0          10
 ```
