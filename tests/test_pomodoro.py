@@ -1,8 +1,7 @@
-"""Tests for plan_pomodoro function."""
+"""Tests for plan_pomodoro function (simplified - no attrs)."""
 
 import pytest
 import pandas as pd
-import deepworks.pomodoro as pomodoro_mod
 from deepworks.pomodoro import plan_pomodoro
 
 
@@ -15,6 +14,7 @@ def test_returns_dataframe():
     """
     result = plan_pomodoro(total_minutes=60)
     assert isinstance(result, pd.DataFrame)
+
 
 def test_has_required_columns():
     """
@@ -31,6 +31,7 @@ def test_has_required_columns():
     assert "start_minute" in result.columns
     assert "end_minute" in result.columns
 
+
 def test_pomodoro_technique_25_5():
     """
     Test that the 'pomodoro' technique uses 25-minute work sessions.
@@ -43,6 +44,7 @@ def test_pomodoro_technique_25_5():
     work_sessions = result[result["type"] == "work"]
     assert work_sessions.iloc[0]["duration_minutes"] == 25
 
+
 def test_schedule_starts_at_zero():
     """
     Test that the schedule always begins at minute 0.
@@ -54,19 +56,6 @@ def test_schedule_starts_at_zero():
     result = plan_pomodoro(total_minutes=60)
     assert result.iloc[0]["start_minute"] == 0
 
-def test_dataframe_has_metadata():
-    """
-    Test that the DataFrame includes summary metadata in attrs.
-
-    The returned DataFrame should have metadata attributes containing:
-    - total_work_minutes: sum of all work session durations
-    - total_break_minutes: sum of all break session durations
-    - work_sessions: count of work sessions in the schedule
-    """
-    result = plan_pomodoro(total_minutes=60)
-    assert "total_work_minutes" in result.attrs
-    assert "total_break_minutes" in result.attrs
-    assert "work_sessions" in result.attrs
 
 def test_52_17_technique():
     """
@@ -80,6 +69,7 @@ def test_52_17_technique():
     work_sessions = result[result["type"] == "work"]
     assert work_sessions.iloc[0]["duration_minutes"] == 52
 
+
 def test_90_20_technique():
     """
     Test that the '90-20' technique uses 90-minute work sessions.
@@ -91,6 +81,7 @@ def test_90_20_technique():
     result = plan_pomodoro(total_minutes=180, technique="90-20")
     work_sessions = result[result["type"] == "work"]
     assert work_sessions.iloc[0]["duration_minutes"] == 90
+
 
 def test_custom_technique():
     """
@@ -109,6 +100,7 @@ def test_custom_technique():
     work_sessions = result[result["type"] == "work"]
     assert work_sessions.iloc[0]["duration_minutes"] == 20
 
+
 def test_short_time_partial_session():
     """
     Test that sessions are truncated when time budget is insufficient.
@@ -120,6 +112,7 @@ def test_short_time_partial_session():
     """
     result = plan_pomodoro(total_minutes=15, technique="pomodoro")
     assert result.iloc[0]["duration_minutes"] == 15
+
 
 def test_long_break_interval():
     """
@@ -133,6 +126,7 @@ def test_long_break_interval():
     long_breaks = result[result["type"] == "long_break"]
     assert len(long_breaks) >= 1
 
+
 def test_total_minutes_not_int_raises_typeerror():
     """
     Test that passing a non-integer total_minutes raises TypeError.
@@ -143,6 +137,7 @@ def test_total_minutes_not_int_raises_typeerror():
     with pytest.raises(TypeError, match="total_minutes must be an integer"):
         plan_pomodoro(total_minutes="60")
 
+
 def test_total_minutes_not_positive_raises_valueerror():
     """
     Test that passing zero or negative total_minutes raises ValueError.
@@ -152,6 +147,7 @@ def test_total_minutes_not_positive_raises_valueerror():
     """
     with pytest.raises(ValueError, match="must be positive"):
         plan_pomodoro(total_minutes=0)
+
 
 def test_invalid_technique_raises_valueerror():
     """
@@ -164,6 +160,7 @@ def test_invalid_technique_raises_valueerror():
     with pytest.raises(ValueError, match="Invalid technique"):
         plan_pomodoro(total_minutes=60, technique="invalid")
 
+
 def test_custom_missing_params_raises_valueerror():
     """
     Test that custom technique without required parameters raises ValueError.
@@ -174,6 +171,7 @@ def test_custom_missing_params_raises_valueerror():
     """
     with pytest.raises(ValueError, match="requires work_length and short_break"):
         plan_pomodoro(total_minutes=60, technique="custom")
+
 
 def test_work_length_not_int_raises_typeerror():
     """
@@ -186,6 +184,7 @@ def test_work_length_not_int_raises_typeerror():
     with pytest.raises(TypeError, match="work_length must be an integer"):
         plan_pomodoro(total_minutes=60, technique="custom", work_length=25.5, short_break=5)
 
+
 def test_short_break_not_int_raises_typeerror():
     """
     Test that passing a non-integer short_break raises TypeError.
@@ -195,6 +194,7 @@ def test_short_break_not_int_raises_typeerror():
     """
     with pytest.raises(TypeError, match="short_break must be an integer"):
         plan_pomodoro(total_minutes=60, technique="custom", work_length=25, short_break="5")
+
 
 def test_long_break_not_int_raises_typeerror():
     """
@@ -206,6 +206,7 @@ def test_long_break_not_int_raises_typeerror():
     with pytest.raises(TypeError, match="long_break must be an integer"):
         plan_pomodoro(total_minutes=60, technique="pomodoro", long_break=15.0)
 
+
 def test_long_break_interval_not_int_raises_typeerror():
     """
     Test that passing a non-integer long_break_interval raises TypeError.
@@ -215,6 +216,7 @@ def test_long_break_interval_not_int_raises_typeerror():
     """
     with pytest.raises(TypeError, match="long_break_interval must be an integer"):
         plan_pomodoro(total_minutes=60, technique="custom", work_length=25, short_break=5, long_break_interval=4.0)
+
 
 def test_work_length_not_positive_raises_valueerror():
     """
@@ -227,6 +229,7 @@ def test_work_length_not_positive_raises_valueerror():
     with pytest.raises(ValueError, match="work_length must be positive"):
         plan_pomodoro(total_minutes=60, technique="custom", work_length=0, short_break=5)
 
+
 def test_short_break_not_positive_raises_valueerror():
     """
     Test that passing zero or negative short_break raises ValueError.
@@ -237,6 +240,7 @@ def test_short_break_not_positive_raises_valueerror():
     """
     with pytest.raises(ValueError, match="short_break must be positive"):
         plan_pomodoro(total_minutes=60, technique="custom", work_length=25, short_break=-1)
+
 
 def test_long_break_not_positive_raises_valueerror():
     """
@@ -249,6 +253,7 @@ def test_long_break_not_positive_raises_valueerror():
     with pytest.raises(ValueError, match="long_break must be positive"):
         plan_pomodoro(total_minutes=60, technique="pomodoro", long_break=0)
 
+
 def test_long_break_interval_not_positive_raises_valueerror():
     """
     Test that passing zero or negative long_break_interval raises ValueError.
@@ -259,6 +264,7 @@ def test_long_break_interval_not_positive_raises_valueerror():
     """
     with pytest.raises(ValueError, match="long_break_interval must be positive"):
         plan_pomodoro(total_minutes=60, technique="custom", work_length=25, short_break=5, long_break_interval=0)
+
 
 def test_custom_uses_explicit_long_break_and_can_truncate_break():
     """
@@ -283,6 +289,7 @@ def test_custom_uses_explicit_long_break_and_can_truncate_break():
     # With interval=1, breaks should all be long_breaks
     assert (result[result["type"].str.contains("break")]["type"] == "long_break").all()
 
+
 def test_preset_allows_overrides_for_work_and_breaks():
     """
     Non-custom techniques should allow overriding work_length/short_break/long_break.
@@ -303,27 +310,10 @@ def test_preset_allows_overrides_for_work_and_breaks():
     assert result.iloc[1]["type"] == "short_break"
     assert result.iloc[1]["duration_minutes"] == 3
 
-def test_empty_schedule_metadata_defaults_to_zero(monkeypatch):
+
+def test_schedule_ends_exactly_on_budget():
     """
-    Force _build_schedule to return an empty schedule to cover the
-    defensive else-branch in _create_dataframe_with_metadata.
-    """
-    def fake_build_schedule(total_minutes, work, short_break, long_break, interval):
-        return [], 0  # empty schedule, zero work sessions
-
-    monkeypatch.setattr(pomodoro_mod, "_build_schedule", fake_build_schedule)
-
-    df = pomodoro_mod.plan_pomodoro(total_minutes=10, technique="pomodoro")
-
-    assert df.empty
-    assert df.attrs["total_work_minutes"] == 0
-    assert df.attrs["total_break_minutes"] == 0
-    assert df.attrs["work_sessions"] == 0
-
-def test_schedule_ends_exactly_on_budget_and_triggers_final_loop_break():
-    """
-    Covers the top-of-loop 'remaining <= 0: break' by making the schedule
-    end exactly at total_minutes, so the next loop iteration immediately breaks.
+    Covers the scenario where the schedule ends exactly at total_minutes.
     """
     df = plan_pomodoro(total_minutes=30, technique="pomodoro")
 
@@ -333,4 +323,3 @@ def test_schedule_ends_exactly_on_budget_and_triggers_final_loop_break():
     # Should include exactly: 25 work + 5 short break
     assert df["type"].tolist() == ["work", "short_break"]
     assert df["duration_minutes"].tolist() == [25, 5]
-

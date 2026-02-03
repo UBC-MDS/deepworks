@@ -22,20 +22,13 @@ detailed your report, the easier and thus faster we can help you.**
 
 ### Fix Bugs
 
-Look through the GitHub issues for bugs. Anything labelled with `bug` and
-`help wanted` is open to whoever wants to implement it. When you decide to work on such
-an issue, please assign yourself to it and add a comment that you'll be working on that,
-too. If you see another issue without the `help wanted` label, just post a comment, the
-maintainers are usually happy for any support that they can get.
+Look through the GitHub issues for bugs. Anything labelled with `bug` and `help wanted` is open to whoever wants to implement it. When you decide to work on such an issue, please assign yourself to it and add a comment that you'll be working on that, too. If you see another issue without the `help wanted` label, just post a comment, the maintainers are usually happy for any support that they can get.
 
 ### Implement Features
 
 Look through the GitHub issues for features. Anything labelled with
 `enhancement` and `help wanted` is open to whoever wants to implement it. As
-for [fixing bugs](#fix-bugs), please assign yourself to the issue and add a comment that
-you'll be working on that, too. If another enhancement catches your fancy, but it
-doesn't have the `help wanted` label, just post a comment, the maintainers are usually
-happy for any support that they can get.
+for [fixing bugs](#fix-bugs), please assign yourself to the issue and add a comment that you'll be working on that, too. If another enhancement catches your fancy, but it doesn't have the `help wanted` label, just post a comment, the maintainers are usually happy for any support that they can get.
 
 ### Write Documentation
 
@@ -48,9 +41,7 @@ to let us know what you will be working on so that we can provide you with guida
 ### Submit Feedback
 
 The best way to send feedback is to file an issue at
-https://github.com/UBC-MDS/deepworks/issues. If your feedback fits the format of one of
-the issue templates, please use that. Remember that this is a volunteer-driven
-project and everybody has limited time.
+<https://github.com/UBC-MDS/deepworks/issues>. If your feedback fits the format of one of the issue templates, please use that. Remember that this is a volunteer-driven project and everybody has limited time.
 
 ## Git Workflow
 
@@ -73,6 +64,7 @@ main
 2. **`develop` branch**: The integration branch where all features and fixes are merged. Branched from `main`.
 
 3. **Feature branches**: For new features, branch from `develop`:
+
    ```bash
    git switch develop
    git pull origin develop
@@ -81,6 +73,7 @@ main
    ```
 
 4. **Fix branches**: For bug fixes, branch from `develop`:
+
    ```bash
    git switch develop
    git pull origin develop
@@ -89,11 +82,13 @@ main
    ```
 
 5. **Test branches**: For writing tests, branch from your feature branch:
+
    ```bash
    git switch feature/your-feature-name
    git checkout -b test/your-feature-name
    git push origin test/your-feature-name
    ```
+
    When tests are complete, create a PR from `test/your-feature-name` → `feature/your-feature-name`.
 
 6. **Merging back**: Once your feature is complete (code + tests), create a PR from `feature/your-feature-name` → `develop`.
@@ -105,13 +100,14 @@ main
 3. Address all review comments before merging
 4. After approval, merge and delete the feature branch
 
-## Get Started!
+## Developer Setup
 
 Ready to contribute? Here's how to set up deepworks for
 local development.
 
-1. Fork the https://github.com/UBC-MDS/deepworks
+1. Fork the <https://github.com/UBC-MDS/deepworks>
    repository on GitHub.
+
 2. Clone your fork locally (*if you want to work locally*)
 
     ```shell
@@ -119,14 +115,41 @@ local development.
    .git
     ```
 
-3. [Install Hatch](https://hatch.pypa.io/latest/install/).
+3. [Install pipx](https://pipx.pypa.io/)
+
+   ```bash
+   pip install pipx
+   ```
+
+4. [Install Hatch](https://hatch.pypa.io/latest/install/).
+
 > Install hatch using the link above or through `pipx`
 
    ```bash
    pipx install hatch
    ```
 
-4. Create a branch for local development using the default branch (typically `main`) as a starting point. Use `fix` or `feat` as a prefix for your branch name.
+1. Install the package in development mode using Hatch
+
+   ```bash
+   hatch shell
+   ```
+
+This will create a virtual environment and install the package with all dependencies.
+
+If you want to leave the developer environment, simply type the following command:
+
+```bash
+exit
+```
+
+Alternatively, if you want to install the package on a particular environment run:
+
+   ```bash
+   pip install -e .
+   ```
+
+1. Create a branch for local development using the default branch (typically `main`) as a starting point. Use `fix` or `feature` as a prefix for your branch name.
 
     ```shell
     git checkout develop
@@ -135,14 +158,13 @@ local development.
 
     Now you can make your changes locally.
 
-5. When you're done making changes, apply the quality assurance tools and check
-   that your changes pass our test suite. This is all included with tox
+2. When you're done making changes, apply the quality assurance tools and check that your changes pass our test suite. This is all included with tox.
 
     ```shell
     hatch run test:run
     ```
 
-6. Commit your changes and push your branch to GitHub. Please use [semantic
+3. Commit your changes and push your branch to GitHub. Please use [semantic
    commit messages](https://www.conventionalcommits.org/).
 
     ```shell
@@ -151,15 +173,12 @@ local development.
     git push -u origin fix-name-of-your-bugfix
     ```
 
-7. Open the link displayed in the message when pushing your new branch in order
-   to submit a pull request.
+4. Open the link displayed in the message when pushing your new branch in order to submit a pull request.
 
 ### Pull Request Guidelines
 
 Before you submit a pull request, check that it meets these guidelines:
 
 1. The pull request should include tests.
-2. If the pull request adds functionality, the docs should be updated. Put your
-   new functionality into a function with a docstring.
-3. Your pull request will automatically be checked by the full test suite.
-   It needs to pass all of them before it can be considered for merging.
+2. If the pull request adds functionality, the docs should be updated. Put your new functionality into a function with a docstring.
+3. Your pull request will automatically be checked by the full test suite. It needs to pass all of them before it can be considered for merging.

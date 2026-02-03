@@ -125,12 +125,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
+    <a class="nav-link" href="../tutorial.html"> 
+<span class="menu-text">Tutorial</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../reference/index.html"> 
 <span class="menu-text">Reference</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../CONTRIBUTING.html"> 
 <span class="menu-text">Contributing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../RETROSPECTIVE.html"> 
+<span class="menu-text">Retrospective</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -175,14 +183,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    seed<span class="op">=</span><span class="va">None</span>,</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Suggest a break activity based on current state and preferences.</p>
+<p>This function recommends a break activity by filtering available activities based on the specified constraints (break type, duration, location) and then applying weighted random selection. Activities are weighted based on how well they match the user’s current energy level, and restful activities are boosted after long work sessions (&gt;90 minutes).</p>
 <section id="parameters" class="level2 doc-section doc-section-parameters">
 <h2 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 11%">
+<col style="width: 7%">
+<col style="width: 3%">
+<col style="width: 82%">
 <col style="width: 5%">
-<col style="width: 73%">
-<col style="width: 8%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -196,13 +205,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td>minutes_worked</td>
 <td>int</td>
-<td>How long you’ve been working (in minutes). This will influence the length of the suggested break.</td>
+<td>How long you’ve been working (in minutes). Values above 90 boost the weight of restful activities. Values above 120 trigger a warning.</td>
 <td><em>required</em></td>
 </tr>
 <tr class="even">
 <td>energy_level</td>
 <td>int</td>
-<td>Your current energy level on a scale of 1-10.</td>
+<td>Your current energy level on a scale of 1-10. Mapped to categories: 1-3 = “low”, 4-7 = “medium”, 8-10 = “high”. Low energy users won’t be suggested high-energy activities.</td>
 <td><em>required</em></td>
 </tr>
 <tr class="odd">
@@ -214,19 +223,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td>duration</td>
 <td>int</td>
-<td>Desired break duration: 5, 10, 15, or 20 minutes. Default is 5.</td>
+<td>Maximum break duration: 5, 10, 15, or 20 minutes. Activities with durations at or below this value are preferred. Default is 5.</td>
 <td><code>5</code></td>
 </tr>
 <tr class="odd">
 <td>indoor_only</td>
 <td>bool</td>
-<td>If True, only suggest indoor activities. Default is False.</td>
+<td>If True, only suggest indoor activities (excludes ‘outdoor’ location). Default is False.</td>
 <td><code>False</code></td>
 </tr>
 <tr class="even">
 <td>seed</td>
 <td>int</td>
-<td>Random seed for reproducible selection.</td>
+<td>Random seed for reproducible selection. Useful for testing.</td>
 <td><code>None</code></td>
 </tr>
 </tbody>
@@ -236,9 +245,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="doc-section doc-section-returns anchored" data-anchor-id="returns">Returns</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 86%">
+<col style="width: 2%">
+<col style="width: 2%">
+<col style="width: 95%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -251,7 +260,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td></td>
 <td>dict</td>
-<td>Activity dictionary with keys: name, description, duration_minutes, category, energy_required, location.</td>
+<td>Activity dictionary with keys: - name : str - Activity name - description : str - What to do - duration_minutes : int - How long the activity takes - category : str - Break type (‘active’, ‘rest’, ‘social’, ‘mindful’) - energy_required : str - Energy level needed (‘low’, ‘medium’, ‘high’) - location : str - Where to do it (‘indoor’, ‘outdoor’, ‘either’)</td>
 </tr>
 </tbody>
 </table>
@@ -260,9 +269,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="doc-section doc-section-raises anchored" data-anchor-id="raises">Raises</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 8%">
-<col style="width: 13%">
-<col style="width: 78%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 87%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -275,32 +284,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td></td>
 <td>TypeError</td>
-<td>If minutes_worked, energy_level, or duration are not integers.</td>
+<td>If minutes_worked, energy_level, or duration are not integers, or if indoor_only is not a boolean.</td>
 </tr>
 <tr class="even">
 <td></td>
 <td>ValueError</td>
-<td>If energy_level not in 1-10, break_type invalid, or duration invalid.</td>
+<td>If energy_level is not between 1 and 10, break_type is not valid, duration is not in [5, 10, 15, 20], or minutes_worked is negative.</td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="examples" class="level2 doc-section doc-section-examples">
 <h2 class="doc-section doc-section-examples anchored" data-anchor-id="examples">Examples</h2>
+<p>Get an active break suggestion after working for 45 minutes:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> activity <span class="op">=</span> suggest_break(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>...     minutes_worked<span class="op">=</span><span class="dv">90</span>, energy_level<span class="op">=</span><span class="dv">4</span>, break_type<span class="op">=</span><span class="st">"active"</span>, seed<span class="op">=</span><span class="dv">42</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>... )</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(activity[<span class="st">'name'</span>])</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>Jumping Jacks</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(activity[<span class="st">'duration_minutes'</span>])</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(activity[<span class="st">'category'</span>])</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>active</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>...     minutes_worked<span class="op">=</span><span class="dv">45</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>...     energy_level<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>...     break_type<span class="op">=</span><span class="st">"active"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>...     duration<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>...     seed<span class="op">=</span><span class="dv">3</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>... )</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> activity[<span class="st">"name"</span>]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">'Quick Walk'</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> activity[<span class="st">"duration_minutes"</span>]</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> activity[<span class="st">"category"</span>]</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">'active'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Get a mindful break when energy is low:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> activity <span class="op">=</span> suggest_break(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>...     minutes_worked<span class="op">=</span><span class="dv">30</span>, energy_level<span class="op">=</span><span class="dv">2</span>, break_type<span class="op">=</span><span class="st">"mindful"</span>, duration<span class="op">=</span><span class="dv">10</span>, seed<span class="op">=</span><span class="dv">123</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>... )</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(activity)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>{<span class="st">'name'</span>: <span class="st">'Deep Breathing'</span>, <span class="st">'description'</span>: <span class="st">'Practice 4-7-8 breathing or box breathing.'</span>, <span class="st">'duration_minutes'</span>: <span class="dv">5</span>, <span class="st">'category'</span>: <span class="st">'mindful'</span>, <span class="st">'energy_required'</span>: <span class="st">'low'</span>, <span class="st">'location'</span>: <span class="st">'indoor'</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>...     minutes_worked<span class="op">=</span><span class="dv">30</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>...     energy_level<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>...     break_type<span class="op">=</span><span class="st">"mindful"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>...     duration<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>...     seed<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>... )</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> activity[<span class="st">"name"</span>]</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">'Deep Breathing'</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> activity[<span class="st">"description"</span>]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">'Practice 4-7-8 breathing or box breathing.'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Get a rest activity, restricting to indoor locations:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> activity <span class="op">=</span> suggest_break(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>...     minutes_worked<span class="op">=</span><span class="dv">60</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>...     energy_level<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>...     break_type<span class="op">=</span><span class="st">"rest"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>...     duration<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>...     indoor_only<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>...     seed<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>... )</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> activity[<span class="st">"name"</span>]</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">'Eye Rest'</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> activity[<span class="st">"location"</span>]</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">'indoor'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>

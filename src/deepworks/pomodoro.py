@@ -86,33 +86,41 @@ def plan_pomodoro(
 
     Examples
     --------
-    **Standard pomodoro session (120 minutes):**
+    **Standard pomodoro session (60 minutes):**
 
     >>> import warnings
-    >>> warnings.filterwarnings('ignore')
-    >>> schedule = plan_pomodoro(total_minutes=120, technique="pomodoro")
+    >>> warnings.filterwarnings("ignore")
+    >>> schedule = plan_pomodoro(total_minutes=60, technique="pomodoro")
     >>> len(schedule)
-    8
-    >>> schedule.attrs['work_sessions']
     4
-    >>> schedule.attrs['total_work_minutes']
-    100
-    >>> schedule[['session', 'type', 'duration_minutes']].head(3).to_dict('records')
-    [{'session': 1, 'type': 'work', 'duration_minutes': 25}, {'session': 2, 'type': 'short_break', 'duration_minutes': 5}, {'session': 3, 'type': 'work', 'duration_minutes': 25}]
+    >>> print(schedule)
+       session         type  duration_minutes  start_minute  end_minute
+    0        1         work                25             0          25
+    1        2  short_break                 5            25          30
+    2        3         work                25            30          55
+    3        4  short_break                 5            55          60
 
-    **Custom technique with shorter work periods:**
+    **Custom technique with user-defined work and break lengths:**
 
-    >>> schedule = plan_pomodoro(total_minutes=60, technique="custom", work_length=20, short_break=5)
-    >>> list(schedule['type'])
-    ['work', 'short_break', 'work', 'short_break', 'work']
+    >>> schedule = plan_pomodoro(
+    ...     total_minutes=50,
+    ...     technique="custom",
+    ...     work_length=20,
+    ...     short_break=5
+    ... )
+    >>> list(schedule["type"])
+       session         type  duration_minutes  start_minute  end_minute
+    0        1         work                20             0          20
+    1        2  short_break                 5            20          25
+    2        3         work                20            25          45
+    3        4  short_break                 5            45          50
 
-    **Short time budget truncates the work session:**
+    **Short time budget truncates the final session:**
 
     >>> schedule = plan_pomodoro(total_minutes=10, technique="pomodoro")
-    >>> int(schedule['duration_minutes'].iloc[0])
-    10
-    >>> schedule['type'].iloc[0]
-    'work'
+    >>> print(schedule)
+       session  type  duration_minutes  start_minute  end_minute
+    0        1  work                10             0          10
     """
     _validate_inputs(
         total_minutes,
@@ -129,11 +137,9 @@ def plan_pomodoro(
 
     _warn_if_too_short(total_minutes, work, s_break)
 
-    schedule, work_session_count = _build_schedule(
-        total_minutes, work, s_break, l_break, interval
-    )
+    schedule = _build_schedule(total_minutes, work, s_break, l_break, interval)
 
-    return _create_dataframe_with_metadata(schedule, work_session_count)
+    return pd.DataFrame(schedule)
 
 
 def _validate_inputs(
@@ -255,7 +261,7 @@ def _build_schedule(
     short_break: int,
     long_break: int,
     long_break_interval: int,
-) -> tuple[list[dict], int]:
+) -> list[dict]:
     """
     Build the work/break schedule.
 
@@ -274,8 +280,8 @@ def _build_schedule(
 
     Returns
     -------
-    tuple
-        (schedule list, work_session_count)
+    list of dict
+        Schedule entries.
     """
     schedule = []
     current_time = 0
@@ -327,38 +333,4 @@ def _build_schedule(
         )
         current_time += break_duration
 
-    return schedule, work_session_count
-
-
-def _create_dataframe_with_metadata(
-    schedule: list[dict], work_session_count: int
-) -> pd.DataFrame:
-    """
-    Create DataFrame from schedule and add summary metadata.
-
-    Parameters
-    ----------
-    schedule : list of dict
-        The schedule entries.
-    work_session_count : int
-        Number of work sessions.
-
-    Returns
-    -------
-    pd.DataFrame
-        Schedule DataFrame with metadata in attrs.
-    """
-    df = pd.DataFrame(schedule)
-
-    if len(df) > 0:
-        total_work = df[df["type"] == "work"]["duration_minutes"].sum()
-        total_break = df[df["type"].str.contains("break")]["duration_minutes"].sum()
-    else:  # will never actually trigger/for reference in the future
-        total_work = 0
-        total_break = 0
-
-    df.attrs["total_work_minutes"] = int(total_work)
-    df.attrs["total_break_minutes"] = int(total_break)
-    df.attrs["work_sessions"] = work_session_count
-
-    return df
+    return schedule
