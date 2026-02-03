@@ -10,12 +10,12 @@ Based on our [Team Workload View](https://github.com/orgs/UBC-MDS/projects/353/v
 
 | Contributor | Issues Assigned |
 |-------------|-----------------|
-| @jiroamato | 61 |
-| @shanzekhem | 41 |
-| @Jenniferonyebuchi | 33 |
-| @jimmy2026-V | 33 |
+| Jennifer Onyebuchi (@Jenniferonyebuchi) | 33 |
+| Jingbo Wang (@jimmy2026-V) | 33 |
+| Shanzé Khemani (@shanzekhem) | 41 |
+| Jiro Amato (@jiroamato) | 61 |
 
-**Analysis:** While the raw numbers show variation, this reflects the nature of different tasks rather than unequal contribution. @jiroamato took on many smaller coordination and integration tasks (such as testing workflows), while the rest of the team members handled larger, more complex features. Otherwise, team members shared responsibility equally for major milestone deliverables, with pull requests showing collaborative co-assignment during integration phases.
+**Analysis:** While the raw numbers show variation, this reflects the nature of different tasks rather than unequal contribution. Jiro took on many smaller coordination and integration tasks (such as testing workflows), while the rest of the team members handled larger, more complex features. Otherwise, team members shared responsibility equally for major milestone deliverables, with pull requests showing collaborative co-assignment during integration phases.
 
 ### Burn-up Chart Analysis
 
@@ -23,10 +23,10 @@ Based on our [Burn-up Chart](https://github.com/orgs/UBC-MDS/projects/353/insigh
 
 | Contributor | M1 | M2 | M3 | M4 | Total |
 |-------------|----|----|----|----|-------|
-| Jenniferonyebuchi | 7 | 4 | 8 | 14 | 33 |
-| jimmy2026-V | 7 | 4 | 8 | 14 | 33 |
-| jiroamato | 8 | 9 | 14 | 30 | 61 |
-| shanzekhem | 7 | 5 | 9 | 20 | 41 |
+| Jennifer Onyebuchi (@Jenniferonyebuchi) | 7 | 4 | 8 | 14 | 33 |
+| Jingbo Wang (@jimmy2026-V) | 7 | 4 | 8 | 14 | 33 |
+| Shanzé Khemani (@shanzekhem) | 7 | 5 | 9 | 20 | 41 |
+| Jiro Amato (@jiroamato) | 8 | 9 | 14 | 30 | 61 |
 | **Total** | **29** | **22** | **39** | **78** | **168** |
 
 **Velocity Trend:** Total issues completed increased from 29 in Milestone 1 to 78 in Milestone 4, representing sustained project acceleration and completion momentum. M4 had the highest volume due to the addition of AI workflows, peer review feedback, documentation improvements, and final polish tasks.
