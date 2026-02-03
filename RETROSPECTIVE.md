@@ -1,10 +1,117 @@
----
-title: "Retrospective"
----
-
 # Retrospective
 
 This portion discusses the development tools, GitHub infrastructure, and organizational practices we learned and applied throughout this project, as well as recommendations for scaling up.
+
+## Project Analytics & Data-Driven Retrospective
+
+### Team Workload Distribution
+
+Based on our [Team Workload View](https://github.com/orgs/UBC-MDS/projects/353/views/10):
+
+| Contributor | Issues Assigned |
+|-------------|-----------------|
+| Jennifer Onyebuchi (@Jenniferonyebuchi) | 33 |
+| Jingbo Wang (@jimmy2026-V) | 33 |
+| Shanzé Khemani (@shanzekhem) | 41 |
+| Jiro Amato (@jiroamato) | 61 |
+
+**Insight:** While the raw numbers show variation, this reflects the nature of different tasks rather than unequal contribution. Jiro took on many smaller coordination and integration tasks (such as testing workflows), while the rest of the team members handled larger, more complex features. Otherwise, team members shared responsibility equally for major milestone deliverables, with pull requests showing collaborative co-assignment during integration phases.
+
+### Burn-up Chart Analysis
+
+Based on our [Burn-up Chart](https://github.com/orgs/UBC-MDS/projects/353/insights/8):
+
+| Contributor | M1 | M2 | M3 | M4 | Total |
+|-------------|----|----|----|----|-------|
+| Jennifer Onyebuchi (@Jenniferonyebuchi) | 7 | 4 | 8 | 14 | 33 |
+| Jingbo Wang (@jimmy2026-V) | 7 | 4 | 8 | 14 | 33 |
+| Shanzé Khemani (@shanzekhem) | 7 | 5 | 9 | 20 | 41 |
+| Jiro Amato (@jiroamato) | 8 | 9 | 14 | 30 | 61 |
+| **Total** | **29** | **22** | **39** | **78** | **168** |
+
+**Insight:** Total issues completed increased from 29 in Milestone 1 to 78 in Milestone 4, representing sustained project acceleration and completion momentum. M4 had the highest volume due to the addition of AI workflows, peer review feedback, documentation improvements, and final polish tasks.
+
+### Status Overview
+
+Based on our [Status Chart](https://github.com/orgs/UBC-MDS/projects/353/insights/6):
+
+- **Milestones 1-4**: 100% completion (all tasks closed)
+
+### Pull Request Contributions
+
+Based on our [PR per Contributor](https://github.com/orgs/UBC-MDS/projects/353/insights/4) view, the team collectively completed **49 merged pull requests** across four milestones. All team members contributed PRs covering feature implementations, documentation, bug fixes, and CI/CD improvements.
+
+## Retrospective Discussion: DAKI Framework
+
+Using the **DAKI (Drop, Add, Keep, Improve)** framework to reflect on our practices:
+
+### Drop
+
+- **Real-life communication dependency:** Reliance on real-life meetings could be reduced with better async/digital practices
+
+### Add
+
+- **CODEOWNERS file:** Would have auto-assigned reviewers by file path, reducing "who should review this?" questions
+- **Stale issue automation:** GitHub Actions like `actions/stale` to auto-close inactive issues
+- **Automated labeling:** `actions/labeler` to tag PRs based on changed files
+
+### Keep
+
+- **Sprint-based milestones:** Master issues with linked sub-issues provided clear scope and traceability
+- **CI/CD pipelines:** Automated testing and deployment caught issues early
+- **AI-powered workflows:** Gemini-based PR reviews and docstring checks improved quality
+- **Code coverage tracking:** Codecov integration ensured test quality
+
+### Improve
+
+- **Issue templates:** More structured bug reports with required fields would reduce back-and-forth
+- **Draft PRs:** Better use of draft status to signal "work in progress"
+- **Earlier documentation:** Writing docs alongside code rather than after
+
+## Planning Accuracy & Bottlenecks
+
+**Planning Observations:**
+
+- M1 and M2 had relatively balanced scope (29 and 22 issues)
+- M3 (CI/CD setup) required more issues (39) due to debugging workflows
+- M4 had the highest count (78) due to comprehensive peer review feedback integration
+
+**Bottleneck Analysis:**
+
+- PR reviews occasionally created small queues
+- GitHub Actions debugging required more iterations than anticipated
+- Integration testing across Python versions (3.10-3.13) caught edge cases late
+
+**Bus Factor Consideration:**
+
+Looking at workload distribution, if the contributor with the highest ticket count became unavailable, the project could have faced delays. Mitigation strategies include:
+
+- Comprehensive documentation
+- Code review ensuring multiple people understand each area
+
+## Project Dimensions: Communication Load & Criticality
+
+Following Alistair Cockburn's framework (from the Agile Manifesto), we recognize that project methodology should match two key dimensions:
+
+### Communication Load
+
+Our team of 4 required structured coordination tools:
+
+- **GitHub Issues & Milestones** replaced informal verbal agreements
+- **Project Boards** provided visibility into what everyone was working on
+- **PR-based workflow** forced explicit code review and knowledge sharing
+
+As teams grow, "shouting across the room" stops working—tools must compensate for the inability to hold the entire project state in one person's head.
+
+### Criticality
+
+As a package deployed to PyPI for public use:
+
+- **CI matrix testing** across Python 3.10-3.13 mitigates "it works on my machine" issues
+- **Codecov integration** ensures we don't ship untested code paths
+- **Trusted publishing** to PyPI ensures the repository code matches what users install
+
+Higher criticality justifies heavier infrastructure, not to "be good programmers," but to mitigate risk.
 
 ## Development Tools
 
@@ -77,16 +184,16 @@ Our GitHub Actions workflows automate the development lifecycle:
 
 We leverage AI in the following workflows using [Google Gemini API](https://ai.google.dev/gemini-api/docs) (Gemini 2.5 Flash):
 
-- **AI Critic (PR)**: Uses to review pull request changes for quality, correctness, and maintainability
-- **AI Docstring Detective**: Analyzes docstrings from a novice user's perspective to ensure clarity
-- **AI Tutorial Generator**: Generates tutorials based on code changes
-- **AI Critic (Issues)**: Reviews and provides feedback on new issues
+- **AI Critic (PR)**: Uses to review pull request changes for quality, correctness, and maintainability - [example outout in #108](https://github.com/UBC-MDS/deepworks/pull/108#issuecomment-3827676383)
+- **AI Docstring Detective**: Analyzes docstrings from a novice user's perspective to ensure clarity - [example output in #109](https://github.com/UBC-MDS/deepworks/pull/109#issuecomment-3832175512)
+- **AI Tutorial Generator**: Generates tutorials based on code changes - [example output in #108](https://github.com/UBC-MDS/deepworks/pull/108#issuecomment-3827676410)
+- **AI Critic (Issues)**: Reviews and provides feedback on new issues - [example output in #68](https://github.com/UBC-MDS/deepworks/issues/68#issuecomment-3814188038)
 
 ### Code Coverage with Codecov
 
 Integration with [Codecov](https://codecov.io/) provides:
 
-- Coverage reports on every PR
+- Coverage reports on every PR - [example output in #109](https://github.com/UBC-MDS/deepworks/pull/109#issuecomment-3827863018)
 - Historical tracking of code coverage trends
 - Visualization of which lines are tested
 - Dynamic badge in `README.md`
@@ -134,13 +241,93 @@ Examples of master issues in this project:
 We leverage GitHub Project Boards to manage our workflow:
 
 - **Kanban-style tracking**: Issues move through columns (e.g., To Do, In Progress, Done) as work progresses
-- **Visual overview**: The board provides a clear picture of current sprint status at a glance
-- **Prioritization**: Issues can be ordered within columns to indicate priority
 - **Cross-team visibility**: All contributors can see what others are working on, reducing duplication and improving collaboration
 
 ## Scaling Recommendations
 
-If we were to scale up this or another project, we would implement the following tools, infrastructure, and practices:
+If we were to scale up this or another project, we would implement the following tools, infrastructure, and practices. The level of formality should match project needs—a 48-hour hackathon doesn't need the same rigor as production tax software.
+
+### Formality Scaling Framework
+
+Drawing from course learnings, here's how formality scales across project dimensions. We assess our **current formality level** and identify **next steps** for scaling.
+
+#### Verification Strategy (Local → Distributed)
+
+| Formality | Practice | Our Implementation | Status |
+|-----------|----------|-------------------|--------|
+| Low | Run `pytest` locally | Initial development | Past |
+| Medium | CI on standard runner | `build.yml` on Ubuntu | Past |
+| **High** | **Matrix testing + coverage gates** | **Python 3.10-3.13, Codecov 80% threshold** | **Current** |
+
+**Current Level: High** — We have matrix testing across 4 Python versions with coverage enforcement.
+
+**Next Level:** Add OS matrix (Ubuntu, macOS, Windows), performance regression testing with `pytest-benchmark`, and mutation testing to verify test quality.
+
+#### Release Management (Manual → Automated)
+
+| Formality | Practice | Our Implementation | Status |
+|-----------|----------|-------------------|--------|
+| Low | Zip and share | N/A | Past |
+| Medium | Semantic versioning + GitHub Releases | `hatch-vcs` for git tags | Past |
+| **High** | **CD pipelines with trusted publishing** | **`deploy.yml` to Test PyPI via OIDC** | **Current** |
+
+**Current Level: High** — We use trusted publishing (OIDC) to Test PyPI without secret API keys.
+
+**Next Level:** Add staged deployments (Test PyPI → PyPI) with manual approval gates, automatic changelog generation from conventional commits using `action-gh-release`, and signed releases with Sigstore.
+
+#### Workflow & Planning (Ad-hoc → Transparent)
+
+| Formality | Practice | Our Implementation | Status |
+|-----------|----------|-------------------|--------|
+| Low | Chat to decide tasks | Early discussions | Past |
+| Medium | Issues + Kanban board | GitHub Projects | Past |
+| **High** | **Analytics, templates, CONTRIBUTING.md** | **Project Insights, contribution guidelines** | **Current** |
+
+**Current Level: High** — We have project analytics, structured contribution guidelines, and milestone-based planning.
+
+**Next Level:** Add CODEOWNERS for automatic reviewer assignment, YAML-based issue templates with required fields, `actions/stale` for automatic issue cleanup, and `actions/labeler` for automatic PR categorization.
+
+#### Code Review & Collaboration
+
+| Formality | Practice | Our Implementation | Status |
+|-----------|----------|-------------------|--------|
+| Low | Informal review or none | N/A | Past |
+| **Medium** | **PR reviews** | **Required reviews, status checks** | **Current** |
+| High | CODEOWNERS + multiple approvers + AI assist | AI-powered reviews (partial) | → Next |
+
+**Current Level: Medium-High** — We require PR reviews and have AI-powered review assistance, but lack CODEOWNERS.
+
+**Next Level:** Add CODEOWNERS file mapping code areas to specific reviewers, require 2+ approvals for `main`, and integrate AI suggestions more deeply into the review workflow.
+
+### Summary: Current Project Formality
+
+| Dimension | Current Level |
+|-----------|---------------|
+| Verification | High |
+| Release Management | High |
+| Workflow & Planning | High |
+| Code Review | Medium-High |
+
+**Overall Assessment:** This project operates at **high formality** appropriate for an open-source package deployed to PyPI. The main gap is in code review automation (CODEOWNERS, multi-approver requirements).
+
+### Recommended GitHub Actions for Scale
+
+These actions provide high value for growing projects:
+
+**Quality & Compliance ("The Gatekeepers"):**
+
+- [Super-Linter](https://github.com/super-linter/super-linter): Checks Python, Markdown, YAML, Dockerfiles in one pass
+- [Codecov Action](https://github.com/codecov/codecov-action): PR comments showing coverage impact (we use this)
+
+**Release & Deployment ("The Time Savers"):**
+
+- [PyPI Publish](https://github.com/pypa/gh-action-pypi-publish): Trusted publishing without secret API keys (we use this)
+- [GH Release](https://github.com/softprops/action-gh-release): Auto-generate releases from git tags
+
+**Project Hygiene ("The Janitors"):**
+
+- [Stale](https://github.com/actions/stale): Auto-close inactive issues/PRs
+- [Labeler](https://github.com/actions/labeler): Auto-label based on changed files
 
 ### Enhanced Testing Infrastructure
 
@@ -163,6 +350,24 @@ If we were to scale up this or another project, we would implement the following
 - **CODEOWNERS** file to automatically assign reviewers by file path
 - **Issue and PR templates** for feature requests, releases, and more with automatic labelling
 - **Automated labeling** based on file paths and PR content
+- **Draft Pull Requests** to signal "work in progress" and prevent premature reviews
+
+### GenAI Integration for Development
+
+Our project already leverages AI-powered workflows. For scaling, we recommend:
+
+**Code Quality:**
+
+- AI-powered PR reviews (we use Gemini 2.5 Flash via `ai-critic.yml`)
+- Docstring quality analysis from novice user perspective (`ai-docstring-detective.yml`)
+- Automated tutorial generation from code changes (`ai-tutorial.yml`)
+
+**Interaction Rules for GenAI Tools:**
+
+- AI suggestions should be reviewed by humans before merging
+- AI-generated code must pass all existing tests and linting
+- AI should augment, not replace, code review discussions
+- Document when AI tools are used (e.g., `Co-Authored-By` in commits)
 
 ### Monitoring and Observability
 
